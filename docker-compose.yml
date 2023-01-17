@@ -35,15 +35,15 @@ services:
     restart: always
     networks:
         - dev
-        
+
   www:
-    build: api/php
+    build: php
     container_name: www_docker_symfony
     ports:
       - "8741:80"
     volumes:
         - ./api/php/vhosts:/etc/apache2/sites-enabled
-        - ./api:/var/www
+        - ./:/var/www
     restart: always
     networks:
         - dev
