@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\FreelanceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -45,6 +47,18 @@ class Freelance
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $cvlink = null;
+
+    #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'candidates')]
+    private Collection $offers;
+
+    #[ORM\OneToMany(mappedBy: 'freelance', targetEntity: Keyword::class)]
+    private Collection $keywords;
+
+    public function __construct()
+    {
+        $this->offers = new ArrayCollection();
+        $this->keywords = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -167,6 +181,63 @@ class Freelance
     public function setCvlink(?string $cvlink): self
     {
         $this->cvlink = $cvlink;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Offer>
+     */
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function addOffer(Offer $offer): self
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers->add($offer);
+            $offer->addCandidate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(Offer $offer): self
+    {
+        if ($this->offers->removeElement($offer)) {
+            $offer->removeCandidate($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Keyword>
+     */
+    public function getKeywords(): Collection
+    {
+        return $this->keywords;
+    }
+
+    public function addKeyword(Keyword $keyword): self
+    {
+        if (!$this->keywords->contains($keyword)) {
+            $this->keywords->add($keyword);
+            $keyword->setFreelance($this);
+        }
+
+        return $this;
+    }
+
+    public function removeKeyword(Keyword $keyword): self
+    {
+        if ($this->keywords->removeElement($keyword)) {
+            // set the owning side to null (unless already changed)
+            if ($keyword->getFreelance() === $this) {
+                $keyword->setFreelance(null);
+            }
+        }
 
         return $this;
     }
