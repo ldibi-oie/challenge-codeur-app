@@ -9,6 +9,11 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "@vue-hero-icons/outline": "^1.7.2",
+    "axios": "^1.2.2",
+    "dotenv": "^16.0.3",
+    "flowbite": "^1.6.2",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
@@ -17,9 +22,12 @@
     "@rushstack/eslint-patch": "^1.1.4",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",
+    "autoprefixer": "^10.4.13",
     "eslint": "^8.22.0",
     "eslint-plugin-vue": "^9.3.0",
+    "postcss": "^8.4.21",
     "prettier": "^2.7.1",
+    "tailwindcss": "^3.2.4",
     "vite": "^4.0.0"
   }
 }
