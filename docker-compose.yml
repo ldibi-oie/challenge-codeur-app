@@ -3,13 +3,13 @@ version: '3'
 services:
 ###> doctrine/doctrine-bundle ###
   database:
-    image: mysql
+    image: mariadb
     container_name: db_docker_symfony
     restart: always
     volumes:
-        - db-data:/var/lib/mysql
+        - db-data:/var/lib/mariadb
     environment:
-        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
     networks:
         - dev
 ###< doctrine/doctrine-bundle ###
@@ -25,7 +25,7 @@ services:
         PMA_HOST: database
     networks:
         - dev
-  
+
   maildev:
     image: maildev/maildev
     container_name: maildev_docker_symfony
@@ -47,7 +47,7 @@ services:
     restart: always
     networks:
         - dev
-  
+
   vue-ui:
     image: node:19.2.0-alpine3.16
     volumes:

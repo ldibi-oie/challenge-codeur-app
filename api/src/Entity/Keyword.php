@@ -18,6 +18,12 @@ class Keyword
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    #[ORM\ManyToOne(inversedBy: 'keywords')]
+    private ?Offer $offer = null;
+
+    #[ORM\ManyToOne(inversedBy: 'keywords')]
+    private ?Freelance $freelance = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -31,6 +37,30 @@ class Keyword
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getOffer(): ?Offer
+    {
+        return $this->offer;
+    }
+
+    public function setOffer(?Offer $offer): self
+    {
+        $this->offer = $offer;
+
+        return $this;
+    }
+
+    public function getFreelance(): ?Freelance
+    {
+        return $this->freelance;
+    }
+
+    public function setFreelance(?Freelance $freelance): self
+    {
+        $this->freelance = $freelance;
 
         return $this;
     }
