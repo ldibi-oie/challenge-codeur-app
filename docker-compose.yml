@@ -9,7 +9,10 @@ services:
     volumes:
         - db-data:/var/lib/mariadb
     environment:
+        MARIADB_DATABASE: challenge
         MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
+    ports:
+      - "3306:3306"
     networks:
         - dev
 ###< doctrine/doctrine-bundle ###
@@ -37,7 +40,9 @@ services:
         - dev
 
   www:
-    build: php
+    build:
+      context: ./api/php
+      dockerfile: Dockerfile
     container_name: www_docker_symfony
     ports:
       - "8741:80"
@@ -53,14 +58,29 @@ services:
     volumes:
       - ./frontend:/app
     working_dir: /app
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "npm install"
+    entrypoint: ["npm", "run", "dev"]
     ports:
       - 5173:5173
 
+vue-ui:
+    image: node:19.2.0-alpine3.16
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    command: sh -c "npm install"
+    entrypoint: ["npm", "run", "dev"]
+    ports:
+      - 5173:5173
+    networks:
+        - default
 
 networks:
     dev:
+    default:
+        driver: bridge
 volumes:
     db-data:
+    
 
 
