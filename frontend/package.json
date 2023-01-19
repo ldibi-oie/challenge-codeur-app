@@ -9,7 +9,6 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@api-platform/admin": "^3.4.3",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-react": "^1.2.0",
