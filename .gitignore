@@ -1,3 +1,5 @@
 .history
 api/.env
 api/.env.local
+
+/.idea
