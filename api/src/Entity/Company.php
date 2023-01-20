@@ -8,11 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\TimestampableTrait;
+use App\Entity\MediaObject;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[ApiResource]
+#[ApiResource(groups: ['timestampable'])]
 class Company
 {
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -36,11 +40,16 @@ class Company
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $offerlist = [];
 
+    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    public ?MediaObject $logo= null;
+
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
     private Collection $offers;
 
     #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
-    private ?Subcription $subscription = null;
+    private ?Subscription $subscription = null;
 
     public function __construct()
     {
@@ -154,12 +163,12 @@ class Company
         return $this;
     }
 
-    public function getSubscription(): ?Subcription
+    public function getSubscription(): ?Subscription
     {
         return $this->subscription;
     }
 
-    public function setSubscription(?Subcription $subscription): self
+    public function setSubscription(?Subscription $subscription): self
     {
         $this->subscription = $subscription;
 
