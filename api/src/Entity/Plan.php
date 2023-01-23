@@ -5,13 +5,14 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PlanRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\TimestampableTrait;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: PlanRepository::class)]
 #[ApiResource]
 class Plan
 {
-    use TimestampableTrait;
+
+    use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

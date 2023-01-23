@@ -8,14 +8,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\TimestampableTrait;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use App\Entity\MediaObject;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[ApiResource(groups: ['timestampable'])]
+#[ApiResource(
+    normalizationContext: ['groups' => ['timestampable']],
+)]
 class Company
 {
-    use TimestampableTrait;
+    use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -55,6 +57,7 @@ class Company
     {
         $this->offers = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
