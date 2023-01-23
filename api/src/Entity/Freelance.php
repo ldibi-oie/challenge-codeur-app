@@ -8,13 +8,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\TimestampableTrait;
 use App\Entity\MediaObject;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Entity(repositoryClass: FreelanceRepository::class)]
 #[ApiResource]
 class Freelance
 {
-    use TimestampableTrait;
+
+    use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

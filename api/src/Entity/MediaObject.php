@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[Vich\Uploadable]
 #[ORM\Entity]
@@ -47,6 +48,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 )]
 class MediaObject
 {
+    use TimestampableEntity;
+
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
     private ?int $id = null;
 
