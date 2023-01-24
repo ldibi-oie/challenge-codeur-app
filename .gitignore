@@ -1,5 +1,4 @@
 .history
 api/.env
 api/.env.local
-api/node_modules
-frontend/node_modules
+http
