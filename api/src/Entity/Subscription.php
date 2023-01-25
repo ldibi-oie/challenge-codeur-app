@@ -21,9 +21,6 @@ class Subscription
     private ?int $id = null;
 
 
-    #[ORM\OneToOne(mappedBy: 'subscription', cascade: ['persist', 'remove'])]
-    private ?Company $company = null;
-
     #[ORM\Column(length: 255)]
     private ?string $stripeId = null;
 
@@ -39,31 +36,13 @@ class Subscription
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $currentPeriodEnd = null;
 
+    #[ORM\ManyToOne(inversedBy: 'subscriptions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Company $company = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCompany(): ?Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(?Company $company): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($company === null && $this->company !== null) {
-            $this->company->setSubscription(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($company !== null && $company->getSubscription() !== $this) {
-            $company->setSubscription($this);
-        }
-
-        $this->company = $company;
-
-        return $this;
     }
 
     public function getStripeId(): ?string
@@ -122,6 +101,18 @@ class Subscription
     public function setCurrentPeriodEnd(\DateTimeInterface $currentPeriodEnd): self
     {
         $this->currentPeriodEnd = $currentPeriodEnd;
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
 
         return $this;
     }

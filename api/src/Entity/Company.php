@@ -12,9 +12,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use App\Entity\MediaObject;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[ApiResource(
-    normalizationContext: ['groups' => ['timestampable']],
-)]
+#[ApiResource]
 class Company
 {
     use TimestampableEntity;
@@ -50,12 +48,13 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
     private Collection $offers;
 
-    #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
-    private ?Subscription $subscription = null;
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Subscription::class)]
+    private Collection $subscriptions;
 
     public function __construct()
     {
         $this->offers = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
     }
 
 
@@ -166,14 +165,32 @@ class Company
         return $this;
     }
 
-    public function getSubscription(): ?Subscription
+    /**
+     * @return Collection<int, Subscription>
+     */
+    public function getSubscriptions(): Collection
     {
-        return $this->subscription;
+        return $this->subscriptions;
     }
 
-    public function setSubscription(?Subscription $subscription): self
+    public function addSubscription(Subscription $subscription): self
     {
-        $this->subscription = $subscription;
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions->add($subscription);
+            $subscription->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(Subscription $subscription): self
+    {
+        if ($this->subscriptions->removeElement($subscription)) {
+            // set the owning side to null (unless already changed)
+            if ($subscription->getCompany() === $this) {
+                $subscription->setCompany(null);
+            }
+        }
 
         return $this;
     }

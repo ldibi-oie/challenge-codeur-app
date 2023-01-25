@@ -6,9 +6,8 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PlanRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-
-#[ORM\Entity(repositoryClass: PlanRepository::class)]
 #[ApiResource]
+#[ORM\Entity(repositoryClass: PlanRepository::class)]
 class Plan
 {
 
