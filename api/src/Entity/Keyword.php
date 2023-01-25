@@ -5,11 +5,15 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\KeywordRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: KeywordRepository::class)]
 #[ApiResource]
 class Keyword
 {
+
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

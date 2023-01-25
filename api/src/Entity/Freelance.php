@@ -8,11 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Entity\MediaObject;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Entity(repositoryClass: FreelanceRepository::class)]
 #[ApiResource]
 class Freelance
 {
+
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -45,8 +49,16 @@ class Freelance
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $freelancetypes = [];
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $cvlink = null;
+
+    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    public ?MediaObject $cv= null;
+
+    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    public ?MediaObject $profile = null;
 
     #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'candidates')]
     private Collection $offers;
@@ -169,18 +181,6 @@ class Freelance
     public function setFreelancetypes(?array $freelancetypes): self
     {
         $this->freelancetypes = $freelancetypes;
-
-        return $this;
-    }
-
-    public function getCvlink(): ?string
-    {
-        return $this->cvlink;
-    }
-
-    public function setCvlink(?string $cvlink): self
-    {
-        $this->cvlink = $cvlink;
 
         return $this;
     }

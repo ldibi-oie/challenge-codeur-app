@@ -8,11 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Entity\MediaObject;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[ApiResource]
 class Company
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -36,16 +40,23 @@ class Company
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $offerlist = [];
 
+    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    public ?MediaObject $logo= null;
+
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
     private Collection $offers;
 
-    #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
-    private ?Subcription $subscription = null;
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Subscription::class)]
+    private Collection $subscriptions;
 
     public function __construct()
     {
         $this->offers = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -154,14 +165,32 @@ class Company
         return $this;
     }
 
-    public function getSubscription(): ?Subcription
+    /**
+     * @return Collection<int, Subscription>
+     */
+    public function getSubscriptions(): Collection
     {
-        return $this->subscription;
+        return $this->subscriptions;
     }
 
-    public function setSubscription(?Subcription $subscription): self
+    public function addSubscription(Subscription $subscription): self
     {
-        $this->subscription = $subscription;
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions->add($subscription);
+            $subscription->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(Subscription $subscription): self
+    {
+        if ($this->subscriptions->removeElement($subscription)) {
+            // set the owning side to null (unless already changed)
+            if ($subscription->getCompany() === $this) {
+                $subscription->setCompany(null);
+            }
+        }
 
         return $this;
     }
