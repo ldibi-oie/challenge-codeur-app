@@ -4,13 +4,19 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\FreelanceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Entity\MediaObject;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Entity(repositoryClass: FreelanceRepository::class)]
 #[ApiResource]
 class Freelance
 {
+
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -43,8 +49,28 @@ class Freelance
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $freelancetypes = [];
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $cvlink = null;
+
+    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    public ?MediaObject $cv= null;
+
+    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    public ?MediaObject $profile = null;
+
+    #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'candidates')]
+    private Collection $offers;
+
+    #[ORM\OneToMany(mappedBy: 'freelance', targetEntity: Keyword::class)]
+    private Collection $keywords;
+
+    public function __construct()
+    {
+        $this->offers = new ArrayCollection();
+        $this->keywords = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -159,14 +185,59 @@ class Freelance
         return $this;
     }
 
-    public function getCvlink(): ?string
+    /**
+     * @return Collection<int, Offer>
+     */
+    public function getOffers(): Collection
     {
-        return $this->cvlink;
+        return $this->offers;
     }
 
-    public function setCvlink(?string $cvlink): self
+    public function addOffer(Offer $offer): self
     {
-        $this->cvlink = $cvlink;
+        if (!$this->offers->contains($offer)) {
+            $this->offers->add($offer);
+            $offer->addCandidate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(Offer $offer): self
+    {
+        if ($this->offers->removeElement($offer)) {
+            $offer->removeCandidate($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Keyword>
+     */
+    public function getKeywords(): Collection
+    {
+        return $this->keywords;
+    }
+
+    public function addKeyword(Keyword $keyword): self
+    {
+        if (!$this->keywords->contains($keyword)) {
+            $this->keywords->add($keyword);
+            $keyword->setFreelance($this);
+        }
+
+        return $this;
+    }
+
+    public function removeKeyword(Keyword $keyword): self
+    {
+        if ($this->keywords->removeElement($keyword)) {
+            // set the owning side to null (unless already changed)
+            if ($keyword->getFreelance() === $this) {
+                $keyword->setFreelance(null);
+            }
+        }
 
         return $this;
     }

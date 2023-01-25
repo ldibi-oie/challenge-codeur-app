@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Subcription;
+use App\Entity\Subscription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Subcription>
+ * @extends ServiceEntityRepository<Subscription>
  *
- * @method Subcription|null find($id, $lockMode = null, $lockVersion = null)
- * @method Subcription|null findOneBy(array $criteria, array $orderBy = null)
- * @method Subcription[]    findAll()
- * @method Subcription[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Subscription|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Subscription|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Subscription[]    findAll()
+ * @method Subscription[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SubcriptionRepository extends ServiceEntityRepository
+class SubscriptionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Subcription::class);
+        parent::__construct($registry, Subscription::class);
     }
 
-    public function save(Subcription $entity, bool $flush = false): void
+    public function save(Subscription $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class SubcriptionRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Subcription $entity, bool $flush = false): void
+    public function remove(Subscription $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class SubcriptionRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Subcription[] Returns an array of Subcription objects
+//     * @return Subscription[] Returns an array of Subscription objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class SubcriptionRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Subcription
+//    public function findOneBySomeField($value): ?Subscription
 //    {
 //        return $this->createQueryBuilder('s')
 //            ->andWhere('s.exampleField = :val')
