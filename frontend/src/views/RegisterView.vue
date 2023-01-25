@@ -65,6 +65,9 @@ import requestApi from "../axios"
         .then((res) => {
             // this.token = res.data.token
             console.log(res)
+            if(res){
+              this.$router.push('/verify/waiting');
+            }
         })
         .catch(err => {
             this.error = err

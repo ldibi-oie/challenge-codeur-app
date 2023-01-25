@@ -1,49 +1,49 @@
-<?php
-
+<?php 
+// RegistrationController.php
 namespace App\Controller;
 
-use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Attribute\AsController;
 
-#[AsController]
+use App\Entity\User;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+
 class RegisterController extends AbstractController
 {
-  private $userPasswordHasher;
+    private $verifyEmailHelper;
+    private $mailer;
     
-  public function __construct(UserPasswordHasherInterface $userPasswordHasher)
-  {
-      $this->userPasswordHasher = $userPasswordHasher;
-  }
- 
-  #[Route('/register', name: 'register' , methods: ['POST'])]
-  public function register(Request $request): Response
-  {
-      // $user = new User();
-      // $user->setEmail('admin@admin.fr');
-      // $user->setRoles(["ROLE_ADMIN"]);
-      // $user->setPassword($this->userPasswordHasher->hashPassword($user, "password"));
-      // $manager->persist($user);
-
-      // $manager->flush();
-      $data = new JsonResponse($request->getContent(), true);
-    return $data;
-  }
-
-  /**
-   * @Route("/verify", name="app_verify_email")
-   */
-  public function verifyUserEmail(): Response
-  {
-    return $this->render('base.html.twig');
-  }
-
+    public function __construct(VerifyEmailHelperInterface $helper, MailerInterface $mailer)
+    {
+        $this->verifyEmailHelper = $helper;
+        $this->mailer = $mailer;
+    }
+    
+    #[Route('/register2', name: 'register-user')]
+    public function register(): Response
+    {
+        $user = new User();
+    
+        // handle the user registration form and persist the new user...
+    
+        $signatureComponents = $this->verifyEmailHelper->generateSignature(
+                'registration_confirmation_route',
+                $user->getId(),
+                $user->getEmail()
+            );
+        
+        $email = (new TemplatedEmail())
+        ->from('myproject.codeur@gmail.com')
+        ->to($user->getEmail())
+        ->htmlTemplate('registration/confirmation_email.html.twig')
+        ->context(['signedUrl' => $signatureComponents->getSignedUrl()]);
+        
+        $this->mailer->send($email);
+    
+        // generate and return a response for the browser
+        return new Response("Votre mail de confirmation vous a ete envoye ! regarder votre mail", 200);
+    }
 }

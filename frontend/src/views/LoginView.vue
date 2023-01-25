@@ -25,12 +25,12 @@
       <div class="w-full max-w-md space-y-8">
         <div>
           <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=red&shade=600" alt="Your Company" />
-          <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
-          <p class="mt-2 text-center text-sm text-gray-600">
+          <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Se connecter</h2>
+          <!-- <p class="mt-2 text-center text-sm text-gray-600">
             Or
             {{ ' ' }}
             <a href="#" class="font-medium text-red-600 hover:text-red-500">start your 14-day free trial</a>
-          </p>
+          </p> -->
         </div>
         <form class="mt-8 space-y-6"  @submit.prevent="submitForm">
           <input type="hidden" name="remember" value="true" />
@@ -65,8 +65,9 @@
             </button>
           </div>
         </form>
-        {{  token  }}
+        token : {{  token  }}
         {{  error  }}
+        user : {{  user  }}
       </div>
     </div>
   </template>
@@ -79,7 +80,8 @@ import requestApi from "../axios"
         username: "",
         password: "",
         token: "",
-        error: ""
+        error: "",
+        user: ""
       };
     },
     methods: {
@@ -89,7 +91,18 @@ import requestApi from "../axios"
             password: this.password
         })
         .then((res) => {
-            this.token = res.data.token
+          this.token = res.data.token
+          requestApi.post("/current" , {
+            token: this.token
+          })
+          .then((infos) => {
+            console.log(infos)
+            this.user = infos
+          })
+          .catch(err => {
+            this.error = err.message
+          })
+          // this.$router.push('/profile');
         })
         .catch(err => {
             this.error = err
