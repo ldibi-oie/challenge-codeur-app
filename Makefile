@@ -12,3 +12,5 @@ start:
 
 stop:
 	docker-compose down
+
+restart: stop start
