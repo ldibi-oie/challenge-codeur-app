@@ -1,5 +1,9 @@
 FROM php:8.1.0-apache
 
+COPY wait-for-it.sh /usr/bin/wait-for-it
+
+RUN chmod +x /usr/bin/wait-for-it
+
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 RUN apt-get update \
@@ -16,4 +20,7 @@ RUN docker-php-ext-configure intl
 RUN docker-php-ext-install pdo pdo_mysql gd opcache intl zip calendar dom mbstring zip gd xsl
 RUN pecl install apcu && docker-php-ext-enable apcu
 
+
 WORKDIR /var/www/
+
+CMD composer i -o ; wait-for-it db_docker_symfony:3306 -- bin/console doctrine:migrations:migrate ;  php
