@@ -9,6 +9,9 @@ parameters:
     vuejs.login: '%env(CLIENT_URL_LOGIN)%'
     vuejs.404: '%env(CLIENT_URL_404)%'
 
+    stripe_sk: '%env(resolve:STRIPE_SK)%'
+    stripe_pk: '%env(resolve:STRIPE_PK)%'
+    stripe_webhook_secret: '%env(resolve:STRIPE_WEBHOOK_SECRET)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -28,6 +31,7 @@ services:
         arguments: ['@.inner']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+<<<<<<< HEAD
 
     App\EventListener\LoginSuccessListener:
         tags:
@@ -38,3 +42,8 @@ services:
         arguments: [ '@security.token_storage' ]
 
         
+=======
+    App\Repository\SubscriptionRepository:
+        autowire: true
+        tags: ['doctrine.repository_service']
+>>>>>>> origin/abonnement-back

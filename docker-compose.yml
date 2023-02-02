@@ -9,6 +9,7 @@ services:
     volumes:
         - db-data:/var/lib/mariadb
     environment:
+        MARIADB_DATABASE: challenge
         MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
     networks:
         - dev

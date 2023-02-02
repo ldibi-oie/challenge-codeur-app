@@ -51,6 +51,9 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Subscription::class)]
     private Collection $subscriptions;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $stripeId = null;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -191,6 +194,18 @@ class Company
                 $subscription->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStripeId(): ?string
+    {
+        return $this->stripeId;
+    }
+
+    public function setStripeId(string $stripeId): self
+    {
+        $this->stripeId = $stripeId;
 
         return $this;
     }
