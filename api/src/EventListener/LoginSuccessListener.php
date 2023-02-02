@@ -4,11 +4,11 @@ namespace App\EventListener;
 
 use App\Entity\User;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 class LoginSuccessListener
 {
 
-    public function onLoginSuccess(AuthenticationSuccessEvent $event): void
+    public function onLoginSuccess(AuthenticationSuccessEvent $event)
     {
         $user = $event->getUser();
         $payload = $event->getData();
@@ -16,9 +16,11 @@ class LoginSuccessListener
             return;
         }
         // Add information to user payload
-        // $payload['user'] = [
-        //     ...
-        // ];
-        var_dump($event->setData($payload));
+        $payload['user'] = [
+            "id" => $user->getId(),
+            "isVerified" => $user->isIsVerified()
+        ];
+
+        $event->setData($payload);
     }
 }

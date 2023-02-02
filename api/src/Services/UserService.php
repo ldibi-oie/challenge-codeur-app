@@ -26,21 +26,4 @@ class UserService
         $this->security = $security;
     }
 
-    // #[Route("/api/login_check", name: 'login_check' , methods:['POST'])]
-    // public function getCurrentUser(Request $request)
-    // {
-
-    //     $token0 = $request->getHeaders();
-    //     $token = $this->tokenStorage->getToken();
-    //     if ($token instanceof TokenInterface) {
-    //         /** @var User  $user */
-    //         $user = $token->getUser();
-    //         return $user;
-
-    //     } else {
-    //         return "null";
-    //     }
-
-    //     return $request->getContent();
-    // }
 }

@@ -11,7 +11,7 @@ return function (array $context) {
 if ($_SERVER['APP_DEBUG']) {
     header('Access-Control-Allow-Origin:'.rtrim($_SERVER['HTTP_REFERER'], '/'));
 } else {
-    header('Access-Control-Allow-Origin:http://localhost:5741');
+    header('Access-Control-Allow-Origin:http://localhost:5173');
 }
 header('Access-Control-Allow-Headers:*');
 header('Access-Control-Allow-Credentials:true');

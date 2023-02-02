@@ -1,47 +1,43 @@
 <template>
-    <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="w-full max-w-md space-y-8">
-        <div>
-            <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=red&shade=600" alt="Your Company" />
-            <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Creer un compte </h2>
-        </div>
-        <form class="mt-8 space-y-6"  @submit.prevent="submitForm">
-            <input type="hidden" name="remember" value="true" />
-            <div class="-space-y-px rounded-md shadow-sm">
-            <div>
-                <label for="email-address" class="sr-only">Email address</label>
-                <input v-model="username" id="email-address" name="email" type="email" autocomplete="email" required="" class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm" placeholder="Email address" />
-            </div>
-            <div>
-                <label for="password" class="sr-only">Password</label>
-                <input v-model="password"  id="password" name="password" type="password" autocomplete="current-password" required="" class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm" placeholder="Password" />
-            </div>
-            </div>
-
-            <div class="flex items-center justify-between">
-            <div class="flex items-center">
-                <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500" />
-                <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
-            </div>
-
-            <div class="text-sm">
-                <a href="#" class="font-medium text-red-600 hover:text-red-500">Forgot your password?</a>
-            </div>
-            </div>
-
-            <div>
-            <button type="submit" class="group relative flex w-full justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <!-- <LockClosedIcon class="h-5 w-5 text-red-500 group-hover:text-red-400" aria-hidden="true" /> -->
-                </span>
-                Sign in
-            </button>
-            </div>
-        </form>
-        {{  token  }}
-        {{  error  }}
-        </div>
-    </div>
+    <div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
+      <a href="/" class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
+          <span>MyProject Codeur</span>  
+      </a>
+      <!-- Card -->
+      <div class="w-full max-w-xl p-6 space-y-8 sm:p-8 bg-white rounded-lg shadow dark:bg-gray-800">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+              Create a Free Account
+          </h2>
+          <form class="mt-8 space-y-6" @submit.prevent="submitForm">
+              <div>
+                  <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                  <input type="email"  v-model="username" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="name@company.com" required="">
+              </div>
+              <div>
+                  <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+                  <input type="password" v-model="password"  id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" required="">
+              </div>
+              <div>
+                  <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
+                  <input type="password" v-model="confirmPassword"  name="confirm-password" id="confirm-password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" required="">
+              </div>
+              <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                      <input id="remember" aria-describedby="remember" name="remember" type="checkbox" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-red-300 dark:focus:ring-red-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600" required="">
+                  </div>
+                  <div class="ml-3 text-sm">
+                      <label for="remember" class="font-medium text-gray-900 dark:text-white">I accept the <a href="#" class="text-red-700 hover:underline dark:text-red-500">Terms and Conditions</a></label>
+                  </div>
+              </div>
+              <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 sm:w-auto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Create account</button>
+              <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  Already have an account? <a href="/login" class="text-red-700 hover:underline dark:text-red-500">Login here</a>
+              </div>
+          </form>
+          {{  token  }}
+          {{  error  }}
+      </div>
+  </div>
 </template>
   
 <script>
@@ -51,28 +47,32 @@ import requestApi from "../axios"
       return {
         username: "",
         password: "",
+        confirmPassword: "",
         token: "",
         error: ""
       };
     },
     methods: {
       submitForm: function () {
-        requestApi.post("/apip/users" , {
+        if(this.confirmPassword != this.password) {
+          this.error = "Les mots de passes ne sont pas identiques" 
+        } else {
+          requestApi.post("/apip/users" , {
             email: this.username,
             roles: ["USER_ROLES"],
             password: this.password   
-        })
-        .then((res) => {
-            // this.token = res.data.token
-            console.log(res)
-            if(res){
-              this.$router.push('/verify/waiting');
-            }
-        })
-        .catch(err => {
-            this.error = err
-        })
-
+          })
+          .then((res) => {
+              // this.token = res.data.token
+              console.log(res)
+              if(res){
+                this.$router.push('/verify/waiting');
+              }
+          })
+          .catch(err => {
+              this.error = err
+          })
+        }
       }
     },
   };

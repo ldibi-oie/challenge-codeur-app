@@ -34,7 +34,7 @@ services:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onLoginSuccess }
         
     tenant_user_service:
-        class: App\Services\UserService
+        class: App\Controller\RegistrationController
         arguments: [ '@security.token_storage' ]
 
         

@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -114,23 +115,31 @@ class RegistrationController extends AbstractController
     #[Route("/current", name: 'current_user')]
     public function getCurrentUser(Request $request) : Response
     {
+        $user = $this->getUser();
+
+        // return new Response('Well hi there '.$user. '. and request ' .$request->getContent());
         return $this->json([
             "user" => $request->getContent() ? $request->getContent() : null
         ]);
     }
 
-    // public function onLoginSuccess(AuthenticationSuccessEvent $event): void
-    // {
-    //     $user = $event->getUser();
-    //     $payload = $event->getData();
-    //     if (!$user instanceof User) {
-    //         return;
-    //     }
-    //     // Add information to user payload
-    //     // $payload['user'] = [
-    //     //     ...
-    //     // ];
-    //     var_dump($event->setData($payload));
-    // }
+    public function onLoginSuccess(AuthenticationSuccessEvent $event)
+    {
+        $user = $event->getUser();
+        $payload = $event->getData();
+        if (!$user instanceof User) {
+            return;
+        }
+        // Add information to user payload
+        $payload['user'] = [
+            "id" => $user->getId(),
+            "isVerified" => $user->isIsVerified()
+        ];
+        return new JsonResponse([
+            "id" => $user->getId(),
+            "email" => $user->getEmail(),
+            "isVerified" => $user->isIsVerified(),
+        ]);
+    }
 
 }
