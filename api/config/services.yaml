@@ -31,7 +31,6 @@ services:
         arguments: ['@.inner']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-<<<<<<< HEAD
 
     App\EventListener\LoginSuccessListener:
         tags:
@@ -42,8 +41,6 @@ services:
         arguments: [ '@security.token_storage' ]
 
         
-=======
     App\Repository\SubscriptionRepository:
         autowire: true
         tags: ['doctrine.repository_service']
->>>>>>> origin/abonnement-back
