@@ -33,7 +33,7 @@
                   </span>
               </button>
               <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  Not registered? <a class="text-red-700 hover:underline dark:text-red-500">Create account</a>
+                  Not registered? <router-link to="register" class="text-red-700 hover:underline dark:text-red-500">Create account</router-link>
               </div>
           </form>
           token : {{  token  }}

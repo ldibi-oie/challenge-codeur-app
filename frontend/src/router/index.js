@@ -4,6 +4,8 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import WaitingView from '../views/verify/waiting.vue'
 import ProfileView from '../views/Profile/Profile.vue'
+import Subscription from '../views/Subscription/Subscription.vue'
+import VerificationInfos from "../views/Stepper/Main.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +34,16 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: ProfileView
+    },
+    {
+      path: '/subscription',
+      name: 'subscription',
+      component: Subscription
+    },
+    {
+      path: '/verify/infos',
+      name: 'verify_user',
+      component: VerificationInfos
     },
     {
       path: '/about',
