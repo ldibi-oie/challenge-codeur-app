@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\FreelanceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +11,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\MediaObject;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 #[ORM\Entity(repositoryClass: FreelanceRepository::class)]
 #[ApiResource]
 class Freelance
@@ -22,34 +25,23 @@ class Freelance
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 50)]
     private ?string $surname = null;
 
+    #[Groups('user')]
     #[ORM\Column(nullable: true)]
     private ?int $siretnumber = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $role = [];
-
+    #[Groups('user')]
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $birthday = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $email = null;
-
-    #[ORM\Column]
-    private ?bool $isverified = null;
-
-    #[ORM\Column(length: 50)]
-    private ?string $password = null;
-
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private array $freelancetypes = [];
-
-
+    #[Groups('user')]
     #[ORM\ManyToOne(targetEntity: MediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
@@ -60,11 +52,15 @@ class Freelance
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $profile = null;
 
+    #[Groups('user')]
     #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'candidates')]
     private Collection $offers;
 
     #[ORM\OneToMany(mappedBy: 'freelance', targetEntity: Keyword::class)]
     private Collection $keywords;
+
+    #[ORM\OneToOne(inversedBy: 'freelance', cascade: ['persist', 'remove'])]
+    private ?User $userId = null;
 
     public function __construct()
     {
@@ -112,19 +108,6 @@ class Freelance
 
         return $this;
     }
-
-    public function getRole(): array
-    {
-        return $this->role;
-    }
-
-    public function setRole(array $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     public function getBirthday(): ?string
     {
         return $this->birthday;
@@ -133,54 +116,6 @@ class Freelance
     public function setBirthday(?string $birthday): self
     {
         $this->birthday = $birthday;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function isIsverified(): ?bool
-    {
-        return $this->isverified;
-    }
-
-    public function setIsverified(bool $isverified): self
-    {
-        $this->isverified = $isverified;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getFreelancetypes(): array
-    {
-        return $this->freelancetypes;
-    }
-
-    public function setFreelancetypes(?array $freelancetypes): self
-    {
-        $this->freelancetypes = $freelancetypes;
 
         return $this;
     }
@@ -238,6 +173,18 @@ class Freelance
                 $keyword->setFreelance(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?User $userId): self
+    {
+        $this->userId = $userId;
 
         return $this;
     }

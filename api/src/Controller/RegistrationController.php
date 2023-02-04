@@ -32,34 +32,19 @@ class RegistrationController extends AbstractController
     }
 
     #[Route("/register", name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request) : Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
+        $obj = json_decode($request->getContent());
             $signatureComponents = $this->verifyEmailHelper->generateSignature(
                 'app_verify_email',
-                $user->getId(),
-                $user->getEmail(),
-                ['id' => $user->getId()]
+                $obj->id,
+                $obj->email,
+                ['id' => $obj->id]
             );
         
             $email = new TemplatedEmail();
             $email->from(new Address('myproject.codeur@gmail.com', 'Codeur bot'));
-            $email->to($user->getEmail());
+            $email->to($obj->email);
             $email->subject("Confirmation de votre email!");
             $email->htmlTemplate('registration/confirmation_email.html.twig');
             $email->context([
@@ -69,11 +54,8 @@ class RegistrationController extends AbstractController
             ]);
             
             $this->mailer->send($email);
-        }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        return new Response("true", Response::HTTP_OK);
     }
 
     #[Route("/verify/email", name: 'app_verify_email')]
@@ -135,6 +117,7 @@ class RegistrationController extends AbstractController
             "id" => $user->getId(),
             "isVerified" => $user->isIsVerified()
         ];
+        
         return new JsonResponse([
             "id" => $user->getId(),
             "email" => $user->getEmail(),

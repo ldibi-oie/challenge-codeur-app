@@ -37,6 +37,13 @@ class Offer
     #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Keyword::class, orphanRemoval: true)]
     private Collection $keywords;
 
+    #[ORM\ManyToOne(inversedBy: 'offers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
+    #[ORM\Column]
+    private ?int $price = null;
+
     public function __construct()
     {
         $this->candidates = new ArrayCollection();
@@ -134,6 +141,30 @@ class Offer
                 $keyword->setOffer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(int $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }
