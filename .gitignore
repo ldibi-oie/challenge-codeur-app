@@ -3,3 +3,5 @@ api/.env
 api/.env.local
 
 /.idea
+api/node_modules
+frontend/node_modules

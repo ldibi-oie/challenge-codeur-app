@@ -9,8 +9,17 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "axios": "^1.2.4",
+    "@headlessui/vue": "^1.7.8",
+    "@tailwindcss/forms": "^0.5.3",
+    "@vue-hero-icons/outline": "^1.7.2",
+    "axios": "^1.2.2",
+    "dotenv": "^16.0.3",
+    "flowbite": "^1.6.2",
+    "flowbite-vue": "^0.0.10",
+    "moment": "^2.29.4",
+    "notyf": "^3.10.0",
     "pinia": "^2.0.28",
+    "upload-js": "^2.8.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },
