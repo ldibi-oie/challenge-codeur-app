@@ -3,14 +3,14 @@ version: '3'
 services:
 ###> doctrine/doctrine-bundle ###
   database:
-    image: mariadb
+    image: mysql:8.0
     container_name: db_docker_symfony
     restart: always
     volumes:
-        - db-data:/var/lib/mariadb
+        - db-data:/var/lib/mysql
     environment:
-        MARIADB_DATABASE: challenge
-        MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
+        MYSQL_DATABASE: challenge
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
       - "3306:3306"
     networks:
