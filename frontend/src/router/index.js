@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+<<<<<<< HEAD
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import WaitingView from '../views/verify/waiting.vue'
 import ProfileView from '../views/Profile/Profile.vue'
 import Subscription from '../views/Subscription/Subscription.vue'
 import VerificationInfos from "../views/Stepper/Main.vue"
+=======
+import CompanyView from '../views/CompanyView.vue'
+>>>>>>> 42c52507 (adding the first compagny design)
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +20,7 @@ const router = createRouter({
       component: HomeView
     },
     {
+<<<<<<< HEAD
       path: '/login',
       name: 'login',
       component: LoginView
@@ -52,6 +57,16 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+=======
+      path: '/offer',
+      name: 'offer',
+      component: () => import('../views/offerView.vue')
+    },
+    {
+      path: '/company',
+      name: 'company',
+      component: CompanyView
+>>>>>>> 42c52507 (adding the first compagny design)
     }
   ]
 })
