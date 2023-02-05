@@ -4,11 +4,18 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Entity\Company;
+<<<<<<< HEAD
 use App\Entity\Freelance;
 use App\Entity\MediaObject;
 use App\Entity\Offer;
 use App\Entity\Subscription;
 use App\Entity\Freelance;
+=======
+use App\Entity\Offer;
+use App\Entity\Subcription;
+use App\Entity\Freelance;
+use App\Entity\Keyword;
+>>>>>>> 49171233 (adding new fixtures)
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
@@ -61,6 +68,7 @@ class AppFixtures extends Fixture
         $plan->setPaymentLink('https://buy.stripe.com/test_8wMdSH1Ceg30am4dQQ');
         $manager->persist($plan);
         $manager->flush();
+<<<<<<< HEAD
 
         $plan = new Plan();
         $plan->setName('SixMonths');
@@ -80,6 +88,8 @@ class AppFixtures extends Fixture
         $manager->persist($plan);
         $manager->flush();
 
+=======
+>>>>>>> 49171233 (adding new fixtures)
         //fixtures 
         for($i = 0; $i < 10; $i++) 
         {
