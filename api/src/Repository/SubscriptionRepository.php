@@ -39,7 +39,7 @@ class SubscriptionRepository extends ServiceEntityRepository
         }
     }
 
-    public function findActualSub($company)
+    public function findActualSub($user)
     {
         $qb = $this
             ->createQueryBuilder('subscription')
@@ -48,8 +48,8 @@ class SubscriptionRepository extends ServiceEntityRepository
             ->andWhere('subscription.currentPeriodEnd > :now')
             ->setParameter('now', new \Datetime('now'))
 
-            ->andWhere('subscription.company = :company')
-            ->setParameter('company', $company)
+            ->andWhere('subscription.user = :user')
+            ->setParameter('user', $user)
 
             ->leftJoin('subscription.plan', 'plan')
             ->addSelect('plan')
@@ -63,7 +63,7 @@ class SubscriptionRepository extends ServiceEntityRepository
         return $qb->getOneOrNullResult();
     }
 
-    public function findActiveSub($company)
+    public function findActiveSub($user)
     {
         $qb = $this
             ->createQueryBuilder('subscription')
@@ -72,8 +72,8 @@ class SubscriptionRepository extends ServiceEntityRepository
             ->andWhere('subscription.currentPeriodEnd > :now')
             ->setParameter('now', new \Datetime('now'))
 
-            ->andWhere('subscription.company = :company')
-            ->setParameter('company', $company)
+            ->andWhere('subscription.user = :user')
+            ->setParameter('user', $user)
 
             ->andWhere('subscription.isActive = :true')
             ->setParameter('true', true)
@@ -90,7 +90,7 @@ class SubscriptionRepository extends ServiceEntityRepository
         return $qb->getOneOrNullResult();
     }
 
-    public function findInactiveSub($company)
+    public function findInactiveSub($user)
     {
         $qb = $this
             ->createQueryBuilder('subscription')
@@ -99,8 +99,8 @@ class SubscriptionRepository extends ServiceEntityRepository
             ->andWhere('subscription.currentPeriodEnd > :now')
             ->setParameter('now', new \Datetime('now'))
 
-            ->andWhere('subscription.company = :company')
-            ->setParameter('company', $company)
+            ->andWhere('subscription.user = :user')
+            ->setParameter('user', $user)
 
             ->orderBy('subscription.currentPeriodEnd', 'desc')
             ->setMaxResults(1)
