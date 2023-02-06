@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
         $plan = new Plan();
         $plan->setName('SixMonths');
         $plan->setSlug('SixMonths');
-        $plan->setPrice(199000);
+        $plan->setPrice(19900);
         $plan->setStripeId('price_1MY3RaAor24SfpgrRdc4KpYJ');
         $plan->setPaymentLink('https://buy.stripe.com/test_00gg0PcgS042gKseUW');
         $manager->persist($plan);
@@ -82,7 +82,7 @@ class AppFixtures extends Fixture
         $plan = new Plan();
         $plan->setName('FMonthly');
         $plan->setSlug('FMonthly');
-        $plan->setPrice(3900);
+        $plan->setPrice(999);
         $plan->setStripeId('price_1MY3bAAor24Sfpgr1VRs8lgJ');
         $plan->setPaymentLink('https://buy.stripe.com/test_14k8ynep05omeCkdQT');
         $manager->persist($plan);
@@ -91,7 +91,7 @@ class AppFixtures extends Fixture
         $plan = new Plan();
         $plan->setName('FSixMonths');
         $plan->setSlug('FSixMonths');
-        $plan->setPrice(199000);
+        $plan->setPrice(4999);
         $plan->setStripeId('price_1MY3dMAor24Sfpgr4wlcE2Pp');
         $plan->setPaymentLink('https://buy.stripe.com/test_9AQg0PbcO5omcuc148');
         $manager->persist($plan);
@@ -100,7 +100,7 @@ class AppFixtures extends Fixture
         $plan = new Plan();
         $plan->setName('FYearly');
         $plan->setSlug('FYearly');
-        $plan->setPrice(39000);
+        $plan->setPrice(9999);
         $plan->setStripeId('price_1MY3etAor24SfpgrdS3YtVin');
         $plan->setPaymentLink('https://buy.stripe.com/test_bIYcODcgS6sq65OdQV');
         $manager->persist($plan);
