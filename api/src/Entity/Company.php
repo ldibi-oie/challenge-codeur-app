@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use App\Entity\MediaObject;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[ApiResource]
@@ -21,43 +23,36 @@ class Company
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    
+    #[Groups('user')]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
-
+    
+    #[Groups('user')]
     #[ORM\Column(nullable: true)]
     private ?int $siretnumber = null;
-
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $role = [];
-
-    #[ORM\Column(length: 50)]
-    private ?string $email = null;
-
+    
+    #[Groups('user')]
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $address = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private array $offerlist = [];
-
-    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $logo= null;
-
+    
+    #[Groups('user')]
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
     private Collection $offers;
+    
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Subscription::class)]
-    private Collection $subscriptions;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $stripeId = null;
+    #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
         $this->offers = new ArrayCollection();
-        $this->subscriptions = new ArrayCollection();
     }
 
 
@@ -90,30 +85,6 @@ class Company
         return $this;
     }
 
-    public function getRole(): array
-    {
-        return $this->role;
-    }
-
-    public function setRole(array $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
     public function getAddress(): ?string
     {
         return $this->address;
@@ -122,18 +93,6 @@ class Company
     public function setAddress(?string $address): self
     {
         $this->address = $address;
-
-        return $this;
-    }
-
-    public function getOfferlist(): array
-    {
-        return $this->offerlist;
-    }
-
-    public function setOfferlist(?array $offerlist): self
-    {
-        $this->offerlist = $offerlist;
 
         return $this;
     }
@@ -168,45 +127,24 @@ class Company
         return $this;
     }
 
-    /**
-     * @return Collection<int, Subscription>
-     */
-    public function getSubscriptions(): Collection
+    public function getUser(): ?User
     {
-        return $this->subscriptions;
+        return $this->user;
     }
 
-    public function addSubscription(Subscription $subscription): self
+    public function setUser(User $user): self
     {
-        if (!$this->subscriptions->contains($subscription)) {
-            $this->subscriptions->add($subscription);
-            $subscription->setCompany($this);
-        }
+        $this->user = $user;
 
         return $this;
     }
-
-    public function removeSubscription(Subscription $subscription): self
+    public function getLogo(): ?MediaObject
     {
-        if ($this->subscriptions->removeElement($subscription)) {
-            // set the owning side to null (unless already changed)
-            if ($subscription->getCompany() === $this) {
-                $subscription->setCompany(null);
-            }
-        }
-
-        return $this;
+        return $this->logo;
     }
-
-    public function getStripeId(): ?string
+    public function setLogo(?MediaObject $logo): self
     {
-        return $this->stripeId;
-    }
-
-    public function setStripeId(string $stripeId): self
-    {
-        $this->stripeId = $stripeId;
-
+        $this->logo = $logo;
         return $this;
     }
 }
