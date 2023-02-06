@@ -1,6 +1,7 @@
 <template>
     <div class="company">
       <h1>Représentation de la company</h1>
+      <h2> Profile</h2>
     </div>
   </template>
   
