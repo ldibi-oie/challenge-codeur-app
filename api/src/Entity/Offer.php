@@ -21,11 +21,11 @@ class Offer
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $title = null;
+    #[ORM\Column(type: 'text')]
+    private $title = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    #[ORM\Column(type: 'text')]
+    private $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -34,13 +34,30 @@ class Offer
     #[ORM\ManyToMany(targetEntity: Freelance::class, inversedBy: 'offers')]
     private Collection $candidates;
 
-    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Keyword::class, orphanRemoval: true)]
+    #[ORM\ManyToOne(inversedBy: 'offers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
+    #[ORM\Column]
+    private ?int $salary = null;
+
+    #[ORM\ManyToOne(inversedBy: 'isSelectedCandidateList')]
+    private ?Freelance $selectedCandidate = null;
+
+    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Comment::class)]
+    private Collection $comments;
+
+    #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'offers', cascade: ['persist'])]
     private Collection $keywords;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
 
     public function __construct()
     {
         $this->candidates = new ArrayCollection();
         $this->keywords = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,6 +125,73 @@ class Offer
         return $this;
     }
 
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getSalary(): ?int
+    {
+        return $this->salary;
+    }
+
+    public function setSalary(int $salary): self
+    {
+        $this->salary = $salary;
+
+        return $this;
+    }
+
+    public function getSelectedCandidate(): ?Freelance
+    {
+        return $this->selectedCandidate;
+    }
+
+    public function setSelectedCandidate(?Freelance $selectedCandidate): self
+    {
+        $this->selectedCandidate = $selectedCandidate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setOffer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getOffer() === $this) {
+                $comment->setOffer(null);
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Keyword>
      */
@@ -120,7 +204,6 @@ class Offer
     {
         if (!$this->keywords->contains($keyword)) {
             $this->keywords->add($keyword);
-            $keyword->setOffer($this);
         }
 
         return $this;
@@ -128,12 +211,19 @@ class Offer
 
     public function removeKeyword(Keyword $keyword): self
     {
-        if ($this->keywords->removeElement($keyword)) {
-            // set the owning side to null (unless already changed)
-            if ($keyword->getOffer() === $this) {
-                $keyword->setOffer(null);
-            }
-        }
+        $this->keywords->removeElement($keyword);
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

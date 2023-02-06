@@ -4,17 +4,12 @@
     <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
       <!-- <VerticalBar /> -->
       <div
-        class="fixed inset-0 z-10 bg-gray-900/50 dark:bg-gray-900/90 hidden"
-        id="sidebarBackdrop"
-      >dededde</div>
-
-      <div
         id="main-content"
         class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900"
       >
         <main>
           <div
-            class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900"
+            class="px-4 pt-6 xl:gap-4 dark:bg-gray-900"
           >
             <div class="mb-4 col-span-full xl:mb-2">
               <h1
@@ -22,10 +17,20 @@
               >
                 Mon profile
               </h1>
+              {{ user }}
             </div>
             <!-- Right Content -->
-            <SubscriptionSection />
-            <InfosProfile />
+            <SubscriptionSection 
+              v-if="user.hasOwnProperty('freelance') === true  || user.hasOwnProperty('company') === true" 
+              :user="user"
+            />
+            <InfosProfile 
+              :type="user.hasOwnProperty('freelance') === true ? 1 :
+               user.hasOwnProperty('company') === true ? 2 : null"
+            />
+
+            <MyOffers />
+
           </div>
         </main>
       </div>
@@ -42,21 +47,22 @@ import requestApi from "../../axios";
 import InfosProfile from "./components/InfosProfile.vue";
 import Comments from "../../components/General/Comments.vue";
 import SubscriptionSection from "./components/SubscriptionSection.vue";
+import MyOffers from "./components/MyOffers.vue";
 
 export default {
   data() {
     return {
       user: "",
-      userId: "",
     };
   },
   mounted() {
-    // this.getUserRequest
+    this.getUserRequest()
   },
   methods: {
     getUserRequest: async function () {
       await getUser().then((r) => {
-        this.user = r;
+        console.log(r)
+        this.user = r[0];
       });
     },
   },
@@ -67,6 +73,7 @@ export default {
     InfosProfile,
     Comments,
     SubscriptionSection,
+    MyOffers
   },
 };
 </script>

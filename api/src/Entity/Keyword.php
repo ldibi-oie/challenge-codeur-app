@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\KeywordRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -22,11 +24,17 @@ class Keyword
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'keywords')]
-    private ?Offer $offer = null;
+    #[ORM\ManyToMany(targetEntity: Freelance::class, mappedBy: 'keywords', cascade: ['persist'])]
+    private Collection $freelances;
 
-    #[ORM\ManyToOne(inversedBy: 'keywords')]
-    private ?Freelance $freelance = null;
+    #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'keywords', cascade: ['persist'])]
+    private Collection $offers;
+
+    public function __construct()
+    {
+        $this->freelances = new ArrayCollection();
+        $this->offers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -45,26 +53,56 @@ class Keyword
         return $this;
     }
 
-    public function getOffer(): ?Offer
+    /**
+     * @return Collection<int, Freelance>
+     */
+    public function getFreelances(): Collection
     {
-        return $this->offer;
+        return $this->freelances;
     }
 
-    public function setOffer(?Offer $offer): self
+    public function addFreelance(Freelance $freelance): self
     {
-        $this->offer = $offer;
+        if (!$this->freelances->contains($freelance)) {
+            $this->freelances->add($freelance);
+            $freelance->addKeyword($this);
+        }
 
         return $this;
     }
 
-    public function getFreelance(): ?Freelance
+    public function removeFreelance(Freelance $freelance): self
     {
-        return $this->freelance;
+        if ($this->freelances->removeElement($freelance)) {
+            $freelance->removeKeyword($this);
+        }
+
+        return $this;
     }
 
-    public function setFreelance(?Freelance $freelance): self
+    /**
+     * @return Collection<int, Offer>
+     */
+    public function getOffers(): Collection
     {
-        $this->freelance = $freelance;
+        return $this->offers;
+    }
+
+    public function addOffer(Offer $offer): self
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers->add($offer);
+            $offer->addKeyword($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(Offer $offer): self
+    {
+        if ($this->offers->removeElement($offer)) {
+            $offer->removeKeyword($this);
+        }
 
         return $this;
     }

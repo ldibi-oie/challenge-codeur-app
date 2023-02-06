@@ -44,3 +44,7 @@ services:
     App\Repository\SubscriptionRepository:
         autowire: true
         tags: ['doctrine.repository_service']
+
+    App\Entity\UserPasswordHasher:
+        bind:
+            $processor: '@api_platform.doctrine.orm.state.persist_processor'

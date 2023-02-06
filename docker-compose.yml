@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
   database:
     image: mysql:8.0
     container_name: db_docker_symfony
@@ -15,7 +14,6 @@ services:
       - "3306:3306"
     networks:
         - dev
-###< doctrine/doctrine-bundle ###
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin_docker_symfony
@@ -40,9 +38,7 @@ services:
         - dev
 
   www:
-    build:
-      context: ./api/php
-      dockerfile: Dockerfile
+    build: ./api/php
     container_name: www_docker_symfony
     ports:
       - "8741:80"

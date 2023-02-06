@@ -96,6 +96,15 @@
             "config/packages/stof_doctrine_extensions.yaml"
         ]
     },
+    "symfony/amazon-mailer": {
+        "version": "6.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.4",
+            "ref": "9648db3ecae5c8a6b1a5f74715d3907124348815"
+        }
+    },
     "symfony/console": {
         "version": "6.1",
         "recipe": {
@@ -237,8 +246,8 @@
             "ref": "e42b3f0177df239add25373083a564e5ead4e13a"
         },
         "files": [
-            "config/packages/web_profiler.yaml",
-            "config/routes/web_profiler.yaml"
+            "./config/packages/web_profiler.yaml",
+            "./config/routes/web_profiler.yaml"
         ]
     },
     "symfonycasts/verify-email-bundle": {

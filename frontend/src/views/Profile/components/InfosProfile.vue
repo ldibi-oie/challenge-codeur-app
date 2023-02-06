@@ -37,13 +37,19 @@
                         <label for="birthday" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthday</label>
                         <input type="date" name="birthday" v-model="infos.birthday" id="birthday" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="15/08/1990" required="">
                     </div>
+
+                    <div class="col-span-6 sm:col-span-3">
+                        <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Adresse</label>
+                        <input type="text" name="address" id="role" v-model="infos.address" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"  required="">
+                    </div>
                     
                     <div class="col-span-6 sm:col-span-3">
                         <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
                         <input type="text" name="role" id="role" :value="user.roles" disabled class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="React Developer" required="">
                     </div>
                     <div class="col-span-6 sm:col-full">
-                        <button class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="submit">Save all</button>
+                        <button v-if="user.company ||user.freelance" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="submit">Mettre a jour</button>
+                        <button v-if="user.company === null || user.freelance === null" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="submit">Save</button>
                     </div>
                 </div>
             </form>
@@ -65,7 +71,7 @@ export default {
         return {
             user: "",
             infos: {
-                userId: this.user ? this.user["@id"] : JSON.parse(localStorage.getItem('user'))["@id"],
+                userId: this.user ? this.user["@id"] : localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))["@id"] : "",
                 name: '',
                 surname: '',
                 siretnumber: '',
@@ -79,6 +85,11 @@ export default {
     //         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     //     }
     // },
+    created(){
+        if(!localStorage.getItem('user')){
+            this.$router.push({name: 'error'})
+        }
+    },
     mounted(){
         this.getUserRequest()
     },

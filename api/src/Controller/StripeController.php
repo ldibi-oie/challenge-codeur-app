@@ -5,14 +5,14 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Company;
+use App\Entity\User;
 
 class StripeController extends AbstractController
 {
     #[Route('/stripe/has_active_sub/{id}', name: 'app_webhook_stripe', methods: ['GET'])]
-    public function getActiveSubscription(Company $company): Response
+    public function getActiveSubscription(User $user): Response
     {
-		$activeSub = $doctrine->getRepository(Subscription::class)->findActiveSub($company->getId());
+		$activeSub = $doctrine->getRepository(Subscription::class)->findActiveSub($user->getId());
 
         http_response_code(200);
 

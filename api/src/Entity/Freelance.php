@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\FreelanceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +11,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\MediaObject;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 #[ORM\Entity(repositoryClass: FreelanceRepository::class)]
 #[ApiResource]
 class Freelance
@@ -22,54 +25,53 @@ class Freelance
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 50)]
     private ?string $surname = null;
 
+    #[Groups('user')]
     #[ORM\Column(nullable: true)]
     private ?int $siretnumber = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $role = [];
-
+    #[Groups('user')]
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $birthday = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $email = null;
-
-    #[ORM\Column]
-    private ?bool $isverified = null;
-
-    #[ORM\Column(length: 50)]
-    private ?string $password = null;
-
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private array $freelancetypes = [];
-
-
-    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[Groups('user')]
+    #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $cv= null;
 
-    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $profile = null;
 
+    #[Groups('user')]
     #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'candidates')]
     private Collection $offers;
 
-    #[ORM\OneToMany(mappedBy: 'freelance', targetEntity: Keyword::class)]
+
+
+    #[ORM\OneToOne(inversedBy: 'freelance', cascade: ['persist', 'remove'])]
+    private ?User $userId = null;
+
+    #[ORM\OneToMany(mappedBy: 'selectedCandidate', targetEntity: Offer::class)]
+    private Collection $isSelectedCandidateList;
+
+    #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'freelances', cascade: ['persist'])]
     private Collection $keywords;
 
     public function __construct()
     {
         $this->offers = new ArrayCollection();
         $this->keywords = new ArrayCollection();
+        $this->isSelectedCandidateList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,19 +114,6 @@ class Freelance
 
         return $this;
     }
-
-    public function getRole(): array
-    {
-        return $this->role;
-    }
-
-    public function setRole(array $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     public function getBirthday(): ?string
     {
         return $this->birthday;
@@ -133,54 +122,6 @@ class Freelance
     public function setBirthday(?string $birthday): self
     {
         $this->birthday = $birthday;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function isIsverified(): ?bool
-    {
-        return $this->isverified;
-    }
-
-    public function setIsverified(bool $isverified): self
-    {
-        $this->isverified = $isverified;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getFreelancetypes(): array
-    {
-        return $this->freelancetypes;
-    }
-
-    public function setFreelancetypes(?array $freelancetypes): self
-    {
-        $this->freelancetypes = $freelancetypes;
 
         return $this;
     }
@@ -212,6 +153,70 @@ class Freelance
         return $this;
     }
 
+
+    public function getUserId(): ?User
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?User $userId): self
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    public function getProfile(): ?MediaObject
+    {
+        return $this->profile;
+    }
+    public function setProfile(?MediaObject $profile): self
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+    public function getCv(): ?MediaObject
+    {
+        return $this->cv;
+    }
+    public function setCv(?MediaObject $cv): self
+    {
+        $this->cv = $cv;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Offer>
+     */
+    public function getIsSelectedCandidateList(): Collection
+    {
+        return $this->isSelectedCandidateList;
+    }
+
+    public function addIsSelectedCandidateList(Offer $isSelectedCandidateList): self
+    {
+        if (!$this->isSelectedCandidateList->contains($isSelectedCandidateList)) {
+            $this->isSelectedCandidateList->add($isSelectedCandidateList);
+            $isSelectedCandidateList->setSelectedCandidate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIsSelectedCandidateList(Offer $isSelectedCandidateList): self
+    {
+        if ($this->isSelectedCandidateList->removeElement($isSelectedCandidateList)) {
+            // set the owning side to null (unless already changed)
+            if ($isSelectedCandidateList->getSelectedCandidate() === $this) {
+                $isSelectedCandidateList->setSelectedCandidate(null);
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Keyword>
      */
@@ -224,7 +229,6 @@ class Freelance
     {
         if (!$this->keywords->contains($keyword)) {
             $this->keywords->add($keyword);
-            $keyword->setFreelance($this);
         }
 
         return $this;
@@ -232,13 +236,9 @@ class Freelance
 
     public function removeKeyword(Keyword $keyword): self
     {
-        if ($this->keywords->removeElement($keyword)) {
-            // set the owning side to null (unless already changed)
-            if ($keyword->getFreelance() === $this) {
-                $keyword->setFreelance(null);
-            }
-        }
+        $this->keywords->removeElement($keyword);
 
         return $this;
     }
+
 }
