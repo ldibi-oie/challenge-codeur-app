@@ -115,6 +115,7 @@ class RegistrationController extends AbstractController
         // Add information to user payload
         $payload['user'] = [
             "id" => $user->getId(),
+            "email" => $user->getEmail(),
             "isVerified" => $user->isIsVerified()
         ];
         

@@ -6,6 +6,8 @@ import WaitingView from '../views/verify/waiting.vue'
 import ProfileView from '../views/Profile/Profile.vue'
 import Subscription from '../views/Subscription/Subscription.vue'
 import VerificationInfos from "../views/Stepper/Main.vue"
+import ErrorPage from "../views/ErrorPage.vue"
+import OfferId from "../views/Offer/OfferId.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +38,11 @@ const router = createRouter({
       component: ProfileView
     },
     {
+      path: '/error',
+      name: 'error',
+      component: ErrorPage
+    },
+    {
       path: '/subscription',
       name: 'subscription',
       component: Subscription
@@ -44,6 +51,11 @@ const router = createRouter({
       path: '/verify/infos',
       name: 'verify_user',
       component: VerificationInfos
+    },
+    {
+      path: '/offer/:id',
+      name: 'offerId',
+      component: OfferId
     },
     {
       path: '/about',

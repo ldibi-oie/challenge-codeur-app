@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
   database:
     image: mariadb
     container_name: db_docker_symfony
@@ -13,7 +12,6 @@ services:
         MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
     networks:
         - dev
-###< doctrine/doctrine-bundle ###
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin_docker_symfony

@@ -78,34 +78,47 @@
       <h5 class="mb-4 mx-5 px-6 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">Nos principaux métiers</h5>
 
       <div class="flex px-6 flex-row">
-        <div class="w-80 px-3 rounded">
+        <div class="px-3 rounded">
         <list-group >
-          <div class="flex items-center justify-center w-56 h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" v-if="categories.length === 0">
+          <div class="w-full flex items-center justify-center w-56 h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" v-if="categories.length === 0">
             <div class="px-3 py-1 text-xs font-medium leading-none text-center text-red-800 bg-red-200 rounded-full animate-pulse dark:bg-red-900 dark:text-red-200">loading...</div>
           </div>
-          <list-group-item v-for="category in categories">
+          <list-group-item v-for="category in categories" @click="selectCategory(category['@id'])">
             <template #prefix>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
               </svg>
-
-              
             </template>
             {{category?.name}}
           </list-group-item>
         </list-group>
       </div>
-      <div class="w-full p-4 mb-4 space-y-6 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-        <div class="px-4 py-2 text-gray-400 border border-gray-200 border-dashed rounded dark:border-gray-600">
-            <h3>Titres</h3>
+      <div class="flex items-center justify-center w-56 h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" v-if="offers.length === 0">
+        <div class="px-3 py-1 text-xs font-medium leading-none text-center text-red-800 bg-red-200 rounded-full animate-pulse dark:bg-red-900 dark:text-red-200">loading...</div>
+      </div>
+      <div class="flex flex-col w-full">
+        <div v-for="offer in offersFilter" v-if="offersFilter.length > 0">
+          <div class="w-full p-4 mb-4 space-y-6 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+            <div class="flex flex-row items-center">
+                <div v-if="offer.status === 'OPEN'" class="px-3 py-1 text-xs font-medium leading-none text-center text-green-800 bg-green-200 rounded-full animate-pulse dark:bg-green-900 dark:text-green-200">ouvert</div>
+                <div v-if="offer.status === 'IN_PROGRESS'" class="px-3 py-1 text-xs font-medium leading-none text-center text-green-800 bg-green-200 rounded-full animate-pulse dark:bg-green-900 dark:text-green-200">en cours ...</div>
+                <div v-if="offer.status === 'DONE'" class="px-3 py-1 text-xs font-medium leading-none text-center text-purple-800 bg-purple-200 rounded-full animate-pulse dark:bg-purple-900 dark:text-purple-200">finish</div>
+                <h3 class="mx-3">
+                  {{offer.title}} 
+                </h3> 
+              </div>
+            <div class="">
+                <h3>{{offer.description}} </h3>
+                <br>
+                <h3>Tarification : {{offer.price}} €</h3>
+                <h3>Publie il y a {{moment(offer.createdAt).format('LLL')}} </h3>
+            </div>
+            <div class="">
+                <button @click="viewOffer(offer.id , offer)" class="rounded-md bg-red-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Voir</button>
+            </div>
+          </div>
         </div>
-        <div class="h-32 px-4 py-2 text-gray-400 border border-gray-200 border-dashed rounded dark:border-gray-600">
-            <h3>Content</h3>
-        </div>
-        <div class="px-4 py-2 text-gray-400 border border-gray-200 border-dashed rounded dark:border-gray-600">
-            <h3>Button - price</h3>
-        </div>
-    </div>
+      </div>
       </div>
       
         
@@ -115,25 +128,30 @@
 </template>
 <script setup>
 import { Dropdown, ListGroup, ListGroupItem } from 'flowbite-vue'
-
 </script>
 <script>
 import { ref } from 'vue'
+import moment from 'moment';
+
 import { Dialog, DialogPanel } from '@headlessui/vue'
 import Navbar from "../components/General/Navbar.vue";
 import requestApi from '../axios';
-import { getUser , getCategories } from '../stores/usersFunction';
+import { getUser , getCategories , getOffers } from '../stores/usersFunction';
+moment.locale('fr');
 
 export default {
     data() {
         return {
             user: "",
             userId: "",
-            categories: []
+            categories: [],
+            offers: [],
+            offersFilter: [],
         };
     },
     mounted(){
         this.getCategoriesRequest()
+        this.getOffersRequest()
     },
     methods: {
         getCategoriesRequest: async function () {
@@ -141,6 +159,27 @@ export default {
             this.categories = data
           })
           console.log(this.categories)
+        }
+        ,
+        getOffersRequest: async function () {
+          await getOffers().then((data) => {
+            this.offers = data
+            this.offersFilter = data
+          })
+          console.log(this.categories)
+        },
+
+        selectCategory(category){
+          console.log(category)
+          this.offersFilter = this.offers.filter(offer => offer.category === category)
+
+          if(category === '/api/categories/1'){
+            this.offersFilter = this.offers
+          }
+        },
+
+        viewOffer: function(id , dataOffer){
+          this.$router.push({name: "offerId", params:{ id , data: dataOffer}})
         }
     },
     components: { Navbar }

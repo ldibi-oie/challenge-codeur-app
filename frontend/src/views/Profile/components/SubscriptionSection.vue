@@ -4,9 +4,13 @@
             <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4">
                 <img class="mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0" src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png" alt="Jese picture">
                 <div>
-                    <h3 class="mb-1 text-xl font-bold text-gray-900 dark:text-white">Profile picture</h3>
+                    <h3 class="mb-1 text-xl font-bold text-gray-900 dark:text-white">Mon abonnementx</h3>
                     <div class="mb-4 text-sm text-gray-500 dark:text-gray-400">
-                        JPG, GIF or PNG. Max size of 800K
+                        Abonnement : {{ 
+                            user.hasOwnProperty('freelance') === true  ? 'Freelance' : 
+                            user.hasOwnProperty('company') === true ? 'Company' : ""
+                         }}
+
                     </div>
                     <div class="flex items-center space-x-4">
                         <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
@@ -44,3 +48,8 @@
         <Comments />
     </div>
 </template>
+<script>
+export default {
+    props: ['user']
+}
+</script>
