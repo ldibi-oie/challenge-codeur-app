@@ -14,3 +14,7 @@ stop:
 	docker-compose down
 
 restart: stop start
+
+fixtures:
+	docker-compose exec www bash -c "cd api && \
+		php bin/console doctrine:fixtures:load"
