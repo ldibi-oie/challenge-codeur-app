@@ -68,4 +68,12 @@ class MediaObject
     {
         return $this->id;
     }
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+    public function setFilePath(?string $filePath): void
+    {
+        $this->filePath = $filePath;
+    }
 }

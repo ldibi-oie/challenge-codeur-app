@@ -42,12 +42,12 @@ class Freelance
     private ?string $birthday = null;
 
     #[Groups('user')]
-    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $cv= null;
 
-    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $profile = null;
@@ -56,16 +56,22 @@ class Freelance
     #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'candidates')]
     private Collection $offers;
 
-    #[ORM\OneToMany(mappedBy: 'freelance', targetEntity: Keyword::class)]
-    private Collection $keywords;
+
 
     #[ORM\OneToOne(inversedBy: 'freelance', cascade: ['persist', 'remove'])]
     private ?User $userId = null;
+
+    #[ORM\OneToMany(mappedBy: 'selectedCandidate', targetEntity: Offer::class)]
+    private Collection $isSelectedCandidateList;
+
+    #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'freelances', cascade: ['persist'])]
+    private Collection $keywords;
 
     public function __construct()
     {
         $this->offers = new ArrayCollection();
         $this->keywords = new ArrayCollection();
+        $this->isSelectedCandidateList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,35 +153,6 @@ class Freelance
         return $this;
     }
 
-    /**
-     * @return Collection<int, Keyword>
-     */
-    public function getKeywords(): Collection
-    {
-        return $this->keywords;
-    }
-
-    public function addKeyword(Keyword $keyword): self
-    {
-        if (!$this->keywords->contains($keyword)) {
-            $this->keywords->add($keyword);
-            $keyword->setFreelance($this);
-        }
-
-        return $this;
-    }
-
-    public function removeKeyword(Keyword $keyword): self
-    {
-        if ($this->keywords->removeElement($keyword)) {
-            // set the owning side to null (unless already changed)
-            if ($keyword->getFreelance() === $this) {
-                $keyword->setFreelance(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getUserId(): ?User
     {
@@ -188,4 +165,80 @@ class Freelance
 
         return $this;
     }
+
+    public function getProfile(): ?MediaObject
+    {
+        return $this->profile;
+    }
+    public function setProfile(?MediaObject $profile): self
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+    public function getCv(): ?MediaObject
+    {
+        return $this->cv;
+    }
+    public function setCv(?MediaObject $cv): self
+    {
+        $this->cv = $cv;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Offer>
+     */
+    public function getIsSelectedCandidateList(): Collection
+    {
+        return $this->isSelectedCandidateList;
+    }
+
+    public function addIsSelectedCandidateList(Offer $isSelectedCandidateList): self
+    {
+        if (!$this->isSelectedCandidateList->contains($isSelectedCandidateList)) {
+            $this->isSelectedCandidateList->add($isSelectedCandidateList);
+            $isSelectedCandidateList->setSelectedCandidate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIsSelectedCandidateList(Offer $isSelectedCandidateList): self
+    {
+        if ($this->isSelectedCandidateList->removeElement($isSelectedCandidateList)) {
+            // set the owning side to null (unless already changed)
+            if ($isSelectedCandidateList->getSelectedCandidate() === $this) {
+                $isSelectedCandidateList->setSelectedCandidate(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Keyword>
+     */
+    public function getKeywords(): Collection
+    {
+        return $this->keywords;
+    }
+
+    public function addKeyword(Keyword $keyword): self
+    {
+        if (!$this->keywords->contains($keyword)) {
+            $this->keywords->add($keyword);
+        }
+
+        return $this;
+    }
+
+    public function removeKeyword(Keyword $keyword): self
+    {
+        $this->keywords->removeElement($keyword);
+
+        return $this;
+    }
+
 }
