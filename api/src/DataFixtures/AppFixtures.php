@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Offer;
 use App\Entity\User;
 use App\Entity\Company;
 use App\Entity\Freelance;
