@@ -38,7 +38,7 @@ class Subscription
 
     #[ORM\ManyToOne(inversedBy: 'subscriptions')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Company $company = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -105,14 +105,14 @@ class Subscription
         return $this;
     }
 
-    public function getCompany(): ?Company
+    public function getUser(): ?User
     {
-        return $this->company;
+        return $this->user;
     }
 
-    public function setCompany(?Company $company): self
+    public function setUser(?User $user): self
     {
-        $this->company = $company;
+        $this->user = $user;
 
         return $this;
     }

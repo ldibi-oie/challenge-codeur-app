@@ -38,7 +38,7 @@ services:
         - dev
 
   www:
-    build: php
+    build: ./api/php
     container_name: www_docker_symfony
     ports:
       - "8741:80"

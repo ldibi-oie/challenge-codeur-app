@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Invoice;
 use App\Entity\Subscription;
-use App\Entity\Company;
+use App\Entity\User;
 use App\Entity\Plan;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
@@ -52,18 +52,18 @@ class WebhookController extends AbstractController
 				$subscriptionStripe = $stripe->subscriptions->retrieve($subscriptionId, array());
 				$planId = $subscriptionStripe->plan->id;
 
-				// Get Company
+				// Get User
 				$customerEmail = $session->customer_details->email;
-				$company = $doctrine->getRepository(Company::class)->findOneByEmail($customerEmail);
-				if (!$company) {
+				$user = $doctrine->getRepository(User::class)->findOneByEmail($customerEmail);
+				if (!$user) {
 					$logger->info('Webhook Stripe user not found');
 					http_response_code(404);
 					exit();
 				}
 
 				// Disable old subscription
-                dump($company->getId());
-				$activeSub = $doctrine->getRepository(Subscription::class)->findActiveSub($company->getId());
+                dump($user->getId());
+				$activeSub = $doctrine->getRepository(Subscription::class)->findActiveSub($user->getId());
 				if ($activeSub) {
 					\Stripe\Subscription::update(
 						$activeSub->getStripeId(), [
@@ -88,9 +88,9 @@ class WebhookController extends AbstractController
 				$subscription->setStripeId($subscriptionStripe->id);
 				$subscription->setCurrentPeriodStart(new \Datetime(date('c', $subscriptionStripe->current_period_start)));
 				$subscription->setCurrentPeriodEnd(new \Datetime(date('c', $subscriptionStripe->current_period_end)));
-				$subscription->setCompany($company);
+				$subscription->setUser($user);
 				$subscription->setIsActive(true);
-				$company->setStripeId($session->customer);
+				$user->setStripeId($session->customer);
 
 				$doctrine->getManager()->persist($subscription);
 				$doctrine->getManager()->flush();
