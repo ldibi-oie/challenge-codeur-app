@@ -7,7 +7,6 @@ use App\Entity\Company;
 use App\Entity\Offer;
 use App\Entity\Subcription;
 use App\Entity\Freelance;
-use App\Entity\Keyword;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;

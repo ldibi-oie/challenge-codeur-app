@@ -1,10 +1,13 @@
 <template>
+
     <div class="company">
-      <h1>Représentation de la company</h1>
-      <h2> Profile</h2>
-    </div>
+      <h2>Profile</h2>
+        <div>
+           
+        </div>
+    </div>    
+    
   </template>
-  
   <style>
   @media (min-width: 1024px) {
     .company {

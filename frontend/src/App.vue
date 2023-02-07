@@ -9,6 +9,16 @@ import PanelView from './views/Admin/PanelView.vue';
 <RouterView />
 </template>
 
+<script>
+import SidebarMenu from './components/SidebarMenu.vue';
+export default {
+  name: 'App',
+  components: {
+    SidebarMenu
+  }
+}
+
+</script>
 <style scoped lang="scss">
 // #root {
 //   display: grid;
