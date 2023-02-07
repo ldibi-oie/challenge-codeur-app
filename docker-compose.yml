@@ -14,6 +14,7 @@ services:
       - "3306:3306"
     networks:
         - dev
+        
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin_docker_symfony
