@@ -54,6 +54,40 @@ class AppFixtures extends Fixture
         $user->setPassword($this->userPasswordHasher->hashPassword($user, "password_1234"));
         $manager->persist($user);
 
+        $user2 = new User();
+        $user2->setEmail('company@test.fr');
+        $user2->setRoles(["USER_ROLE"]);
+        $user2->setPassword($this->userPasswordHasher->hashPassword($user2, "password"));
+        $manager->persist($user2);
+        $manager->flush();
+
+        /* create company fixtures */
+        $company = new Company();
+        $company->setName('Codeur Challenge');
+        $company->setSiretnumber(339431181);
+        $company->setUser($user); // NEW PROPERTY
+        $company->setAddress('94 rue de la paix, 75000 Paris');
+        $user->setRoles(["FREELANCE"]);
+        $manager->persist($company);
+        $manager->flush();
+
+        $company = new Company();
+        $company->setName('WhatBig');
+        $company->setSiretnumber(339481);
+        $company->setUser($user2); // NEW PROPERTY
+        $company->setAddress('234 rue de la paix, 75002 Paris');
+        $user->setRoles(["COMPANY"]);
+
+        $manager->persist($company);
+        $manager->flush();
+
+        // $company = new Company();
+        // $company->setName('ClayDrive');
+        // $company->setSiretnumber(339431181);
+        // $company->setAddress('23 rue de la paix, 75000 Paris');
+        // $manager->persist($company);
+        // $manager->flush();
+
         $manager->flush();
 
 
@@ -225,5 +259,175 @@ class AppFixtures extends Fixture
             $manager->persist($freelance);
         }
         $manager->flush();
+<<<<<<< HEAD
+=======
+
+
+        // les mots clés
+        $keywords = ['', 'Développeur web', 'Développeur mobile', 'Développeur full stack',
+        'Administrateur réseau', 'Développeur WordPress', 'Développeur Symfony', 'Développeur React',
+        'Développeur Angular', 'Développeur Vue', 'Développeur Laravel', 'Développeur NodeJS',
+        'Développeur Python', 'Développeur Java', 'Développeur C#', 'Développeur C++', 'Développeur C',
+        'Développeur Ruby', 'Développeur PHP', 'Développeur Go', 'Développeur Rust', 'Développeur Swift',
+        'Développeur Kotlin', 'Développeur Dart', 'Développeur Scala', 'Développeur Groovy', 'Développeur Kotlin',
+        'Administrateur système', 'Administrateur réseau', 'Administrateur base de données', 'Administrateur serveur',
+        'Administrateur cloud', 'Administrateur sécurité', 'Administrateur système', 'Administrateur réseau',
+        'Consultant SEO', 'Consultant en développement', 'Consultant en sécurité', 'Consultant en cloud', 'Consultant en réseau',
+        'Community manager', 'Chef de projet', 'Chef de projet web', 'Chef de projet mobile', 'Chef de projet digital', 'Chef de projet marketing',
+        'Graphiste', 'Designer', 'Designer web', 'Designer mobile', 'Designer UX', 'Designer UI', 'Designer graphique', 'Designer produit',
+        'Rédacteur web', 'Correcteur'];
+
+        foreach ($keywords as $keyword) {
+            $key = new Keyword();
+            $key->setName($keyword);
+            $manager->persist($key);
+            $manager->flush();
+        }
+
+        // LES CATEGORIES
+        $categories = ['Développeur', 'Administrateur', 'Consultant', 'Chef de projet', 'Graphiste', 'Designer', 'Rédacteur', 'Correcteur'];
+
+        foreach ($categories as $category) {
+            $cat = new Category();
+            $cat->setName($category);
+            $manager->persist($cat);
+            $manager->flush();
+        }
+
+        // get both categories and keywords from database
+        $categories_list = $manager->getRepository(Category::class)->findAll();
+        $keywords_list = $manager->getRepository(Keyword::class)->findAll();
+
+        //Fake Freelancers and Companies
+
+        $categoryR = new Category();
+        $categoryR->setName('Développeur full stack');
+        $manager->persist($categoryR);
+        $manager->flush();
+        
+        $genres = ['male', 'female'];
+        $roles = ['ROLE_FREELANCER', 'ROLE_COMPANY'];
+
+        for ($i = 1; $i <= 10; $i++) {
+            $user = new User();
+
+            $genre = $this->faker->randomElement($genres);
+
+            $picture = 'https://randomuser.me/api/portraits/';
+            $pictureId = $this->faker->numberBetween(1, 99) . '.jpg';
+
+            if ($genre == "male") {
+                $picture .= "men/".$pictureId;
+            } else {
+                $picture .=  "women/".$pictureId;
+            }
+
+            $role = $this->faker->randomElement($roles);
+
+            if($role == "ROLE_FREELANCER"){
+                $freelance = new Freelance();
+
+
+                $profile = new MediaObject();
+                $profile->setFilePath($picture); //default image url from faker
+
+                $cv = new MediaObject();
+                $cv->setFilePath($picture); //default image url from faker
+
+                $freelance->setName($this->faker->firstName($genre))
+                ->setSurname($this->faker->lastName($genre))
+                ->setBirthday($this->faker->dateTimeBetween('-50 years', '-18 years')->format('Y-m-d'))
+                ->setSiretnumber($this->faker->numberBetween(10000000, 999999999))
+                ->setProfile($profile)
+                ->setCv($cv)
+                ->setUserId($user);
+
+                $rand_keywords = $this->faker->randomElements($keywords_list, 3);
+                foreach ($rand_keywords as $keyword) {
+                    $keyword->addFreelance($freelance);
+                }
+
+                $user->setRoles(['ROLE_USER', $role])
+                ->setEmail($this->faker->email())
+                ->setPassword($this->userPasswordHasher->hashPassword($user, 'pass_12345'))
+                ->setFreelance($freelance);
+
+                $manager->persist($user);
+                array_push($freelancers, $freelance);
+
+            }else{
+
+                $company = new Company();
+
+                $logo = new MediaObject();
+                $logo->setFilePath($picture); //default image url from faker this would be the default if file absent
+
+                $company->setName($this->faker->company())
+                ->setSiretnumber($this->faker->numberBetween(10000000, 999999999))
+                ->setLogo($logo)
+                ->setUser($user)
+                ->setAddress($this->faker->address());
+
+                $user->setRoles(['ROLE_USER', $role])
+                ->setEmail($this->faker->email())
+                ->setPassword($this->userPasswordHasher->hashPassword($user, 'pass_12345'))
+                ->setCompany($company);
+                $manager->persist($user);
+                array_push($companies, $company);
+            }
+
+            $manager->flush();
+        }
+
+        //Fake Companies Offers
+
+        foreach ($companies as $company) {
+                for ($i = 1; $i <= 2; $i++) {
+                    $offer = new Offer();
+                    $new_category = $categories_list[mt_rand(0, count($categories_list) - 1)];
+                    $offer->setTitle($this->faker->sentence(1))
+                    ->setDescription($this->faker->paragraph(1))
+                    ->setCompany($company)
+                    ->setSalary($this->faker->numberBetween(2000, 100000))
+                    ->setCategory($new_category);
+
+                    $rand_keywords = $this->faker->randomElements($keywords_list, 3);
+                    foreach ($rand_keywords as $keyword) {
+                        $keyword->addOffer($offer);
+                    }
+
+                    //add freelancers
+                    $rand_freelancers = $this->faker->randomElements($freelancers, 3);
+                    foreach ($rand_freelancers as $freelancer) {
+                        $offer->addCandidate($freelancer);
+                    }
+
+                    // add selected freelancer
+                    $offer->setSelectedCandidate($rand_freelancers[0]);
+
+                    // fake company and selected candidate comments
+                    for ($i=0; $i < 2; $i++) {
+                        $companyComment = new Comment();
+                        $companyComment->setAuthor($company->getUser())
+                        ->setOffer($offer)
+                        ->setComment($this->faker->paragraph(1));
+                        $manager->persist($companyComment);
+                        $manager->flush();
+
+                        // add candidate comment
+                        $candidateComment = new Comment();
+                        $candidateComment->setAuthor($offer->getSelectedCandidate()->getUserId())
+                        ->setOffer($offer)
+                        ->setComment($this->faker->paragraph(1));
+                        $manager->persist($companyComment);
+                        $manager->flush();
+                    }
+
+                    $manager->persist($offer);
+                    $manager->flush();
+            }
+        }
+
+>>>>>>> develop
     }
 }

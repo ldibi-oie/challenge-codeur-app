@@ -1,22 +1,9 @@
-FROM php:8.1.0-apache
+FROM php:8.0.0RC3-fpm-alpine
+RUN apk --update --no-cache add git
+RUN docker-php-ext-install pdo_mysql
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN a2enmod headers
 
-COPY wait-for-it.sh /usr/bin/wait-for-it
-
-RUN chmod +x /usr/bin/wait-for-it
-
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends locales apt-utils git libicu-dev g++ libpng-dev libxml2-dev libzip-dev libonig-dev libxslt-dev;
-
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
-    echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
-    locale-gen
-
-RUN curl -sSk https://getcomposer.org/installer | php -- --disable-tls && \
-   mv composer.phar /usr/local/bin/composer
-RUN a2enmod headers rewrite
-
-RUN docker-php-ext-configure intl
-RUN docker-php-ext-install pdo pdo_mysql gd opcache intl zip calendar dom mbstring zip gd xsl
-RUN pecl install apcu && docker-php-ext-enable apcu
+WORKDIR /var/www
+CMD composer install ;  php-fpm
+EXPOSE 9000

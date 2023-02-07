@@ -36,9 +36,7 @@
                   Not registered? <router-link to="register" class="text-red-700 hover:underline dark:text-red-500">Create account</router-link>
               </div>
           </form>
-          token : {{  token  }}
         {{  error  }}
-        user : {{  user  }}
       </div>
   </div>
 </template>
@@ -70,9 +68,9 @@ import requestApi from "../axios"
           localStorage.setItem("user" , JSON.stringify(res.data.user))
 
           if(res.data.user.isVerified === false){
-            this.$router.push('/verify/waiting/');
+            this.$router.push({name: 'waiting'});
           } else {
-            this.$router.push('/profile');
+            this.$router.push({name: 'profile'});
           }
         })
         .catch(err => {

@@ -21,11 +21,11 @@ class Offer
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $title = null;
+    #[ORM\Column(type: 'text')]
+    private $title = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    #[ORM\Column(type: 'text')]
+    private $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -49,6 +49,9 @@ class Offer
 
     #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'offers', cascade: ['persist'])]
     private Collection $keywords;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
 
     public function __construct()
     {
@@ -209,6 +212,18 @@ class Offer
     public function removeKeyword(Keyword $keyword): self
     {
         $this->keywords->removeElement($keyword);
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

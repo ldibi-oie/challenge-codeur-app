@@ -1,4 +1,13 @@
 .history
 api/.env
 api/.env.local
+<<<<<<< HEAD
 http
+=======
+
+/.idea
+api/node_modules
+frontend/node_modules
+/docker/.env/
+/docker/docker-compose.yml
+>>>>>>> develop

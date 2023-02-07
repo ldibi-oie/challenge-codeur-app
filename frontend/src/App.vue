@@ -1,6 +1,11 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+<<<<<<< HEAD
 import SidebarMenu from './components/SidebarMenu.vue'
+=======
+import HelloWorld from './components/HelloWorld.vue'
+import PanelView from './views/Admin/PanelView.vue';
+>>>>>>> develop
 </script>
 
 <template>      

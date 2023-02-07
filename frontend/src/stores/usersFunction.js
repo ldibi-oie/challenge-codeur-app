@@ -56,15 +56,6 @@ export const sendVerificationEmail = (data) => {
 export const ResendVerificationEmail = async (data) => {
     var r = ''
     await requestApi.post("/register" , data)
-      .then((res) => {
-          // this.token = res.data.token
-          console.log(res)
-          r.push(res)
-        })
-      .catch(err => {
-          r.push(err)
-      }
-    )
 
     return r;
 }
@@ -97,8 +88,20 @@ export const getCategories = async () => {
     return r;
 }
 
-export const logout = () => {
+export const getOffers = async () => {
+    console.log("cherche offes en cours -------------")
+    var r = [];
+    await requestApi.get("/api/offers").then((categories) => {
+        const response = categories.data["hydra:member"]
+        console.log(response)
+        r.push(...response)   
+    })
+    return r;
+}
+
+export const logout = async () => {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     localStorage.clear()
+    return false;
 }

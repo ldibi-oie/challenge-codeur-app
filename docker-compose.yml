@@ -1,53 +1,57 @@
-version: '3'
+version: '3.8'
 
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: mariadb
+  db:
+    image: mysql:8
     container_name: db_docker_symfony
     restart: always
     volumes:
         - db-data:/var/lib/mariadb
     environment:
-        MARIADB_DATABASE: challenge
-        MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
+        MYSQL_ROOT_PASSWORD: challenge
+        MYSQL_ALLOW_EMPTY_ROOT_PASSWORD: 'yes'
     networks:
         - dev
-###< doctrine/doctrine-bundle ###
+
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: ./docker/php-fpm
+    depends_on:
+      - db
+    volumes:
+      - ./api/:/var/www
+
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin_docker_symfony
     restart: always
     depends_on:
-        - database
+        - db
     ports:
         - 8082:80
     environment:
-        PMA_HOST: database
+        PMA_HOST: db
     networks:
         - dev
+    volumes:
+      - ./mysql:/var/lib/mysql
 
-  maildev:
-    image: maildev/maildev
-    container_name: maildev_docker_symfony
-    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
-    ports:
-      - "8081:80"
-    restart: always
-    networks:
-        - dev
-
-  www:
-    build: ./api/php
-    container_name: www_docker_symfony
+  nginx:
+    container_name: nginx
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./api/:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/sites/:/etc/nginx/sites-available
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d
+      - ./docker/logs:/var/log
+    depends_on:
+      - php-fpm
     ports:
       - "8741:80"
-    volumes:
-        - ./api/php/vhosts:/etc/apache2/sites-enabled
-        - ./:/var/www
-    restart: always
-    networks:
-        - dev
+      - "443:443"
 
   vue-ui:
     image: node:19.2.0-alpine3.16
@@ -57,8 +61,7 @@ services:
     command: sh -c "npm install && npm run dev"
     ports:
       - 5173:5173
-
-
+      
 networks:
     dev:
 volumes:
