@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-=======
-@import './base.css';
+/* @import './base.css'; */
 
 #app {
   margin: 0 auto;
@@ -37,4 +35,3 @@ a,
     padding: 0 2rem;
   }
 }
->>>>>>> 42c52507 (adding the first compagny design)
