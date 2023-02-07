@@ -5,3 +5,5 @@ api/.env.local
 /.idea
 api/node_modules
 frontend/node_modules
+/docker/.env/
+/docker/docker-compose.yml

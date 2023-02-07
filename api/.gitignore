@@ -12,9 +12,6 @@ node_modules
 ###> lexik/jwt-authentication-bundle ###
 # /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
-<<<<<<< HEAD
-/migrations/
-=======
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
@@ -25,4 +22,3 @@ yarn-error.log
 
 ###> migrations ###
 /migrations/*
->>>>>>> origin/feature/admin
