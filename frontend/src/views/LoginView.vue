@@ -3,6 +3,26 @@
       <a href="/" class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
           <span>MyProject Codeur</span>  
       </a>
+      <div v-if="error !== ''"
+          class="flex w-full max-w-xl p-4 mb-6 text-sm border border-red-300  text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+          role="alert">
+          <svg
+              aria-hidden="true"
+              class="flex-shrink-0 inline w-5 h-5 mr-3"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                  fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                  clip-rule="evenodd"></path>
+          </svg>
+          <span class="sr-only">Info</span>
+          <div>
+              <span class="font-medium">Erreur : </span>
+              {{ error }}
+          </div>
+      </div>
       <!-- Card -->
       <div class="w-full max-w-xl p-6 space-y-8 sm:p-8 bg-white rounded-lg shadow dark:bg-gray-800">
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
@@ -36,7 +56,6 @@
                   Not registered? <router-link to="register" class="text-red-700 hover:underline dark:text-red-500">Create account</router-link>
               </div>
           </form>
-        {{  error  }}
       </div>
   </div>
 </template>
@@ -70,13 +89,19 @@ import requestApi from "../axios"
           if(res.data.user.isVerified === false){
             this.$router.push({name: 'waiting'});
           } else {
-            this.$router.push({name: 'profile'});
+            if(res.data.user.roles[0] === "COMPANY"){
+              this.$router.push({name: 'admin'});
+            } else if(res.data.user.roles[0] === "ROLE_USER"){
+              this.$router.push({name: 'user'});
+            }
           }
         })
         .catch(err => {
             this.error = err
         })
-
+        .finally(() => {
+          this.isLoading = false
+        })
       }
     },
   };
