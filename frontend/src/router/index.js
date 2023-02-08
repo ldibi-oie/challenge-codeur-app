@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AdminView from '../views/AdminView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import WaitingView from '../views/verify/waiting.vue'
@@ -9,6 +8,7 @@ import Subscription from '../views/Subscription/Subscription.vue'
 import VerificationInfos from "../views/Stepper/Main.vue"
 import ErrorPage from "../views/ErrorPage.vue"
 import OfferId from "../views/Offer/OfferId.vue"
+import AdminRoutes from "./admin.js"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,29 +58,7 @@ const router = createRouter({
       name: 'offerId',
       component: OfferId
     },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: () => import('../views/Admin/PanelView.vue'),
-    },
-    {
-      path: '/admin/form/add',
-      name: 'admin_form_add',
-      component: () => import('../components/Admin/Form.vue'),
-    },
-    {
-      path: '/admin/form/edit/:id',
-      name: 'admin_form_edit',
-      component: () => import('../components/Admin/Form.vue'),
-    },
+    ...AdminRoutes
   ]
 })
 

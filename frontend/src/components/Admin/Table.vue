@@ -65,7 +65,7 @@
                     </td>
                     <div
                         v-if="popup"
-                        class="fixed top-0 left-0 right-0 z-50 py-64 overflow-x-hidden overflow-y-auto md:inset-0 bg-gray-800/50">
+                        class="fixed top-0 left-0 right-0 z-50 py-64 overflow-x-hidden overflow-y-auto md:inset-0 bg-gray-600/25">
                         <div class="relative w-full h-full max-w-md mx-auto">
                             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                 <button
