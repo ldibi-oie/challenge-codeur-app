@@ -47,37 +47,11 @@ class AppFixtures extends Fixture
 
         $user2 = new User();
         $user2->setEmail('company@test.fr');
-        $user2->setRoles(["USER_ROLE"]);
+        $user2->setRoles(["ROLE_USER"]);
         $user2->setPassword($this->userPasswordHasher->hashPassword($user2, "password"));
         $manager->persist($user2);
         $manager->flush();
 
-        /* create company fixtures */
-        $company = new Company();
-        $company->setName('Codeur Challenge');
-        $company->setSiretnumber(339431181);
-        $company->setUser($user); // NEW PROPERTY
-        $company->setAddress('94 rue de la paix, 75000 Paris');
-        $user->setRoles(["FREELANCE"]);
-        $manager->persist($company);
-        $manager->flush();
-
-        $company = new Company();
-        $company->setName('WhatBig');
-        $company->setSiretnumber(339481);
-        $company->setUser($user2); // NEW PROPERTY
-        $company->setAddress('234 rue de la paix, 75002 Paris');
-        $user->setRoles(["COMPANY"]);
-
-        $manager->persist($company);
-        $manager->flush();
-
-        // $company = new Company();
-        // $company->setName('ClayDrive');
-        // $company->setSiretnumber(339431181);
-        // $company->setAddress('23 rue de la paix, 75000 Paris');
-        // $manager->persist($company);
-        // $manager->flush();
 
         $manager->flush();
 
@@ -184,9 +158,11 @@ class AppFixtures extends Fixture
         $manager->flush();
         
         $genres = ['male', 'female'];
-        $roles = ['ROLE_FREELANCER', 'ROLE_COMPANY'];
 
-        for ($i = 1; $i <= 10; $i++) {
+        $defaultFreelanceEmail =  '2022stupid.email@gmail.com'; //add your default email for all freelancers
+        $defaultCompanyEmail =  'therecettessympfony@gmail.com'; //add your default email for all companies
+
+        for ($i = 1; $i <= 5; $i++) {
             $user = new User();
 
             $genre = $this->faker->randomElement($genres);
@@ -200,9 +176,6 @@ class AppFixtures extends Fixture
                 $picture .=  "women/".$pictureId;
             }
 
-            $role = $this->faker->randomElement($roles);
-
-            if($role == "ROLE_FREELANCER"){
                 $freelance = new Freelance();
 
 
@@ -225,15 +198,33 @@ class AppFixtures extends Fixture
                     $keyword->addFreelance($freelance);
                 }
 
-                $user->setRoles(['ROLE_USER', $role])
-                ->setEmail($this->faker->email())
+                $user->setRoles(['ROLE_USER', 'ROLE_FREELANCER'])
+                ->setEmail($i == 1 ? $defaultFreelanceEmail : $this->faker->email())
                 ->setPassword($this->userPasswordHasher->hashPassword($user, 'pass_12345'))
-                ->setFreelance($freelance);
+                ->setFreelance($freelance)
+                ->setIsVerified($i == 2 ? true : false);
 
                 $manager->persist($user);
                 array_push($freelancers, $freelance);
 
-            }else{
+                $manager->flush();
+        }
+
+        for ($i = 1; $i <= 5; $i++) {
+            $user = new User();
+
+            $genre = $this->faker->randomElement($genres);
+
+            $picture = 'https://randomuser.me/api/portraits/';
+            $pictureId = $this->faker->numberBetween(1, 99) . '.jpg';
+
+            if ($genre == "male") {
+                $picture .= "men/".$pictureId;
+            } else {
+                $picture .=  "women/".$pictureId;
+            }
+
+
 
                 $company = new Company();
 
@@ -246,15 +237,16 @@ class AppFixtures extends Fixture
                 ->setUser($user)
                 ->setAddress($this->faker->address());
 
-                $user->setRoles(['ROLE_USER', $role])
-                ->setEmail($this->faker->email())
+                $user->setRoles(['ROLE_USER', 'ROLE_COMPANY'])
+                ->setEmail($i == 1 ? $defaultCompanyEmail : $this->faker->email())
                 ->setPassword($this->userPasswordHasher->hashPassword($user, 'pass_12345'))
-                ->setCompany($company);
+                ->setCompany($company)
+                ->setIsVerified($i == 2 ? true : false);
+
                 $manager->persist($user);
                 array_push($companies, $company);
-            }
 
-            $manager->flush();
+                $manager->flush();
         }
 
         //Fake Companies Offers
