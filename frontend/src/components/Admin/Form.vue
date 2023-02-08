@@ -113,16 +113,16 @@ export default {
                 const url = this.$route.params.id ? `${this.$route.query.submitApi}/${this.$route.params.id}` : this.$route.query.submitApi;
                 const response = await http[method](url, this.form);
                 
+                this.success = 'Objet enregistré avec succès';
                 this.$emit("submitted", response.data);
-                this.loading = false;
-                this.success = response.data.message;
-                this.$router.push({ name: 'admin' });
                 
             } catch (error) {
-                this.loading = false;
-                this.error = error.response.data.detail;
-
+                this.error = error.response.data['hydra:description']
                 console.error(error);
+            }
+            finally {
+                this.loading = false;
+                this.$router.push({ name: 'admin' });
             }
         },
         async fetchData() {
@@ -130,10 +130,10 @@ export default {
                 this.loading = true;
                 const response = await http.get(this.$route.query.submitApi + '/' + this.$route.params.id);
                 this.form = response.data;
-                this.loading = false;
             } catch (error) {
-                this.loading = false;
                 console.error(error);
+            } finally {
+                this.loading = false;
             }
         },
         async fetchForm() {

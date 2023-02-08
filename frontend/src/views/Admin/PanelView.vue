@@ -46,7 +46,29 @@
         </aside>
 
 <div class="p-4 sm:ml-64">
-    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-200 mt-14">
+    <div
+        v-if="error != ''"
+        class="flex p-4 mt-5 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:text-red-400"
+        role="alert">
+        <svg
+            aria-hidden="true"
+            class="flex-shrink-0 inline w-5 h-5 mr-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+                fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd"></path>
+        </svg>
+        <span class="sr-only">Info</span>
+        <div>
+            <span class="font-medium">Erreur :
+            </span>
+            {{ error }}
+        </div>
+    </div>
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-200 mt-7">
         <button class="bg-blue-500 py-2 px-4 rounded-md text-white dark:text-white mx-5">
             <span v-if="loadNavigation">
                 <svg
@@ -101,6 +123,9 @@
                 // Table
                 columns: [],
                 dataTable: [],
+
+                // Alert error
+                error: '',
             }
         },
         mounted() {
@@ -113,10 +138,13 @@
                     .get("/api")
                     .then(response => {
                         this.data = response.data
-                        this.loadNavigation = false
+                        this.error = ''
                     })
                     .catch(e => {
-                        console.log(e)
+                        this.error = e
+                    })
+                    .finally(() => {
+                        this.loadNavigation = false
                     })
             },
             async fetchData(path) {
@@ -124,6 +152,9 @@
                     this.$refs.tableAdmin.load = true
                     this.url = path
                     const response = await http.get(path);
+                    
+                    this.error = ''
+
                     this.columns = Object.keys(response.data["hydra:member"][0]);
                     this.dataTable = response.data["hydra:member"];
 
@@ -134,6 +165,7 @@
                     console.log(this.columns)
                 } catch (error) {
                     console.log(error);
+                    this.error = error.response.data['hydra:description']
                 } finally {
                     this.$refs.tableAdmin.load = false
                 }

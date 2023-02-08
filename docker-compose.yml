@@ -1,54 +1,59 @@
-version: '3'
+version: '3.8'
 
 services:
-  database:
-    image: mysql:8.0
+  db:
+    image: postgres:15.1-alpine3.17
     container_name: db_docker_symfony
-    restart: always
+    restart: unless-stopped
     volumes:
-        - db-data:/var/lib/mysql
-    environment:
-        MYSQL_DATABASE: challenge
-        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      - db:/var/lib/postgresql/data
     ports:
-      - "3306:3306"
+      - 5432:5432
+    environment:
+      POSTGRES_USER: challenge
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: challenge
     networks:
-        - dev
-        
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: phpmyadmin_docker_symfony
-    restart: always
+      - dev
+
+  php-fpm:
+    container_name: php-fpm
+    restart: unless-stopped
+    build:
+      context: ./docker/php-fpm
     depends_on:
-        - database
-    ports:
-        - 8082:80
-    environment:
-        PMA_HOST: database
+      - db
+    volumes:
+      - ./api/:/var/www
     networks:
-        - dev
+      - dev
 
-  maildev:
-    image: maildev/maildev
-    container_name: maildev_docker_symfony
-    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
-    ports:
-      - "8081:80"
+  adminer:
+    image: adminer
     restart: always
+    ports:
+      - 8082:8082
     networks:
-        - dev
+      - dev
 
-  www:
-    build: ./api/php
-    container_name: www_docker_symfony
+  nginx:
+    container_name: nginx
+    restart: unless-stopped
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./api/:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/sites/:/etc/nginx/sites-available
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d
+      - ./docker/logs:/var/log
+    depends_on:
+      - php-fpm
     ports:
       - "8741:80"
-    volumes:
-        - ./api/php/vhosts:/etc/apache2/sites-enabled
-        - ./:/var/www
-    restart: always
+      - "443:443"
     networks:
-        - dev
+      - dev
 
   vue-ui:
     image: node:19.2.0-alpine3.16
@@ -56,19 +61,17 @@ services:
       - ./frontend:/app
     working_dir: /app
     command: sh -c "npm install && npm run dev"
+    restart: unless-stopped
     ports:
-      - 5173:5173
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - "5173:5173"
     networks:
-        - dev
-
+      - dev
+      
 networks:
     dev:
         driver: bridge
 
 volumes:
-    db-data:
-    
+    db:
 
 

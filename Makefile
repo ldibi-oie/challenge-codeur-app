@@ -1,8 +1,7 @@
 build:
 	docker-compose build
 	docker-compose up -d
-	docker-compose exec www bash -c "cd api && \
-		composer require symfony/runtime && \
+	docker-compose exec php-fpm bash -c "composer require symfony/runtime && \
 		php bin/console make:migration && \
 		php bin/console doctrine:schema:update --force && \
 		php bin/console doctrine:migrations:migrate"
@@ -16,5 +15,4 @@ stop:
 restart: stop start
 
 fixtures:
-	docker-compose exec www bash -c "cd api && \
-		php bin/console doctrine:fixtures:load"
+	docker-compose exec php-fpm bash -c "php bin/console doctrine:fixtures:load"
