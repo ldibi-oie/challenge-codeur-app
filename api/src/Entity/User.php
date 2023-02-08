@@ -30,6 +30,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     normalizationContext: ['groups' => ['user']]
 )]
+#[ORM\Table(name: '`user`')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
