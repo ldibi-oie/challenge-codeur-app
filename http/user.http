@@ -1,0 +1,6 @@
+# API Platform
+### Response get all routes
+GET http://localhost:8741/api/
+
+### Response get all compagnies
+GET http://localhost:8741/api/companies
