@@ -75,8 +75,3 @@ networks:
 
 volumes:
     db:
-<<<<<<< HEAD
-
-=======
->>>>>>> c29c4913 (adding fix)
-
