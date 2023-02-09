@@ -1,6 +1,8 @@
 
 
 import requestApi from '../axios';
+const url = "http://localhost:8741";
+
 export const setCompanyToUser = async (data) => {
     var r;
     const v = {
@@ -11,7 +13,7 @@ export const setCompanyToUser = async (data) => {
 
     console.log("CREATION D'UNE COMPANY EN COURS ....")
 
-    await requestApi.post("/api/companies" , v)
+    await requestApi.post(url+"/api/companies" , v)
     .then((res) => {
       console.log(res)
       console.log(res.data)
@@ -46,10 +48,10 @@ export const updateCompanyToUser = async (data) => {
 // get companies 
 export const getCompanies = async () => {
     var r;
-    await requestApi.get("/api/companies")
+    await requestApi.get(url+"/api/companies")
     .then((res) => {
-      console.log(res.data)
-      r = res.data
+      //console.log(res.data)
+      r = res.data;
     })
     .catch(err => {
         console.log(err)
@@ -59,11 +61,11 @@ export const getCompanies = async () => {
 
 // get company by id
 export const getCompanyById = async (id) => {
-    var r;
-    await requestApi.get("/api/companies/" + id)
+    var r ;
+    await requestApi.get(url+"/api/companies/" + id)
     .then((res) => {
-      console.log(res.data)
-      r = res.data
+      r = res.data;
+      //console.log("stores.company ", r)
     })
     .catch(err => {
         console.log(err)
@@ -73,7 +75,7 @@ export const getCompanyById = async (id) => {
 
 
 // add offre by compagny
-export const addOffre = async (data) => {
+export const addOffre = async (data, id) => {
     var r;
     const v = {
         "title": data.title,
@@ -82,7 +84,7 @@ export const addOffre = async (data) => {
 
     console.log("CREATION D'UNE OFFRE EN COURS ....")
 
-    await requestApi.post("/api/offers" , v)
+    await requestApi.post(url+"/api/companies/"+id+"/offres" , v)
     .then((res) => {
       console.log(res)
       console.log(res.data)
@@ -99,7 +101,7 @@ export const addOffre = async (data) => {
 // get offers by company
 export const getOffersByCompany = async (id) => {
     var r;
-    await requestApi.get("/api/offers?company.id=" + id)
+    await requestApi.get(url+"/api/offers?company.id=" + id)
     .then((res) => {
       console.log(res.data)
       r = res.data
@@ -113,7 +115,7 @@ export const getOffersByCompany = async (id) => {
 // get offers 
 export const getOffers = async () => {
     var r;
-    await requestApi.get("/api/offers")
+    await requestApi.get(url+"/api/offers")
     .then((res) => {
       console.log(res.data)
       r = res.data
@@ -127,7 +129,7 @@ export const getOffers = async () => {
 // get comments
 export const getComments = async () => {
     var r;
-    await requestApi.get("/api/comments")
+    await requestApi.get(url+"/api/comments")
     .then((res) => {
       console.log(res.data)
       r = res.data
@@ -141,10 +143,10 @@ export const getComments = async () => {
 // get comments by offer
 export const getCommentsByOffer = async (id) => {
     var r;
-    await requestApi.get("/api/comments?offer.id=" + id)
+    await requestApi.get(url+"/api/comments?offer.id=" + id)
     .then((res) => {
       console.log(res.data)
-      r = res.data
+      r = res.data["hydra:member"]
     })
     .catch(err => {
         console.log(err)

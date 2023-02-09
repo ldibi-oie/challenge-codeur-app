@@ -91,4 +91,13 @@ class CompanyController extends AbstractController
         $jsonCompany = $serializer->serialize($company,'json');
         return new JsonResponse($jsonCompany, Response::HTTP_OK, [], true);
     }
+
+    //add offre with company
+    #[Route('/api/companies/{id}/offres', name: 'app_company', methods: ["POST"])]
+    public function addOffreWithCompany(CompanyRepository $companyRepository, SerializerInterface $serializer, int $id): JsonResponse
+    {
+        $company = $companyRepository->find($id);
+        $jsonCompany = $serializer->serialize($company,'json');
+        return new JsonResponse($jsonCompany, Response::HTTP_OK, [], true);
+    }
 }
