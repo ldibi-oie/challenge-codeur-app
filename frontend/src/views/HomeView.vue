@@ -78,9 +78,9 @@
       <h5 class="mb-4 mx-5 px-6 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">Nos principaux métiers</h5>
 
       <div class="flex px-6 flex-row">
-        <div class="px-3 rounded">
+        <div class="px-3 w-64 rounded">
         <list-group >
-          <div class="w-full flex items-center justify-center w-56 h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" v-if="categories.length === 0">
+          <div class="flex items-center justify-center h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" v-if="categories.length === 0">
             <div class="px-3 py-1 text-xs font-medium leading-none text-center text-red-800 bg-red-200 rounded-full animate-pulse dark:bg-red-900 dark:text-red-200">loading...</div>
           </div>
           <list-group-item v-for="category in categories" @click="selectCategory(category['@id'])">
@@ -100,9 +100,9 @@
         <div v-for="offer in offersFilter" v-if="offersFilter.length > 0">
           <div class="w-full p-4 mb-4 space-y-6 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
             <div class="flex flex-row items-center">
-                <div v-if="offer.status === 'OPEN'" class="px-3 py-1 text-xs font-medium leading-none text-center text-green-800 bg-green-200 rounded-full animate-pulse dark:bg-green-900 dark:text-green-200">ouvert</div>
+                <div v-if="offer.status === 'open'" class="px-3 py-1 text-xs font-medium leading-none text-center text-green-800 bg-green-200 rounded-full animate-pulse dark:bg-green-900 dark:text-green-200">ouvert</div>
                 <div v-if="offer.status === 'IN_PROGRESS'" class="px-3 py-1 text-xs font-medium leading-none text-center text-green-800 bg-green-200 rounded-full animate-pulse dark:bg-green-900 dark:text-green-200">en cours ...</div>
-                <div v-if="offer.status === 'DONE'" class="px-3 py-1 text-xs font-medium leading-none text-center text-purple-800 bg-purple-200 rounded-full animate-pulse dark:bg-purple-900 dark:text-purple-200">finish</div>
+                <div v-if="offer.status === 'closed'" class="px-3 py-1 text-xs font-medium leading-none text-center text-purple-800 bg-purple-200 rounded-full animate-pulse dark:bg-purple-900 dark:text-purple-200">finish</div>
                 <h3 class="mx-3">
                   {{offer.title}} 
                 </h3> 
@@ -110,7 +110,7 @@
             <div class="">
                 <h3>{{offer.description}} </h3>
                 <br>
-                <h3>Tarification : {{offer.price}} €</h3>
+                <h3>Tarification : {{offer.salary}} €</h3>
                 <h3>Publie il y a {{moment(offer.createdAt).format('LLL')}} </h3>
             </div>
             <div class="">
@@ -136,7 +136,8 @@ import moment from 'moment';
 import { Dialog, DialogPanel } from '@headlessui/vue'
 import Navbar from "../components/General/Navbar.vue";
 import requestApi from '../axios';
-import { getUser , getCategories , getOffers } from '../stores/usersFunction';
+import { getUser , getCategories } from '../stores/usersFunction';
+import { getOffers } from '../stores/offers';
 moment.locale('fr');
 
 export default {
@@ -179,7 +180,7 @@ export default {
         },
 
         viewOffer: function(id , dataOffer){
-          this.$router.push({name: "offerId", params:{ id , data: dataOffer}})
+          this.$router.push({name: "offerId", params: {id} })
         }
     },
     components: { Navbar }

@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
 #[ApiResource]
@@ -21,9 +22,11 @@ class Offer
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: 'text')]
     private $title = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: 'text')]
     private $description = null;
 
@@ -38,13 +41,14 @@ class Offer
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    #[Groups('user')]
     #[ORM\Column]
     private ?int $salary = null;
 
     #[ORM\ManyToOne(inversedBy: 'isSelectedCandidateList')]
     private ?Freelance $selectedCandidate = null;
 
-    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
     private Collection $comments;
 
     #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'offers', cascade: ['persist'])]

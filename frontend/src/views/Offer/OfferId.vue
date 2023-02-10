@@ -1,105 +1,143 @@
-<template lang="">
-    <Navbar/>
-    <div class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
-        <div class="mb-4 col-span-full xl:mb-2">
-            <nav class="flex mb-5" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
-                  <li class="inline-flex items-center">
-                    <a href="#" class="inline-flex items-center text-gray-700 hover:text-red-600 dark:text-gray-300 dark:hover:text-white">
-                      <svg class="w-5 h-5 mr-2.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                      Home
-                    </a>
-                  </li>
-                  <li>
-                    <div class="flex items-center">
-                      <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                      <a href="#" class="ml-1 text-gray-700 hover:text-red-600 md:ml-2 dark:text-gray-300 dark:hover:text-white">Users</a>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="flex items-center">
-                      <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                      <span class="ml-1 text-gray-400 md:ml-2 dark:text-gray-500" aria-current="page">Settings</span>
-                    </div>
-                  </li>
-                </ol>
-            </nav>
-            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">User settings</h1>
-        </div>
-        <!-- Right Content -->
-        <div class="col-span-full xl:col-auto">
-            <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-                <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4">
-                    <img class="mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0" src="https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png" alt="Jese picture">
-                    <div>
-                        <h3 class="mb-1 text-xl font-bold text-gray-900 dark:text-white">Profile picture</h3>
-                        <div class="mb-4 text-sm text-gray-500 dark:text-gray-400">
-                            JPG, GIF or PNG. Max size of 800K
+
+<template>
+  <Navbar />
+  <div class="container mx-auto dark:bg-gray-900">
+    <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
+        <div role="status" class="" v-if="!offer    ">
+            <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-red-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+            </svg>
+            <span class="sr-only">Loading...</span>
+        </div> 
+        <div  v-if="offer" id="main-content" class="relative w-full max-w-screen-2xl mx-auto h-full overflow-y-auto bg-gray-50 dark:bg-gray-900">
+          <main>
+            <div class="grid grid-rows-1 px-4 pt-6 xl:grid-cols-3 xl:px-0 xl:gap-4 dark:bg-gray-900">
+                <div class="mb-4 col-span-full xl:mb-2">
+                    
+                    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"> {{offer?.title}}</h1>
+                    {{ offer }}
+                </div>
+                <!-- Right Content -->
+                <div v-if="offer?.selectedCandidate?.length > 1" v-bind:class="{' col-span-full xl:col-auto ' :offer.selectedCandidate?.length > 0 , 'hidden' : offer?.selectedCandidate?.length === 0 } " >
+                    <div class="p-4 mb-4 space-y-6 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                        <div class="px-4 py-2 ">
+                            <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                            <img src="../../assets/img/king-svgrepo-com.svg" alt="" style="width: 40px;">
+                                
+                                Le freelance selectionné
+                            </h3>
                         </div>
-                        <div class="flex items-center space-x-4">
-                            <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                <svg class="w-4 h-4 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"></path><path d="M9 13h2v5a1 1 0 11-2 0v-5z"></path></svg>
-                                Upload picture
-                            </button>
-                            <button type="button" class="py-2 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                Delete
-                            </button>
+                        <div class="h-32 px-4 py-2 ">
+                            <h3>{{offer?.selectedCandidate}} </h3>
+                        </div>
+                        <div class="px-4 py-2 ">
                         </div>
                     </div>
                 </div>
+                <div class="col-span-2">
+                    <div class="p-4 mb-4 space-y-6 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                        <div class="flex flex-row items-center">
+                            <div v-if="offer.status === 'open'" class="px-3 py-1 text-xs font-medium leading-none text-center text-green-800 bg-green-200 rounded-full animate-pulse dark:bg-green-900 dark:text-green-200">ouvert</div>
+                            <div v-if="offer.status === 'IN_PROGRESS'" class="px-3 py-1 text-xs font-medium leading-none text-center text-green-800 bg-green-200 rounded-full animate-pulse dark:bg-green-900 dark:text-green-200">en cours ...</div>
+                            <div v-if="offer.status === 'closed'" class="px-3 py-1 text-xs font-medium leading-none text-center text-purple-800 bg-purple-200 rounded-full animate-pulse dark:bg-purple-900 dark:text-purple-200">finish</div>
+                            <h3 class="mx-3">
+                            {{offer?.title}} 
+                            </h3> 
+                        </div>
+                        <div class="h-32 px-4 py-2 ">
+                            <h3>{{offer?.description}}</h3>
+                        </div>
+                        <div class="px-4 py-2 ">
+                            <h3>Tarification : {{offer?.salary}} €</h3>
+                        </div>
+                        <div class="px-4 ">
+                            <h3>Category: {{offer?.category}}</h3>
+                        </div>
+                        <div class="px-4 py-2 ">
+                            <h3>Mots cles : </h3>
+                            <ul>
+                                <li v-for="item in offer.keywords">
+                                    <span> {{item}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> 
+                </div>
             </div>
-            <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-                <h3 class="mb-4 text-xl font-semibold dark:text-white">Language &amp; Time</h3>
-                <div class="mb-4">
-                    <label for="settings-language" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select language</label>
-                    <select id="settings-language" name="countries" class="bg-gray-50 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500">
-                        <option>English (US)</option>
-                        <option>Italiano</option>
-                        <option>Français (France)</option>
-                        <option>正體字</option>
-                        <option>Español (España)</option>
-                        <option>Deutsch</option>
-                        <option>Português (Brasil)</option>
-                    </select>
+            <div  v-if="offer?.candidates" class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900 dark:text-white">Les candidatures
+                </h3>
+                <div data-popover="" id="popover-description" role="tooltip" class="absolute z-10 inline-block text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 opacity-0 invisible" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(221.111px, 731.111px);" data-popper-placement="bottom-start">
+                <div class="p-3 space-y-2">
                 </div>
-                <div class="mb-6">
-                    <label for="settings-timezone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Time Zone</label>
-                    <select id="settings-timezone" name="countries" class="bg-gray-50 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500">
-                        <option>GMT+0 Greenwich Mean Time (GMT)</option>
-                        <option>GMT+1 Central European Time (CET)</option>
-                        <option>GMT+2 Eastern European Time (EET)</option>
-                        <option>GMT+3 Moscow Time (MSK)</option>
-                        <option>GMT+5 Pakistan Standard Time (PKT)</option>
-                        <option>GMT+8 China Standard Time (CST)</option>
-                        <option>GMT+10 Eastern Australia Standard Time (AEST)</option>
-                    </select>
+                <div data-popper-arrow="" style="position: absolute; left: 0px; transform: translate(6.66667px, 0px);"></div>
                 </div>
-                <div>
-                    <button class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Save all</button>
+                <div id="fullWidthTabContent" class="border-t border-gray-200 dark:border-gray-600">
+                    <div class="pt-4" id="faq" role="tabpanel" aria-labelledby="faq-tab">
+                    <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                        <li class="py-3 sm:py-4" v-for="item in offer?.candidates">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center min-w-0">
+                            <!-- <img class="flex-shrink-0 w-10 h-10" src="https://flowbite-admin-dashboard.vercel.app/images/products/iphone.png" alt="imac image"> -->
+                            <div class="ml-3">
+                                <p class="font-medium text-gray-900 truncate dark:text-white">
+                                {{item}}
+                                </p>
+                                <span class="ml-2 text-gray-500"> user email </span>
+                            </div>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                            Publie 
+                            </div>
+                        </div>
+                        </li>
+                    </ul>
+                    </div>
                 </div>
+                <!-- Card Footer -->
             </div>
+            <!-- <div class="grid gap-4 px-4 mb-4 md:grid-cols-2 xl:grid-cols-4 xl:px-0">
+                <div class="p-4 space-y-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                    <div class="px-4 py-2 ">
+                        <h3>{{offer.title}}</h3>
+                    </div>
+                    <div class="h-32 px-4 py-2 ">
+                        <h3>{{offer.description}}</h3>
+                    </div>
+                    <div class="px-4 py-2 ">
+                        <h3>Card footer</h3>
+                    </div>
+                </div>
+            </div> -->
+          </main>
         </div>
-        <div class="col-span-2">
-            <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-                <!-- <h3 class="mb-4 text-xl font-semibold dark:text-white">{{user.title}}</h3> -->
-                <form action="#">
-                    <!-- {{user.description}} -->
-                </form>
-            </div>
-        </div>
-</div>
+      </div> 
+  </div>
 </template>
 <script>
-import Navbar from '../../components/General/Navbar.vue';
+import Navbar from "../../components/General/Navbar.vue";
+import Footer from "../../components/General/Footer.vue";
+import { getOffer } from "../../stores/offers";
+import moment from "moment";
+moment.locale("fr");
+
 export default {
-    data() {
-        return {
-            offer: [],
-        };
+  data() {
+    return {
+      offer: "",
+    };
+  },
+  mounted() {
+    this.getOfferRequest();
+  },
+  methods: {
+    getOfferRequest: async function () {
+      await getOffer(this.$route.params.id).then((offer) => {
+        this.offer = offer;
+      });
     },
-    mounted(){
-        console.log(this.$route.params)
-    },
-    components: {Navbar}
-}
+  },
+  components: { Navbar , Footer },
+};
 </script>

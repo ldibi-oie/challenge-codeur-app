@@ -13,8 +13,11 @@ use App\Entity\MediaObject;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ORM\Table(name: '`freelance`')]
 #[ORM\Entity(repositoryClass: FreelanceRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['user' ,'freelance']]
+)]
 class Freelance
 {
 
@@ -25,23 +28,23 @@ class Freelance
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups('user')]
+    #[Groups('user' , 'freelance')]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[Groups('user')]
+    #[Groups('user' , 'freelance')]
     #[ORM\Column(length: 50)]
     private ?string $surname = null;
 
-    #[Groups('user')]
+    #[Groups('user' , 'freelance')]
     #[ORM\Column(nullable: true)]
     private ?int $siretnumber = null;
 
-    #[Groups('user')]
+    #[Groups('user' , 'freelance')]
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $birthday = null;
 
-    #[Groups('user')]
+    #[Groups('user' , 'freelance')]
     #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
@@ -52,7 +55,7 @@ class Freelance
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $profile = null;
 
-    #[Groups('user')]
+    #[Groups('user' , 'freelance')]
     #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'candidates')]
     private Collection $offers;
 
@@ -61,9 +64,11 @@ class Freelance
     #[ORM\OneToOne(inversedBy: 'freelance', cascade: ['persist', 'remove'])]
     private ?User $userId = null;
 
+    #[Groups('user' , 'freelance')]
     #[ORM\OneToMany(mappedBy: 'selectedCandidate', targetEntity: Offer::class)]
     private Collection $isSelectedCandidateList;
 
+    #[Groups('user' , 'freelance')]
     #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'freelances', cascade: ['persist'])]
     private Collection $keywords;
 

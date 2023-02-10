@@ -65,7 +65,7 @@ export const getUser = async () => {
 
     var id = JSON.parse(localStorage.getItem("user")).id
     var token = localStorage.getItem("token")
-    console.log(id , token)
+    // console.log(id , token)
     var r = [];
 
     await requestApi.get("/api/users/" + id , {
@@ -88,20 +88,14 @@ export const getCategories = async () => {
     return r;
 }
 
-export const getOffers = async () => {
-    console.log("cherche offes en cours -------------")
-    var r = [];
-    await requestApi.get("/api/offers").then((categories) => {
-        const response = categories.data["hydra:member"]
-        console.log(response)
-        r.push(...response)   
-    })
-    return r;
-}
+
 
 export const logout = async () => {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     localStorage.clear()
+    var currentUrl = window.location.href;
+    var newUrl = currentUrl.replace(/\/[^\/]+$/ , '');
+    window.location.href = newUrl;
     return false;
 }
