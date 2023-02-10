@@ -29,7 +29,7 @@
 <script>
 import CompayVertBar from './company/CompayVertBar.vue';
 import { getCompanyById, getCompanies } from '../stores/company';
-
+import { getUser } from '../stores/usersFunction';
 export default {
   name: 'CompanyView',
   components: {
@@ -42,27 +42,26 @@ export default {
         siretnumber: '',
         address: '',
       },
-      results: [],
+      user: "",
     };
   },
   methods: {
     async getCompany() {
-      await getCompanies().then((data) => {
-        this.results = data;
-        //console.log("getCompany data results ", this.results)
-      });
-
-      await getCompanyById(1).then((response) => {
+      if (this.user !== '') return;
+      await getUser().then((r) => 
+      {
+          this.user = r[0]
+          console.log("getUserRequest user", this.user.id);
+      })
+      console.log("getCompany", this.user.id)
+      await getCompanyById(this.user.id).then((response) => {
         this.company = response;
-        //console.log("getCompanyById data results", this.company)
+        console.log("getCompanyById data results", this.company)
       });
     },
   },
-  created() {
+  mounted() {
     this.getCompany();
-  },
-  mounted(){
-    console.log(this.company.name)
   }
 };
 

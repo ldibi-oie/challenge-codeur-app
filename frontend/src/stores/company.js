@@ -65,7 +65,7 @@ export const getCompanyById = async (id) => {
     await requestApi.get(url+"/api/companies/" + id)
     .then((res) => {
       r = res.data;
-      //console.log("stores.company ", r)
+      console.log("stores.company ", r)
     })
     .catch(err => {
         console.log(err)
@@ -75,23 +75,29 @@ export const getCompanyById = async (id) => {
 
 
 // add offre by compagny
-export const addOffre = async (data, id) => {
+export const addOffre = async (data) => {
     var r;
     const v = {
         "title": data.title,
-        "description": data.description
-    }
+        "description": data.description,
+        "company": data.company_id,
+        "candidates": [],
+        "category": data.category_id,
+        "salary": data.salary,
+        "selectedCandidate": "",
+        "comments": [],
+        "keywords": [],
+        "status": data.status,
+      }
 
-    console.log("CREATION D'UNE OFFRE EN COURS ....")
-
-    await requestApi.post(url+"/api/companies/"+id+"/offres" , v)
+    console.log("CREATION D'UNE OFFRE EN COURS ....", v)
+    await requestApi.post(url+"/api/offers" , v)
     .then((res) => {
-      console.log(res)
       console.log(res.data)
-      r = true
+      r = res
     })
     .catch(err => {
-        console.log(err)
+        console.log("the error", err)
     })
     return r;
 }
@@ -101,10 +107,10 @@ export const addOffre = async (data, id) => {
 // get offers by company
 export const getOffersByCompany = async (id) => {
     var r;
-    await requestApi.get(url+"/api/offers?company.id=" + id)
+    await requestApi.get(url+"/api/companies/" + id)
     .then((res) => {
-      console.log(res.data)
-      r = res.data
+        console.log("",res.data)
+        r = res.data
     })
     .catch(err => {
         console.log(err)
@@ -112,10 +118,11 @@ export const getOffersByCompany = async (id) => {
     return r;
 }
 
+
 // get offers 
-export const getOffers = async () => {
+export const getOffers = async (id) => {
     var r;
-    await requestApi.get(url+"/api/offers")
+    await requestApi.get(url+"/api/offers/"+ id)
     .then((res) => {
       console.log(res.data)
       r = res.data
