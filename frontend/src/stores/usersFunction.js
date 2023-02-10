@@ -1,30 +1,32 @@
 /* eslint-disable no-prototype-builtins */
 import requestApi from "../axios";
+import storage from "./storage";
 
-export const getLoggedUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+export const getLoggedUser = async () => {
+  return await storage.getItem("user");
 };
 
-export const getToken = () => {
-  return JSON.parse(localStorage.getItem("token"));
+export const getToken = async () => {
+  return await storage.getItem("token");
 };
 
-export const getUser = async () => {
+export const getUser = async (useId) => {
   console.log("chercher user en cours ...");
 
-  var id = JSON.parse(localStorage.getItem("user"))?.id;
-  var token = localStorage.getItem("token");
-  console.log(id, token);
+  var token = await getToken();
+  const id = useId || (await getLoggedUser())?.id;
+  console.log("logged", id, token);
 
   const r = [];
-  await requestApi
-    .get("/api/users/" + id, {
-      headers: "Bearer " + token,
-    })
-    .then((res) => {
-      localStorage.setItem("user", JSON.stringify(res.data));
-      r.push(res.data);
-    });
+  id &&
+    (await requestApi
+      .get("/api/users/" + id, {
+        headers: "Bearer " + token,
+      })
+      .then((res) => {
+        storage.setItem("user", res.data);
+        r.push(res.data);
+      }));
 
   return r;
 };
@@ -36,13 +38,11 @@ export const login = (state) => {
       username: state.username,
       password: state.password,
     })
-    .then((res) => {
-      console.log(res.data);
+    .then(async (res) => {
       state.token = res.data.token;
       // get user full object
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      getUser(res.data.user?.id);
+      await storage.setItem("token", res.data.token);
+      await getUser(res.data.user?.id);
 
       if (res.data.user?.isVerified === false) {
         state.$router.push({ name: "waiting" });
@@ -60,10 +60,10 @@ export const register = (state) => {
   state.isLoading = true;
   requestApi
     .post("/api/users", data)
-    .then((res) => {
+    .then(async (res) => {
       sendVerificationEmail(res.data);
       // get user full object
-      localStorage.setItem("user", JSON.stringify(res.data));
+      await storage.setItem("user", res.data);
     })
     .catch((err) => {
       state.error = err;
@@ -125,31 +125,31 @@ export const logout = async () => {
 };
 
 export const isFreelance = (data) => {
-  let user = data || JSON.parse(localStorage.getItem("user"));
+  let user = data || getLoggedUser();
   return user && user.roles?.includes("ROLE_FREELANCER");
 };
 
 export const isCompany = (data) => {
-  let user = data || JSON.parse(localStorage.getItem("user"));
+  let user = data || getLoggedUser();
   return user && user.roles?.includes("ROLE_COMPANY");
 };
 
 export const isRegisteredUser = (data) => {
-  let user = data || JSON.parse(localStorage.getItem("user"));
+  let user = data || getLoggedUser();
   return (
     (user && user.roles?.includes("ROLE_FREELANCER")) ||
     (user && user.roles?.includes("ROLE_COMPANY"))
   );
 };
 
-export const getActiveSubscription = (user) => {
-  for (const subscription of user.subscriptions || []) {
+export const getActiveSubscription = async (user) => {
+  for (const subscription of user?.subscriptions || []) {
     if (subscription.isActive === true) {
-      localStorage.setItem("active_sub", subscription);
+      await storage.setItem("active_sub", subscription);
       return subscription;
     }
   }
-  localStorage.setItem("active_sub", null);
+  await storage.setItem("active_sub", null);
   return null;
 };
 
