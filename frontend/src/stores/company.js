@@ -65,7 +65,7 @@ export const getCompanyById = async (id) => {
     await requestApi.get(url+"/api/companies/" + id)
     .then((res) => {
       r = res.data;
-      console.log("stores.company ", r)
+      //console.log("stores.company ", r)
     })
     .catch(err => {
         console.log(err)
@@ -81,18 +81,16 @@ export const addOffre = async (data) => {
         "title": data.title,
         "description": data.description,
         "company": data.company_id,
-        "candidates": [],
         "category": data.category_id,
         "salary": data.salary,
-        "selectedCandidate": "",
-        "comments": [],
-        "keywords": [],
         "status": data.status,
-      }
+    }
 
-    console.log("CREATION D'UNE OFFRE EN COURS ....", v)
+    console.log("CREATION D'UNE OFFRE EN COURS ....")
+
     await requestApi.post(url+"/api/offers" , v)
     .then((res) => {
+      console.log(res)
       console.log(res.data)
       r = res
     })
@@ -119,10 +117,11 @@ export const getOffersByCompany = async (id) => {
 }
 
 
+
 // get offers 
-export const getOffers = async (id) => {
+export const getOffers = async () => {
     var r;
-    await requestApi.get(url+"/api/offers/"+ id)
+    await requestApi.get(url+"/api/offers")
     .then((res) => {
       console.log(res.data)
       r = res.data

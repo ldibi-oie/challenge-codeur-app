@@ -19,10 +19,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Post(),
+        new Get(),
+        new Put(),
+        new Patch(),
+        new Delete(),
+    ],
+    normalizationContext: ['groups' => ['user']],
+    denormalizationContext: ['groups' => ['user']]
+)]
 class Offer
 {
     use TimestampableEntity;
+
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

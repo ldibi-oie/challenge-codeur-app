@@ -25,17 +25,14 @@ use ApiPlatform\Metadata\Put;
     
     operations: [
         new GetCollection(),
-        new Post(
-            normalizationContext: ['groups' => ['user']],
-        ),
-        new Get(
-            normalizationContext: ['groups' => ['user']],
-        ),
+        new Post(),
+        new Get(),
         new Put(),
         new Patch(),
         new Delete(),
     ],
     normalizationContext: ['groups' => ['user']],
+    denormalizationContext: ['groups' => ['user']],
    
 )]
 class Company
