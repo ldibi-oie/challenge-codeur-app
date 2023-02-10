@@ -51,10 +51,11 @@ export default {
       await getUser().then((r) => 
       {
           this.user = r[0]
-          console.log("getUserRequest user", this.user.id);
+          console.log("getUserRequest company id", this.user);
       })
-      console.log("getCompany", this.user.id)
-      await getCompanyById(this.user.id).then((response) => {
+      console.log("user id", this.user.id)
+      console.log("company", this.user.company.id)
+      await getCompanyById(this.user.company.id).then((response) => {
         this.company = response;
         console.log("getCompanyById data results", this.company)
       });

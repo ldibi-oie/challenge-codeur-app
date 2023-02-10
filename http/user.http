@@ -3,7 +3,10 @@
 GET http://localhost:8741/api/
 
 ### Response get all compagnies
-GET http://localhost:8741/api/companies/14
+GET http://localhost:8741/api/companies
+
+### Response get all compagnies
+GET http://localhost:8741/api/users
 
 ### création d'offres
-GET http://localhost:8741/api/offers
+GET http://localhost:8741/api/offers/28

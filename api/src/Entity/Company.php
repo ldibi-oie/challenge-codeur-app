@@ -25,8 +25,12 @@ use ApiPlatform\Metadata\Put;
     
     operations: [
         new GetCollection(),
-        new Post(),
-        new Get(),
+        new Post(
+            normalizationContext: ['groups' => ['user']],
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['user']],
+        ),
         new Put(),
         new Patch(),
         new Delete(),
@@ -37,6 +41,7 @@ use ApiPlatform\Metadata\Put;
 class Company
 {
     use TimestampableEntity;
+
 
     #[Groups('user')]
     #[ORM\Id]

@@ -24,7 +24,6 @@ class Offer
 {
     use TimestampableEntity;
 
-    #[Groups('user')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -44,6 +43,7 @@ class Offer
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
+    #[Groups('user')]
     #[ORM\ManyToMany(targetEntity: Freelance::class, inversedBy: 'offers')]
     private Collection $candidates;
 
