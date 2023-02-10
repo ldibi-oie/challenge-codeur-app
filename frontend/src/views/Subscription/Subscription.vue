@@ -14,7 +14,8 @@
         développement, c'est pourquoi nous vous donnons la possibilité de
         décider de la quantité dont vous avez besoin.
       </p>
-      <PricingCard :is_company="is_company" />
+      <PricingCard :is_company="is_company" :user="user"/>
+      
       <!-- Comparison Table -->
       <section class="flex flex-col pt-10 md:pt-20">
         <div class="overflow-x-auto rounded-lg">
@@ -448,7 +449,6 @@
 import Navbar from "../../components/General/Navbar.vue";
 
 import {
-  hasActiveSubscription,
   getLoggedUser,
   isCompany,
   getUser,
@@ -459,7 +459,6 @@ export default {
   data() {
     return {
       user: "",
-      has_active_sub: false,
       is_registered_user: false,
       is_company: false,
     };
@@ -468,7 +467,6 @@ export default {
     getUser();
     this.user = getLoggedUser();
     this.is_company = isCompany(this.user);
-    hasActiveSubscription(this.user);
   },
   methods: {},
   components: { Navbar, PricingCard },

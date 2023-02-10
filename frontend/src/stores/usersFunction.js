@@ -126,33 +126,42 @@ export const logout = async () => {
 
 export const isFreelance = (data) => {
   let user = data || JSON.parse(localStorage.getItem("user"));
-  return user && user.roles.includes("ROLE_FREELANCER");
+  return user && user.roles?.includes("ROLE_FREELANCER");
 };
 
 export const isCompany = (data) => {
   let user = data || JSON.parse(localStorage.getItem("user"));
-  return user && user.roles.includes("ROLE_COMPANY");
+  return user && user.roles?.includes("ROLE_COMPANY");
 };
 
 export const isRegisteredUser = (data) => {
   let user = data || JSON.parse(localStorage.getItem("user"));
   return (
-    (user && user.roles.includes("ROLE_FREELANCER")) ||
-    user.roles.includes("ROLE_COMPANY")
+    (user && user.roles?.includes("ROLE_FREELANCER")) ||
+    (user && user.roles?.includes("ROLE_COMPANY"))
   );
 };
 
 export const getActiveSubscription = (user) => {
-  let active_sub = null;
-  user?.subscriptions.forEach((subscription) => {
-    if (subscription.isActive) {
-      active_sub = subscription;
-      localStorage.setItem("active_sub", active_sub);
+  for (const subscription of user.subscriptions || []) {
+    if (subscription.isActive === true) {
+      localStorage.setItem("active_sub", subscription);
+      return subscription;
     }
-  });
-  return active_sub;
+  }
+  localStorage.setItem("active_sub", null);
+  return null;
 };
 
-export const hasActiveSubscription = (user) => {
-  return getActiveSubscription(user);
+export const getSubscriptionPlanText = (user, planId) => {
+  const active_sub = getActiveSubscription(user);
+  console.log("active_sub", active_sub);
+  let text = "Get Started";
+  if (active_sub) {
+    text = "Change Plan";
+    if (planId === active_sub.plan.stripeId) {
+      text = "Current Plan";
+    }
+  }
+  return text;
 };
