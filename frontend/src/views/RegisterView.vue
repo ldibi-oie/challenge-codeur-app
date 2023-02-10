@@ -50,31 +50,29 @@
       </div>
   </div>
 </template>
-  
-<script>
-import requestApi from "../axios" 
-import {register} from '../stores/usersFunction';
 
-  export default {
-    data() {
-      return {
-        isLoading: false,
-        email: "",
-        password: "",
-        confirmPassword: "",
-        token: "",
-        error: ""
-      };
-    },
-    methods: {
-      submitForm: async function () {
-        if(this.confirmPassword != this.password) {
-          this.error = "Les mots de passes ne sont pas identiques" 
-        } else {
-          this.isLoading = true
-          await register(this.email , this.password)
-        }
+<script>
+import { register } from "../stores/usersFunction";
+
+export default {
+  data() {
+    return {
+      isLoading: false,
+      email: "",
+      password: "",
+      confirmPassword: "",
+      token: "",
+      error: "",
+    };
+  },
+  methods: {
+    submitForm: async function () {
+      if (this.confirmPassword != this.password) {
+        this.error = "Les mots de passes ne sont pas identiques";
+      } else {
+        await register(this);
       }
     },
-  };
+  },
+};
 </script>

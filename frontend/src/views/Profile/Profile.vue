@@ -18,17 +18,24 @@
               {{ user }}
             </div>
             <!-- Right Content -->
-            <SubscriptionSection 
-              v-if="user.hasOwnProperty('freelance') === true  || user.hasOwnProperty('company') === true" 
+            <SubscriptionSection
+              v-if="
+                user.hasOwnProperty('freelance') === true ||
+                user.hasOwnProperty('company') === true
+              "
               :user="user"
             />
-            <InfosProfile 
-              :type="user.hasOwnProperty('freelance') === true ? 1 :
-               user.hasOwnProperty('company') === true ? 2 : null"
+            <InfosProfile
+              :type="
+                user.hasOwnProperty('freelance') === true
+                  ? 1
+                  : user.hasOwnProperty('company') === true
+                  ? 2
+                  : null
+              "
             />
 
             <MyOffers />
-
           </div>
         </main>
       </div>
@@ -54,12 +61,12 @@ export default {
     };
   },
   mounted() {
-    this.getUserRequest()
+    this.getUserRequest();
   },
   methods: {
     getUserRequest: async function () {
       await getUser().then((r) => {
-        console.log(r)
+        console.log(r);
         this.user = r[0];
       });
     },
@@ -71,7 +78,7 @@ export default {
     InfosProfile,
     Comments,
     SubscriptionSection,
-    MyOffers
+    MyOffers,
   },
 };
 </script>

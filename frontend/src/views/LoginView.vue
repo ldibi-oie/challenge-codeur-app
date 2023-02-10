@@ -47,59 +47,24 @@
       </div>
   </div>
 </template>
-  
+
 <script>
-import requestApi from "../axios" 
-  export default {
-    data() {
-      return {
-        username: "",
-        password: "",
-        token: "",
-        error: "",
-        user: "",
-        isLoading: false
-      };
+import { login } from "../stores/usersFunction";
+export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+      token: "",
+      error: "",
+      user: "",
+      isLoading: false,
+    };
+  },
+  methods: {
+    submitForm: async function () {
+      await login(this);
     },
-    methods: {
-      submitForm: function () {
-        this.isLoading = true
-        requestApi.post("/api/login_check" , {
-            username: this.username,
-            password: this.password
-        })
-        .then((res) => {
-          console.log(res.data)
-          this.token = res.data.token
-          localStorage.setItem("token" , res.data.token)
-          localStorage.setItem("user" , JSON.stringify(res.data.user))
-
-          if(res.data.user.isVerified === false){
-            this.$router.push({name: 'waiting'});
-          } else {
-            if(res.data.user.roles[0] === "ROLE_ADMIN"){
-              console.log(res.data.user.roles[0])
-              this.$router.push({name: 'admin'});
-            } else if(res.data.user.roles[0] === "ROLE_FREELANCER"){
-              console.log(res.data.user.roles[0])
-              this.$router.push({name: 'profile'});
-            } else if(res.data.user.roles[0] === "ROLE_COMPANY"){
-              this.$router.push({name: 'profile'});
-            }
-          }
-        })
-        .catch(err => {
-            this.error = err
-        })
-        .finally(() => {
-          this.isLoading = false
-          
-          setTimeout(() => {
-            this.error = null
-          }, 10000);
-        })
-
-      }
-    },
-  };
+  },
+};
 </script>

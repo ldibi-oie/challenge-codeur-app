@@ -4,11 +4,9 @@ module.exports = {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx,vue}",
   ],
-  darkMode: false,
+  darkMode: true,
   theme: {
     extend: {},
   },
-  plugins: [
-    require('@tailwindcss/forms')
-  ],
-}
+  plugins: [require("@tailwindcss/forms")],
+};
