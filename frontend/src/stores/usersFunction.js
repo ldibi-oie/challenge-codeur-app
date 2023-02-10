@@ -1,107 +1,157 @@
+/* eslint-disable no-prototype-builtins */
+import requestApi from "../axios";
 
-import requestApi from '../axios';
+export const getLoggedUser = () => {
+  return JSON.parse(localStorage.getItem("user"));
+};
 
-export const login = (data) => {
-    requestApi.post("/api/login_check" , {
-        username: data.username,
-        password: data.password
-    })
-    .then((res) => {
-      console.log(res.data)
-      // this.$router.push('/profile');
-      localStorage.setItem("token" , res.data.token)
-      localStorage.setItem("user" , JSON.stringify(res.data.user))
-
-    //   if(res.data.user.isVerified === false){
-    //     this.$router.push('/verify/waiting/');
-    //   } else {
-    //     this.$router.push('/profile');
-    //   }
-
-    })
-    .catch(err => {
-        console.log(err)
-    })
-}
-
-export const register = (email , password) => {
-    var data = {email , password}
-    requestApi.post("/api/users" , data)
-      .then((res) => {
-          // this.token = res.data.token
-          sendVerificationEmail(res.data)
-          localStorage.setItem("user" , JSON.stringify(res.data))
-      })
-      .catch(err => {
-          this.error = err
-      })
-}
-
-export const sendVerificationEmail = (data) => {
-    requestApi.post("/register" , data)
-      .then((res) => {
-          // this.token = res.data.token
-          console.log(res)
-          if(res){
-            var currentUrl = window.location.href;
-            var newUrl = currentUrl.replace(/\/[^\/]+$/, '/verify/waiting');
-            window.location.href = newUrl;
-          }
-      })
-      .catch(err => {
-          this.error = err
-      })
-}
-
-export const ResendVerificationEmail = async (data) => {
-    var r = ''
-    await requestApi.post("/register" , data)
-
-    return r;
-}
+export const getToken = () => {
+  return JSON.parse(localStorage.getItem("token"));
+};
 
 export const getUser = async () => {
-    console.log("chercher user en cours ...")
+  console.log("chercher user en cours ...");
 
-    var id = JSON.parse(localStorage.getItem("user")).id
-    var token = localStorage.getItem("token")
-    console.log(id , token)
-    var r = [];
+  var id = JSON.parse(localStorage.getItem("user"))?.id;
+  var token = localStorage.getItem("token");
+  console.log(id, token);
 
-    await requestApi.get("/api/users/" + id , {
-        headers: "Bearer " + token
-    }).then((res) => {
-        r.push(res.data)
+  const r = [];
+  await requestApi
+    .get("/api/users/" + id, {
+      headers: "Bearer " + token,
     })
-    
-    return r;
-}
+    .then((res) => {
+      localStorage.setItem("user", JSON.stringify(res.data));
+      r.push(res.data);
+    });
+
+  return r;
+};
+
+export const login = (state) => {
+  state.isLoading = true;
+  requestApi
+    .post("/api/login_check", {
+      username: state.username,
+      password: state.password,
+    })
+    .then((res) => {
+      console.log(res.data);
+      state.token = res.data.token;
+      // get user full object
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      getUser(res.data.user?.id);
+
+      if (res.data.user?.isVerified === false) {
+        state.$router.push({ name: "waiting" });
+      } else {
+        state.$router.push({ name: "profile" });
+      }
+    })
+    .catch((err) => {
+      state.error = err;
+    });
+};
+
+export const register = (state) => {
+  var data = { email: state.email, password: state.password };
+  state.isLoading = true;
+  requestApi
+    .post("/api/users", data)
+    .then((res) => {
+      sendVerificationEmail(res.data);
+      // get user full object
+      localStorage.setItem("user", JSON.stringify(res.data));
+    })
+    .catch((err) => {
+      state.error = err;
+    });
+};
+
+export const sendVerificationEmail = (data) => {
+  requestApi
+    .post("/register", data)
+    .then((res) => {
+      // this.token = res.data.token
+      console.log(res);
+      if (res) {
+        var currentUrl = window.location.href;
+        var newUrl = currentUrl.replace(/\/[^/]+$/, "/verify/waiting");
+        window.location.href = newUrl;
+      }
+    })
+    .catch((err) => {
+      this.error = err;
+    });
+};
+
+export const ResendVerificationEmail = async (data) => {
+  var r = "";
+  await requestApi.post("/register", data);
+
+  return r;
+};
 
 export const getCategories = async () => {
-    console.log("dzfeeefefefefef")
-    var r = [];
-    await requestApi.get("/api/categories").then((categories) => {
-        const response = categories.data["hydra:member"]
-        console.log(response)
-        r.push(...response)   
-    })
-    return r;
-}
+  console.log("dzfeeefefefefef");
+  var r = [];
+  await requestApi.get("/api/categories").then((categories) => {
+    const response = categories.data["hydra:member"];
+    console.log(response);
+    r.push(...response);
+  });
+  return r;
+};
 
 export const getOffers = async () => {
-    console.log("cherche offes en cours -------------")
-    var r = [];
-    await requestApi.get("/api/offers").then((categories) => {
-        const response = categories.data["hydra:member"]
-        console.log(response)
-        r.push(...response)   
-    })
-    return r;
-}
+  console.log("cherche offes en cours -------------");
+  var r = [];
+  await requestApi.get("/api/offers").then((categories) => {
+    const response = categories.data["hydra:member"];
+    console.log(response);
+    r.push(...response);
+  });
+  return r;
+};
 
 export const logout = async () => {
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    localStorage.clear()
-    return false;
-}
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  localStorage.clear();
+  window.location.href = "/";
+  return false;
+};
+
+export const isFreelance = (data) => {
+  let user = data || JSON.parse(localStorage.getItem("user"));
+  return user && user.hasOwnProperty("freelance");
+};
+
+export const isCompany = (data) => {
+  let user = data || JSON.parse(localStorage.getItem("user"));
+  return user && user.hasOwnProperty("company");
+};
+
+export const isRegisteredUser = (data) => {
+  let user = data || JSON.parse(localStorage.getItem("user"));
+  return (
+    user && (user.hasOwnProperty("freelance") || user.hasOwnProperty("company"))
+  );
+};
+
+export const getActiveSubscription = (user) => {
+  let active_sub = null;
+  user?.subscriptions.forEach((subscription) => {
+    if (subscription.isActive) {
+      active_sub = subscription;
+      localStorage.setItem("active_sub", active_sub);
+    }
+  });
+  return active_sub;
+};
+
+export const hasActiveSubscription = (user) => {
+  return getActiveSubscription(user);
+};

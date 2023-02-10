@@ -74,6 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class)]
     private Collection $subscriptions;
 
+    #[Groups('user')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stripeId = null;
 
