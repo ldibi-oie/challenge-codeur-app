@@ -126,18 +126,19 @@ export const logout = async () => {
 
 export const isFreelance = (data) => {
   let user = data || JSON.parse(localStorage.getItem("user"));
-  return user && user.hasOwnProperty("freelance");
+  return user && user.roles.includes("ROLE_FREELANCER");
 };
 
 export const isCompany = (data) => {
   let user = data || JSON.parse(localStorage.getItem("user"));
-  return user && user.hasOwnProperty("company");
+  return user && user.roles.includes("ROLE_COMPANY");
 };
 
 export const isRegisteredUser = (data) => {
   let user = data || JSON.parse(localStorage.getItem("user"));
   return (
-    user && (user.hasOwnProperty("freelance") || user.hasOwnProperty("company"))
+    (user && user.roles.includes("ROLE_FREELANCER")) ||
+    user.roles.includes("ROLE_COMPANY")
   );
 };
 

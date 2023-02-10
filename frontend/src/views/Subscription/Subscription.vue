@@ -445,9 +445,8 @@
 </template>
 
 <script>
-import Sidebar from "../../components/General/Sidebar.vue";
 import Navbar from "../../components/General/Navbar.vue";
-import VerticalBar from "../Navbar/VerticalBar.vue";
+
 import {
   hasActiveSubscription,
   getLoggedUser,

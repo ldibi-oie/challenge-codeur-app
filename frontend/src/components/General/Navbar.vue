@@ -65,7 +65,7 @@
                                 <li>
                                     <router-link to="/" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">Marketplace</router-link>
                                 </li> -->
-                    <li >
+                    <li>
                       <router-link
                         to="subscription"
                         class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700"
@@ -99,14 +99,18 @@
 </template>
 
 <script>
-import { logout, isRegisteredUser, getLoggedUser } from "../../stores/usersFunction";
+import {
+  logout,
+  isRegisteredUser,
+  getLoggedUser,
+} from "../../stores/usersFunction";
 export default {
   data() {
     console.log("isLogged", localStorage.getItem("user"));
-    this.user = getLoggedUser()
+    this.user = getLoggedUser();
     return {
       isLogged: this.user != null ? true : false,
-      isRegisteredUser: isRegisteredUser(this.user)
+      isRegisteredUser: isRegisteredUser(this.user),
     };
   },
   methods: {
