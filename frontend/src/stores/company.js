@@ -75,12 +75,12 @@ export const getCompanyById = async (id) => {
 
 
 // add offre by compagny
-export const addOffre = async (data) => {
+export const addOffre = async (data, company_id) => {
     var r;
     const v = {
         "title": data.title,
         "description": data.description,
-        "company": data.company_id,
+        "company": company_id,
         "category": data.category_id,
         "salary": data.salary,
         "status": data.status,
