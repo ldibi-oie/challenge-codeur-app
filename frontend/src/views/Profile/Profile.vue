@@ -8,9 +8,7 @@
         class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900"
       >
         <main>
-          <div
-            class="px-4 pt-6 xl:gap-4 dark:bg-gray-900"
-          >
+          <div class="px-4 pt-6 xl:gap-4 dark:bg-gray-900 min-h-screen">
             <div class="mb-4 col-span-full xl:mb-2">
               <h1
                 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
