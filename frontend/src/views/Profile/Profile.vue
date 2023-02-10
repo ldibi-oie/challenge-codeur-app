@@ -8,9 +8,7 @@
         class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900"
       >
         <main>
-          <div
-            class="px-4 pt-6 xl:gap-4 dark:bg-gray-900"
-          >
+          <div class="px-4 pt-6 xl:gap-4 dark:bg-gray-900">
             <div class="mb-4 col-span-full xl:mb-2">
               <h1
                 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
@@ -20,17 +18,24 @@
               {{ user }}
             </div>
             <!-- Right Content -->
-            <SubscriptionSection 
-              v-if="user.hasOwnProperty('freelance') === true  || user.hasOwnProperty('company') === true" 
+            <SubscriptionSection
+              v-if="
+                user.hasOwnProperty('freelance') === true ||
+                user.hasOwnProperty('company') === true
+              "
               :user="user"
             />
-            <InfosProfile 
-              :type="user.hasOwnProperty('freelance') === true ? 1 :
-               user.hasOwnProperty('company') === true ? 2 : null"
+            <InfosProfile
+              :type="
+                user.hasOwnProperty('freelance') === true
+                  ? 1
+                  : user.hasOwnProperty('company') === true
+                  ? 2
+                  : null
+              "
             />
 
             <MyOffers />
-
           </div>
         </main>
       </div>
@@ -56,12 +61,12 @@ export default {
     };
   },
   mounted() {
-    this.getUserRequest()
+    this.getUserRequest();
   },
   methods: {
     getUserRequest: async function () {
       await getUser().then((r) => {
-        console.log(r)
+        console.log(r);
         this.user = r[0];
       });
     },
@@ -73,7 +78,7 @@ export default {
     InfosProfile,
     Comments,
     SubscriptionSection,
-    MyOffers
+    MyOffers,
   },
 };
 </script>

@@ -21,6 +21,7 @@ class Offer
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: 'text')]
     private $title = null;
 
