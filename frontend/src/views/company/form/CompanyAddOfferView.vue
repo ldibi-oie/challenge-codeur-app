@@ -52,7 +52,8 @@ export default {
         createOffer: async function(userForm) {
             console.log("creating", userForm);
             this.infos.company_id = "/api/companies/"+this.user.company.id
-            await addOffre(userForm, this.infos.company_id) 
+            await addOffre(userForm, this.infos.company_id)
+            window.location.reload(); 
         },
         getUserRequest: async function () {
             if (this.user !== '') return;
