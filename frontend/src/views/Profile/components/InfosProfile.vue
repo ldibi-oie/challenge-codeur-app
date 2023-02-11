@@ -74,12 +74,12 @@ export default {
             infos: {
                 id: this.user ? this.user.id : localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : "",
                 userId: this.user ? this.user["@id"] : localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))["@id"] : "",
-                name: this.user.freelance ? this.user.freelance?.name :
-                    this.user.company ? this.user.company?.name : '',
-                surname: this.user.freelance ? this.user.freelance?.surname :
-                    this.user.company ? this.user.company?.surname : '',
-                birthday: this.user.freelance ? this.user.freelance?.birthday :
-                    this.user.company ? this.user.company?.birthday : '',
+                name: this.user?.freelance ? this.user.freelance?.name :
+                    this.user?.company ? this.user.company?.name : '',
+                surname: this.user?.freelance ? this.user?.freelance?.surname :
+                    this.user?.company ? this.user?.company?.surname : '',
+                birthday: this.user?.freelance ? this.user?.freelance?.birthday :
+                    this.user?.company ? this.user?.company?.birthday : '',
                 organization: '',
             }
         };

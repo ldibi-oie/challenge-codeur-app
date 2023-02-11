@@ -60,10 +60,10 @@ export default {
   data(){
     return {
       isLoading: this.role ? true : false,
-      // settings: this.role?.includes(ROLE_COMPANY) ? freelanceParams : 
-      //   this.role?.includes(ROLE_FREELANCER) ? freelanceParams :
-      //   userNormalParams
-      settings: freelanceParams
+      settings: this.role && this.role?.includes(ROLE_COMPANY) ? freelanceParams : 
+        this.role && this.role?.includes(ROLE_FREELANCER) ? freelanceParams :
+        userNormalParams
+      // settings: freelanceParams
     }
   }
   ,
