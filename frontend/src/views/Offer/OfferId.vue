@@ -60,10 +60,6 @@
             </div>
           </div>
         </div>
-        <div v-if="offer.selectedCandidate.length != 0" class="p-6 min-h-fit mb-4 rounded bg-green-100 dark:bg-gray-800" >
-          <h3 class="text-base font-semibold text-gray-900 dark:text-white">Candidat sélectionné</h3>
-          <div class="text-gray-600 capitalize">{{ offer.selectedCandidate.name }} {{ offer.selectedCandidate.surname }}</div>
-        </div>
         <div class="p-4 min-h-fit mb-4 rounded bg-gray-50 dark:bg-gray-800">
           <div>
             <div class="flex items-center space-x-2 text-base">
@@ -85,6 +81,13 @@
               {{ tag.name }}
             </div>
           </div>
+        </div>
+        <div v-if="offer.selectedCandidate.length != 0" class="p-6 min-h-fit mb-4 rounded bg-green-100 dark:bg-gray-800" >
+          <h3 class="text-base font-semibold text-gray-900 dark:text-white">Candidat sélectionné</h3>
+          <div class="text-gray-600 capitalize">{{ offer.selectedCandidate.name }} {{ offer.selectedCandidate.surname }}</div>
+        </div>
+        <div v-else class="p-6 min-h-fit mb-4 rounded bg-red-100 dark:bg-gray-800" >
+          <h3 class="text-base font-semibold text-gray-900 dark:text-white">Commentaire :</h3>
         </div>
       </div>
     </div>
