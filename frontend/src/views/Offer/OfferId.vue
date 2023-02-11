@@ -187,9 +187,9 @@
                 </div>
             </div>
         </div>
-        <div class="rounded-full bg-red-800 text-white p-6 first-letter:hidden w-12 h-12 flex items-center justify-center">
+        <!-- <div class="rounded-full bg-red-800 text-white p-6 first-letter:hidden w-12 h-12 flex items-center justify-center">
             <span class="text-2xl font-bold">{{ firstLetter('offer.title') }}</span>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -215,10 +215,10 @@
                 await fetchOffer(this.$route.params.id, this);
             }
         },
-        computed: {
-            firstLetter(word) {
-                return word.toString().charAt(0).toUpperCase();
-            }
-        }
+        // computed: {
+        //     firstLetter(word) {
+        //         return word.toString().charAt(0).toUpperCase();
+        //     }
+        // }
     };
 </script>
