@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\File\File;
 class AppFixtures extends Fixture
 {
     private $userPasswordHasher;
+    private $faker;
 
     public function __construct(UserPasswordHasherInterface $userPasswordHasher)
     {
@@ -128,7 +129,7 @@ class AppFixtures extends Fixture
         }
 
         // LES CATEGORIES
-        $categories = ['Développeur', 'Administrateur', 'Consultant', 'Chef de projet', 'Graphiste', 'Designer', 'Rédacteur', 'Correcteur'];
+        $categories = ['Tous' , 'Développeur', 'Administrateur', 'Consultant', 'Chef de projet', 'Graphiste', 'Designer', 'Rédacteur', 'Correcteur'];
 
         foreach ($categories as $category) {
             $cat = new Category();

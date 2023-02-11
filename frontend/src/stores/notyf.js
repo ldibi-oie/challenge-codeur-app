@@ -1,11 +1,19 @@
 import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css'; 
 
 const notification = new Notyf({
-    duration: 1000,
+    duration: 10000,
     position: {
       x: 'center',
       y: 'bottom',
-    }
+    },
+    types: [
+      {
+        type: 'info',
+        background: 'blue',
+        icon: false
+      }
+    ]
   });
 
 export const popUpSuccess = (message) => {
@@ -17,5 +25,8 @@ export const popUpError = (message) => {
 }
 
 export const popUpInfo = (message) => {
-    return notification.open(message)
+    return notification.open({
+      type: 'info',
+      message
+    });
 }

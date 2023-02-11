@@ -3,11 +3,11 @@ import requestApi from "../axios";
 import storage from "./storage";
 
 export const getLoggedUser = async () => {
-  return await storage.getItem("user");
+  return storage.getItem("user");
 };
 
 export const getToken = async () => {
-  return await storage.getItem("token");
+  return storage.getItem("token");
 };
 
 export const getUser = async (useId) => {
@@ -117,34 +117,34 @@ export const getOffers = async () => {
 };
 
 export const logout = async () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  localStorage.clear();
+  await storage.removeItem("token");
+  await storage.removeItem("user");
+  await storage.clear();
   window.location.href = "/";
   return false;
 };
 
 export const isFreelance = (data) => {
   let user = data || getLoggedUser();
-  return user && user.roles?.includes("ROLE_FREELANCER");
+  return user && user?.roles?.includes("ROLE_FREELANCER");
 };
 
 export const isCompany = (data) => {
   let user = data || getLoggedUser();
-  return user && user.roles?.includes("ROLE_COMPANY");
+  return user && user?.roles?.includes("ROLE_COMPANY");
 };
 
 export const isRegisteredUser = (data) => {
   let user = data || getLoggedUser();
   return (
-    (user && user.roles?.includes("ROLE_FREELANCER")) ||
-    (user && user.roles?.includes("ROLE_COMPANY"))
+    (user && user?.roles?.includes("ROLE_FREELANCER")) ||
+    (user && user?.roles?.includes("ROLE_COMPANY"))
   );
 };
 
 export const getActiveSubscription = async (user) => {
   for (const subscription of user?.subscriptions || []) {
-    if (subscription.isActive === true) {
+    if (subscription?.isActive === true) {
       await storage.setItem("active_sub", subscription);
       return subscription;
     }
@@ -153,13 +153,13 @@ export const getActiveSubscription = async (user) => {
   return null;
 };
 
-export const getSubscriptionPlanText = (user, planId) => {
-  const active_sub = getActiveSubscription(user);
+export const getSubscriptionPlanText = async (user, planId) => {
+  const active_sub = await getActiveSubscription(user);
   console.log("active_sub", active_sub);
   let text = "Get Started";
   if (active_sub) {
     text = "Change Plan";
-    if (planId === active_sub.plan.stripeId) {
+    if (planId === active_sub?.plan?.stripeId) {
       text = "Current Plan";
     }
   }
