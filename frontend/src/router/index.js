@@ -10,6 +10,8 @@ import ErrorPage from "../views/ErrorPage.vue";
 import OfferId from "../views/Offer/OfferId.vue";
 import AdminRoutes from "./admin.js";
 import OfferScrapperView from "../views/OfferScrapper/OfferScrapperView.vue";
+import CompanyAddOfferView from "../views/company/form/CompanyAddOfferView.vue";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +20,28 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+    },
+    //companies routes    
+    {
+      // path: '/company/:id',
+      path: '/company',
+      name: 'company_edit',
+      component: () => import('../views/CompanyView.vue')
+    },
+    {
+      path: '/company/addOffre',
+      name: 'company_addOffre',
+      component: CompanyAddOfferView
+    },
+    {
+      path: '/company/candidate',
+      name: 'company_candidate',
+      component: () => import('../views/company/CompanyOfferCandidateView.vue')
+    },
+    {
+      path: '/company/comments',
+      name: 'company_comments',
+      component: () => import('../views/company/CompanyCommentsView.vue')
     },
     {
       path: "/login",

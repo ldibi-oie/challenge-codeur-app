@@ -9,13 +9,32 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Post(),
+        new Get(),
+        new Put(),
+        new Patch(),
+        new Delete(),
+    ],
+    normalizationContext: ['groups' => ['user']],
+    denormalizationContext: ['groups' => ['user']]
+)]
 class Offer
 {
     use TimestampableEntity;
+
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,13 +49,17 @@ class Offer
     #[ORM\Column(type: 'text')]
     private $description = null;
 
+
+    #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
+    #[Groups('user')]
     #[ORM\ManyToMany(targetEntity: Freelance::class, inversedBy: 'offers')]
     private Collection $candidates;
 
+    #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
@@ -45,15 +68,19 @@ class Offer
     #[ORM\Column]
     private ?int $salary = null;
 
+    #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'isSelectedCandidateList')]
     private ?Freelance $selectedCandidate = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
+    #[Groups('user')]
+    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Comment::class)]
     private Collection $comments;
 
+    #[Groups('user')]
     #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'offers', cascade: ['persist'])]
     private Collection $keywords;
 
+    #[Groups('user')]
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
