@@ -8,14 +8,21 @@
         Notre plan de tarification simplifié
       </h1>
       <p
+        v-if="is_company"
         class="mb-6 text-lg font-normal text-gray-500 sm:text-xl dark:text-gray-400"
       >
         Tous les types d'entreprises ont besoin d'accéder aux ressources de
         développement, c'est pourquoi nous vous donnons la possibilité de
         décider de la quantité dont vous avez besoin.
       </p>
-      <PricingCard :is_company="is_company" :user="user"/>
-      
+      <p
+        v-if="!is_company"
+        class="mb-6 text-lg font-normal text-gray-500 sm:text-xl dark:text-gray-400"
+      >
+        Souscrivez à un abonnement freelance mensuel, 6mois ou annuel pour accéder à toutes les
+        fonctionnalités de notre plateforme.
+      </p>
+      <PricingCard :is_company="is_company" :user="user" />
       <!-- Comparison Table -->
       <section class="flex flex-col pt-10 md:pt-20">
         <div class="overflow-x-auto rounded-lg">
@@ -448,25 +455,22 @@
 <script>
 import Navbar from "../../components/General/Navbar.vue";
 
-import {
-  getLoggedUser,
-  isCompany,
-  getUser,
-} from "../../stores/usersFunction";
+import { getLoggedUser, isCompany } from "../../stores/usersFunction";
 import PricingCard from "./PricingCard.vue";
 
 export default {
   data() {
     return {
-      user: "",
+      user: null,
       is_registered_user: false,
       is_company: false,
     };
   },
   mounted() {
-    getUser();
-    this.user = getLoggedUser();
-    this.is_company = isCompany(this.user);
+    getLoggedUser().then((data) => {
+      this.user = data;
+      this.is_company = isCompany(data);
+    });
   },
   methods: {},
   components: { Navbar, PricingCard },

@@ -21,6 +21,13 @@ const storage = {
       console.error(e);
     }
   },
+  async clear() {
+    try {
+      localStorage.clear();
+    } catch (e) {
+      console.error(e);
+    }
+  }
 };
 
 export default storage;

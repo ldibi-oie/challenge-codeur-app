@@ -11,17 +11,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['category']]
+    normalizationContext: ['groups' => ['category' , 'freelance']]
 )]
 class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('category')]
+    #[Groups('category' , 'freelance')]
     private ?int $id = null;
 
-    #[Groups('category')]
+    #[Groups('category' , 'freelance')]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 

@@ -43,7 +43,7 @@
         href="https://buy.stripe.com/test_8wMdSH1Ceg30am4dQQ"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
         >{{
-          getSubscriptionPlanText(user, "price_1MTlBKAor24SfpgrohcSJ6S6")
+          companyMonthText
         }}</a
       >
       <a
@@ -51,7 +51,7 @@
         href="https://buy.stripe.com/test_14k8ynep05omeCkdQT"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
         >{{
-          getSubscriptionPlanText(user, "price_1MY3bAAor24Sfpgr1VRs8lgJ")
+          freelanceMonthText
         }}</a
       >
     </div>
@@ -97,7 +97,7 @@
         href="https://buy.stripe.com/test_00gg0PcgS042gKseUW"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
         >{{
-          getSubscriptionPlanText(user, "price_1MY3RaAor24SfpgrRdc4KpYJ")
+         companyHalfYearText
         }}</a
       >
       <a
@@ -105,7 +105,7 @@
         href="https://buy.stripe.com/test_9AQg0PbcO5omcuc148"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
         >{{
-          getSubscriptionPlanText(user, "price_1MY3dMAor24Sfpgr4wlcE2Pp")
+          freelanceHalfYearText
         }}</a
       >
     </div>
@@ -147,7 +147,7 @@
         href="https://buy.stripe.com/test_8wM15Vgx818665O001"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
         >{{
-          getSubscriptionPlanText(user, "price_1MTlclAor24SfpgrZynCfsYo")
+          companyYearText
         }}</a
       >
       <a
@@ -155,7 +155,7 @@
         href="https://buy.stripe.com/test_bIYcODcgS6sq65OdQV"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
         >{{
-          getSubscriptionPlanText(user, "price_1MY3etAor24SfpgrdS3YtVin")
+          freelanceYearText
         }}</a
       >
     </div>
@@ -176,7 +176,42 @@ export default {
       default: null,
     },
   },
-  methods: { getSubscriptionPlanText },
+  data() {
+    return {
+      freelanceMonthText: "",
+      freelanceHalfYearText: "",
+      freelanceYearText: "",
+      companyMonthText: "",
+      companyHalfYearText: "",
+      companyYearText: "",
+
+    };
+  },
+  mounted() {
+    this.initialize();
+  },
+  methods: { async initialize() {
+    this.freelanceMonthText = await getSubscriptionPlanText(
+      this.user,
+      "price_1MY3bAAor24Sfpgr1VRs8lgJ"
+    );
+    this.freelanceHalfYearText = await getSubscriptionPlanText(
+      this.user,
+      "price_1MY3dMAor24Sfpgr4wlcE2Pp"
+    );
+    this.freelanceYearText = await getSubscriptionPlanText(this.user, "price_1MY3etAor24SfpgrdS3YtVin")
+    
+    this.companyMonthText = await getSubscriptionPlanText(
+      this.user,
+      "price_1MTlBKAor24SfpgrohcSJ6S6"
+    );
+    this.companyHalfYearText = await getSubscriptionPlanText(
+      this.user,
+      "price_1MY3RaAor24SfpgrRdc4KpYJ"
+    );
+    this.companyYearText = await getSubscriptionPlanText(this.user, "price_1MTlclAor24SfpgrZynCfsYo")
+
+  }},
   components: {},
 };
 </script>
