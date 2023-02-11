@@ -42,13 +42,17 @@
         v-if="is_company"
         href="https://buy.stripe.com/test_8wMdSH1Ceg30am4dQQ"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
-        >Get started</a
+        >{{
+          getSubscriptionPlanText(user, "price_1MTlBKAor24SfpgrohcSJ6S6")
+        }}</a
       >
       <a
         v-if="!is_company"
         href="https://buy.stripe.com/test_14k8ynep05omeCkdQT"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
-        >Get started</a
+        >{{
+          getSubscriptionPlanText(user, "price_1MY3bAAor24Sfpgr1VRs8lgJ")
+        }}</a
       >
     </div>
     <!-- Pricing Card -->
@@ -92,13 +96,17 @@
         v-if="is_company"
         href="https://buy.stripe.com/test_00gg0PcgS042gKseUW"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
-        >Get started</a
+        >{{
+          getSubscriptionPlanText(user, "price_1MY3RaAor24SfpgrRdc4KpYJ")
+        }}</a
       >
       <a
         v-if="!is_company"
         href="https://buy.stripe.com/test_9AQg0PbcO5omcuc148"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
-        >Get started</a
+        >{{
+          getSubscriptionPlanText(user, "price_1MY3dMAor24Sfpgr4wlcE2Pp")
+        }}</a
       >
     </div>
     <!-- Pricing Card -->
@@ -138,19 +146,24 @@
         v-if="is_company"
         href="https://buy.stripe.com/test_8wM15Vgx818665O001"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
-        >Get started</a
+        >{{
+          getSubscriptionPlanText(user, "price_1MTlclAor24SfpgrZynCfsYo")
+        }}</a
       >
       <a
         v-if="!is_company"
         href="https://buy.stripe.com/test_bIYcODcgS6sq65OdQV"
         class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white dark:focus:ring-red-900"
-        >Get started</a
+        >{{
+          getSubscriptionPlanText(user, "price_1MY3etAor24SfpgrdS3YtVin")
+        }}</a
       >
     </div>
   </section>
 </template>
 
 <script>
+import { getSubscriptionPlanText } from "../../stores/usersFunction";
 export default {
   name: "PricingCard",
   props: {
@@ -158,8 +171,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    user: {
+      type: Object,
+      default: null,
+    },
   },
-  methods: {},
+  methods: { getSubscriptionPlanText },
   components: {},
 };
 </script>

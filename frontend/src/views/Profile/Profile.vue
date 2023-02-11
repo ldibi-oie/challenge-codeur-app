@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     getUserRequest: async function () {
-      await getUser().then((r) => {
+      getUser().then((r) => {
         console.log(r);
         this.user = r[0];
       });

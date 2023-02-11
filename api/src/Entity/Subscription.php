@@ -31,6 +31,7 @@ class Subscription
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private ?bool $isActive = null;
 
+    #[Groups('user')]
     #[ORM\ManyToOne]
     private ?Plan $plan = null;
 

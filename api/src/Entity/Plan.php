@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PlanRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource]
 #[ORM\Entity(repositoryClass: PlanRepository::class)]
 class Plan
@@ -24,6 +25,7 @@ class Plan
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 255)]
     private ?string $stripeId = null;
 
