@@ -42,8 +42,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ${{ env.workdir_frontend }}
-          file: ./Dockerfile
+          context: frontend
+          file: frontend/Dockerfile
           platforms: ${{ env.platforms }}
           push: true
           tags: "frontend:latest"
