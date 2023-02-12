@@ -87,7 +87,7 @@
           <div class="text-gray-600 capitalize">{{ offer.selectedCandidate.name }} {{ offer.selectedCandidate.surname }}</div>
         </div>
         <div v-else class="p-6 min-h-fit mb-4 rounded bg-red-100 dark:bg-gray-800" >
-          <h3 class="text-base font-semibold text-gray-900 dark:text-white">Commentaire :</h3>
+          <h3 class="text-base font-semibold text-gray-900 dark:text-white">Commentaires :</h3>
         </div>
       </div>
     </div>
