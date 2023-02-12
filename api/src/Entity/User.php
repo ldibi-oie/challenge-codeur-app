@@ -19,8 +19,8 @@ use ApiPlatform\Metadata\Put;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Traits\TimestampableTrait;
 #[ApiResource(
     operations: [
         new GetCollection(),
@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Patch(processor: UserPasswordHasher::class),
         new Delete(),
     ],
-    normalizationContext: ['groups' => ['user']]
+    normalizationContext: ['groups' => ['user', 'timestampable']],
 ),
 ApiFilter(SearchFilter::class , properties:['id' => 'exact' , 'email' => 'exact'])
 ]
@@ -40,7 +40,7 @@ ApiFilter(SearchFilter::class , properties:['id' => 'exact' , 'email' => 'exact'
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 
-    use TimestampableEntity;
+    use TimestampableTrait;
     
     #[Groups('user')]
     #[ORM\Id]

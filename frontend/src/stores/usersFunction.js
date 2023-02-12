@@ -135,16 +135,6 @@ export const getCategories = async () => {
   return r;
 };
 
-export const logout = async () => {
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    localStorage.clear()
-    var currentUrl = window.location.href;
-    var newUrl = currentUrl.replace(/\/[^\/]+$/ , '');
-    window.location.href = newUrl;
-    return false;
-}
-
 export const getOffers = async () => {
   console.log("cherche offes en cours -------------");
   var r = [];
@@ -156,6 +146,13 @@ export const getOffers = async () => {
   return r;
 };
 
+export const logout = async () => {
+  await storage.removeItem("token");
+  await storage.removeItem("user");
+  //await storage.clear();
+  window.location.href = "/";
+  return false;
+};
 
 export const isFreelance = (data) => {
   let user = data || getLoggedUser();
@@ -169,6 +166,7 @@ export const isCompany = (data) => {
 
 export const isRegisteredUser = (data) => {
   let user = data || getLoggedUser();
+  console.log("userhere", user)
   return (
     (user && user?.roles?.includes("ROLE_FREELANCER")) ||
     (user && user?.roles?.includes("ROLE_COMPANY"))
@@ -198,3 +196,42 @@ export const getSubscriptionPlanText = async (user, planId) => {
   }
   return text;
 };
+
+export const getRapidApiOptions = (query) => {
+  return {
+    method: 'GET',
+    url: 'https://jsearch.p.rapidapi.com/search',
+    params: {query: query, num_pages: '1'},
+    headers: {
+      'X-RapidAPI-Key': import.meta.env.VITE_RAPID_API_KEY,
+      'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
+    }
+  };
+}
+
+
+// get offer candidates by offer id
+export const getOffersCandidatesByOfferId = async (options) => {
+  const {
+    offer_id= "",
+    page= 1
+  } = options
+  var token = await getToken();
+  const offers = await requestApi.get(`/api/freelances?page=${page}&offers=${offer_id}`, {
+    headers: "Bearer " + token,
+  });
+  return offers.data["hydra:member"];
+};
+
+//get offers comments by offer id
+export const getOffersCommentsByOfferId = async (options) => {
+  const {
+    offer_id= "",
+    page= 1
+  } = options
+  var token = await getToken();
+  const offers = await requestApi.get(`/api/comments?page=${page}&offer=${offer_id}`, {
+    headers: "Bearer " + token,
+  });
+  return offers.data["hydra:member"];
+}

@@ -6,17 +6,17 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SubscriptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Entity\Traits\TimestampableTrait;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['subscription']]
+    normalizationContext: ['groups' => ['subscription', 'timestampable']],
 )]
 class Subscription
 {
 
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

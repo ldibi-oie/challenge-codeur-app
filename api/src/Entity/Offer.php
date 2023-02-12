@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -16,7 +15,9 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Entity\Traits\TimestampableTrait;
 
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
 #[ApiResource(
@@ -28,34 +29,34 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Patch(),
         new Delete(),
     ],
-    normalizationContext: ['groups' => ['user']],
-    denormalizationContext: ['groups' => ['user']]
+    normalizationContext: ['groups' => ['user', 'offer', 'timestampable']],
+    denormalizationContext: ['groups' => ['user', 'offer']]
 )]
+
+#[ApiFilter(SearchFilter::class, properties: ['company' => 'exact', 'category' => 'exact', 'status' => 'exact'])]
 class Offer
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
-
+    #[Groups('offer')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups('user')]
+    #[Groups('user', 'offer')]
     #[ORM\Column(type: 'text')]
     private $title = null;
 
-    #[Groups('user')]
+    #[Groups('user', 'offer')]
     #[ORM\Column(type: 'text')]
     private $description = null;
 
 
-    #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
-    #[Groups('user')]
     #[ORM\ManyToMany(targetEntity: Freelance::class, inversedBy: 'offers')]
     private Collection $candidates;
 
@@ -64,11 +65,10 @@ class Offer
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    #[Groups('user')]
+    #[Groups('user', 'offer')]
     #[ORM\Column]
     private ?int $salary = null;
 
-    #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'isSelectedCandidateList')]
     private ?Freelance $selectedCandidate = null;
 
@@ -76,13 +76,17 @@ class Offer
     #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Comment::class)]
     private Collection $comments;
 
-    #[Groups('user')]
+    #[Groups('user', 'offer')]
     #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'offers', cascade: ['persist'])]
     private Collection $keywords;
 
-    #[Groups('user')]
+    #[Groups('user', 'offer')]
     #[ORM\Column(length: 255)]
     private ?string $status = null;
+
+    #[Groups('user', 'offer')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $jobUrl = null;
 
     public function __construct()
     {
@@ -255,6 +259,18 @@ class Offer
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getJobUrl(): ?string
+    {
+        return $this->jobUrl;
+    }
+
+    public function setJobUrl(?string $jobUrl): self
+    {
+        $this->jobUrl = $jobUrl;
 
         return $this;
     }

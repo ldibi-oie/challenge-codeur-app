@@ -10,29 +10,32 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\MediaObject;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Traits\TimestampableTrait;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Table(name: '`freelance`')]
 #[ORM\Entity(repositoryClass: FreelanceRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['user' ,'freelance']]
+    normalizationContext: ['groups' => ['user' ,'freelance', 'timestampable', 'user:comment']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['offers' => 'exact'])]
 class Freelance
 {
 
-    use TimestampableEntity;
-
+    use TimestampableTrait;
+    #[Groups('user', 'user:comment')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups('user' , 'freelance')]
+    #[Groups('user' , 'freelance', 'user:comment')]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[Groups('user' , 'freelance')]
+    #[Groups('user' , 'freelance', 'user:comment')]
     #[ORM\Column(length: 50)]
     private ?string $surname = null;
 
@@ -50,12 +53,12 @@ class Freelance
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $cv= null;
 
+    #[Groups('user' , 'comment')]
     #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $profile = null;
 
-    #[Groups('user' , 'freelance')]
     #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'candidates')]
     private Collection $offers;
 
@@ -64,7 +67,6 @@ class Freelance
     #[ORM\OneToOne(inversedBy: 'freelance', cascade: ['persist', 'remove'])]
     private ?User $userId = null;
 
-    #[Groups('user' , 'freelance')]
     #[ORM\OneToMany(mappedBy: 'selectedCandidate', targetEntity: Offer::class)]
     private Collection $isSelectedCandidateList;
 
