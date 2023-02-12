@@ -22,9 +22,11 @@ class Offer
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: 'text')]
     private $title = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: 'text')]
     private $description = null;
 
@@ -39,6 +41,7 @@ class Offer
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    #[Groups('user')]
     #[ORM\Column]
     private ?int $salary = null;
 

@@ -33,8 +33,6 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
 
         $freelancers = [];
         $companies = [];
@@ -45,13 +43,6 @@ class AppFixtures extends Fixture
         $user->setRoles(["ROLE_ADMIN"]);
         $user->setPassword($this->userPasswordHasher->hashPassword($user, "pass1234"));
         $manager->persist($user);
-
-        $user2 = new User();
-        $user2->setEmail('company@test.fr');
-        $user2->setRoles(["ROLE_USER"]);
-        $user2->setPassword($this->userPasswordHasher->hashPassword($user2, "pass1234"));
-        $manager->persist($user2);
-        $manager->flush();
 
 
         $manager->flush();
@@ -199,7 +190,7 @@ class AppFixtures extends Fixture
                     $keyword->addFreelance($freelance);
                 }
 
-                $user->setRoles(['ROLE_USER', 'ROLE_FREELANCER'])
+                $user->setRoles(['ROLE_FREELANCER'])
                 ->setEmail($i == 1 ? $defaultFreelanceEmail : $this->faker->email())
                 ->setPassword($this->userPasswordHasher->hashPassword($user, 'pass1234'))
                 ->setFreelance($freelance)
@@ -238,7 +229,7 @@ class AppFixtures extends Fixture
                 ->setUser($user)
                 ->setAddress($this->faker->address());
 
-                $user->setRoles(['ROLE_USER', 'ROLE_COMPANY'])
+                $user->setRoles(['ROLE_COMPANY'])
                 ->setEmail($i == 1 ? $defaultCompanyEmail : $this->faker->email())
                 ->setPassword($this->userPasswordHasher->hashPassword($user, 'pass1234'))
                 ->setCompany($company)

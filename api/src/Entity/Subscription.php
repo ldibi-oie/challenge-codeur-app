@@ -7,9 +7,12 @@ use App\Repository\SubscriptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['subscription']]
+)]
 class Subscription
 {
 
@@ -24,9 +27,11 @@ class Subscription
     #[ORM\Column(length: 255)]
     private ?string $stripeId = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private ?bool $isActive = null;
 
+    #[Groups('user')]
     #[ORM\ManyToOne]
     private ?Plan $plan = null;
 

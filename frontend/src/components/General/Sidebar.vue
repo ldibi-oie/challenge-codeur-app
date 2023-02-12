@@ -69,7 +69,7 @@ export default {
   data(){
     return {
       isLoading: this.role ? true : false,
-      settings: this.role && this.role?.includes(ROLE_COMPANY) ? freelanceParams : 
+      settings: this.role && this.role?.includes(ROLE_COMPANY) ? companyParams : 
         this.role && this.role?.includes(ROLE_FREELANCER) ? freelanceParams :
         userNormalParams
       // settings: freelanceParams

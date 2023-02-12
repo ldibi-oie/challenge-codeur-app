@@ -1,24 +1,18 @@
+import http from "../axios";
 
-import requestApi from '../axios';
+export const fetchOffers = async () => {
+  const offers = await http.get("/api/offers");
+  return offers.data;
+};
 
-export const getOffer = async (id) => {
-    console.log("cherche offer en cours pour " + id + " -------------")
-    var r;
-    await requestApi.get("/api/offers/" + id ).then((offers) => {
-        const response = offers.data
-        console.log(response)
-        r = response   
-    })
-    return r;
-}
-
-export const getOffers = async () => {
-    console.log("cherche offres en cours -------------")
-    var r = [];
-    await requestApi.get("/api/offers").then((categories) => {
-        const response = categories.data["hydra:member"]
-        console.log(response)
-        r.push(...response)   
-    })
-    return r;
-}
+export const fetchOffer = async (id, state) => {
+  try {
+    state.loading = true;
+    const offer = await http.get("/api/offers/" + id);
+    state.offer = offer.data;
+  } catch (error) {
+    state.error = error;
+  } finally {
+    state.loading = false;
+  }
+};
