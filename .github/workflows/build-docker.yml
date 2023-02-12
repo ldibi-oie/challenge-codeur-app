@@ -52,6 +52,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Copy wait-for-it.sh
+        run: |
+          cp api/php/wait-for-it.sh /usr/bin/wait-for-it
+          chmod +x /usr/bin/wait-for-it
+          
       - name: Start PostgreSQL container
         run : |
           docker run --name challenge -e POSTGRES_PASSWORD=password -d postgres
