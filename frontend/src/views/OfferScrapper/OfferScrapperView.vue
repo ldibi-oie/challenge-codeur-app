@@ -25,7 +25,7 @@
           </div>
         </div>
         <div v-if="!isLoading" class="flex w-full py-8" v-for="jobOffer in jobOffers" :key="jobOffer.job_id" style="margin: 0">
-           <OfferBoxComponent :jobOffer="jobOffer" :isScrapper="true" />
+           <OfferBoxComponent :jobOffer="jobOffer" :isScrapper="true"  />
         </div>
       </div>
     </div>
