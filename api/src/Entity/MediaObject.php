@@ -12,12 +12,12 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Entity\Traits\TimestampableTrait;
 
 #[Vich\Uploadable]
 #[ORM\Entity]
 #[ApiResource(
-    normalizationContext: ['groups' => ['media_object:read']],
+    normalizationContext: ['groups' => ['media_object:read', 'timestampable']],
     types: ['https://schema.org/MediaObject'],
     operations: [
         new Get(),
@@ -48,7 +48,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 )]
 class MediaObject
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
     private ?int $id = null;

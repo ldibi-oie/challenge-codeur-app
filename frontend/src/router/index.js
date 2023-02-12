@@ -11,6 +11,8 @@ import OfferId from "../views/Offer/OfferId.vue";
 import AdminRoutes from "./admin.js";
 import OfferScrapperView from "../views/OfferScrapper/OfferScrapperView.vue";
 import CompanyAddOfferView from "../views/company/form/CompanyAddOfferView.vue";
+import OfferScrapperForm from "../views/OfferScrapper/OfferScrapperForm.vue";
+
 
 
 const router = createRouter({
@@ -89,6 +91,11 @@ const router = createRouter({
       name: "scrapper-create-offer",
       component: OfferScrapperView,
     },
+    {
+      path: "/scrapper-create-offer-form",
+      name: "scrapper-create-offer-form",
+      component: OfferScrapperForm,
+    }
   ],
 });
 
