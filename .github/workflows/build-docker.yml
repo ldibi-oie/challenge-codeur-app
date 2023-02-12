@@ -45,5 +45,5 @@ jobs:
           context: frontend
           file: frontend/Dockerfile
           platforms: ${{ env.platforms }}
-          push: true
+          load: true
           tags: "frontend:latest"
