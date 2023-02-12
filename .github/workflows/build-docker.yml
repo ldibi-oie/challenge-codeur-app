@@ -2,10 +2,10 @@ name: Build Docker Image
 
 on:
   push:
-    branches: ['features/ci-cd'],
+    branches: ["features/ci-cd"],
 
   pull_request:
-    branches: ['features/ci-cd'],
+    branches: ["features/ci-cd"],
 
 env:
   platforms: "linux/amd64, linux/arm64/v8"
