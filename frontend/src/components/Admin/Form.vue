@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen">
-        <NavbarAdmin/>
+        <Navbar />
         <div class="flex items-center">
             <div class="w-full">
             <div v-if="loading" class="fixed top-0 left-0 right-0 z-50 py-64 overflow-x-hidden overflow-y-auto md:inset-0 bg-gray-800/70">
@@ -82,12 +82,12 @@
 
 <script>
 import http from '../../axios';
-import NavbarAdmin from './Navbar.vue';
+import Navbar from '../General/Navbar.vue';
     
 export default {
     name: "Form",
     components: {
-        NavbarAdmin
+        Navbar,
     },
     data() {
         return {
