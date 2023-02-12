@@ -44,6 +44,9 @@ jobs:
         with:
           context: frontend
           file: frontend/Dockerfile
-          platforms: ${{ env.platforms }}
+          # platforms: ${{ env.platforms }}
           load: true
           tags: "frontend:latest"
+
+      - name: Run Docker Image
+        run: docker run -d -p 3000:3000 frontend:latest
