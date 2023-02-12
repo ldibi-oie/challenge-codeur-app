@@ -84,6 +84,7 @@ export const addOffre = async (data, company_id) => {
         "category": data.category_id,
         "salary": data.salary,
         "status": data.status,
+        "jobUrl": data.jobUrl,
     }
 
     console.log("CREATION D'UNE OFFRE EN COURS ....")

@@ -1,6 +1,9 @@
 <template> 
-      <form @submit.prevent="$emit('on-submit', form)">  
-        <div class="p-4 sm:ml-64">
+      <form v-if="mounted"  @submit.prevent="$emit('on-submit', form)">
+        <div :class="{
+          'p-4': true,
+          'sm:ml-64':  !fromScrapper,
+        }">
           <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
             <div class="mb-6">
                 <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Titre</label>
@@ -10,9 +13,7 @@
             <div class="mb-6">
                 <label for="categories" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select your categorie</label>
                 <select id="categories" v-model="form.category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="/api/categories/10">Développeur</option>
-                    <option value="/api/categories/11">Administrateur</option>
-                    <option value="/api/categories/12">Consultant</option>
+                    <option v-for="categorie in categories" :key="categorie.id" :value="categorie['@id']">{{categorie.name}}</option>
                 </select>
             </div>
             
@@ -23,7 +24,12 @@
             
             <div class="mb-6">
                 <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                <textarea id="description" v-model="form.description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a comment..."></textarea>
+                <textarea id="description" v-model="form.description" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a comment..."></textarea>
+            </div>
+
+            <div class="mb-6">
+                <label for="jobUrl" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Url d'application à l'offre</label>
+                <input type="text" id="jobUrl" v-model="form.jobUrl" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="L'url de l'offre" required>
             </div>
 
             <div class="mb-6">
@@ -41,22 +47,52 @@
 </template>
 
 <script>
+import { getCategories } from '../../stores/usersFunction';
+
 export default {
+  name: "OfferForm",
   props: {
-    offersData: {
+    offerData: {
       type: Object,
     },
+    fromScrapper: {
+      type: Boolean,
+      default: false,
+    },
   },
-  data() {
+data() {
+
     return {
       form: {
-        title: this.offersData?.title || "",
-        category_id: this.offersData?.category_id || "",
-        salary: this.offersData?.salary || "",
-        description: this.offersData?.description || "",
-        status: this.offersData?.status || "",
+        title: "",
+        category_id:  "",
+        salary:  "",
+        description: "",
+        status:  "",
+        jobUrl:  "",
       },
+      categories: [],
+      mounted: false,
     };
+  },
+  async mounted() {
+    await this.getCategoriesRequest();
+    this.form = {
+        title: this.offerData?.title || "",
+        category_id: this.offerData?.category_id || "",
+        salary: this.offerData?.salary || "",
+        description: this.offerData?.description || "",
+        status: this.offerData?.status || "",
+        jobUrl: this.offerData?.jobUrl || "",
+      };
+    this.mounted = true;
+  },
+  methods: {
+    getCategoriesRequest: async function () {
+      await getCategories().then((data) => {
+        this.categories = data;
+      });
+    },
   },
 };
 </script>

@@ -6,13 +6,16 @@ use App\Repository\InvoiceRepository;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Entity\Traits\TimestampableTrait;
+
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['timestampable']],
+)]
 class Invoice
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

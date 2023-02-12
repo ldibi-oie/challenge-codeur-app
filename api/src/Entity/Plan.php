@@ -5,14 +5,14 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PlanRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Entity\Traits\TimestampableTrait;
 use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource]
 #[ORM\Entity(repositoryClass: PlanRepository::class)]
 class Plan
 {
 
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

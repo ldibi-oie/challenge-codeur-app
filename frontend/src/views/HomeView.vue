@@ -30,9 +30,9 @@
       </svg>
     </div>
     <Navbar />
-    <main>
-      <div class="relative">
-        <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+    <main class="flex flex-col items-center">
+      <div class="relative  max-w-5xl">
+        <div v-if="!user" class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div class="text-center">
             <h1
               class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
@@ -58,8 +58,8 @@
             </div>
           </div>
         </div>
-        <section class="dark:bg-gray-900 w-full p-6">
-          <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+        <section v-if="isCompany()" class="dark:bg-gray-900 w-full px-6 pt-12">
+          <div class="px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
             <div class="max-w-screen-md mb-8 lg:mb-16">
               <h2
                 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white"
@@ -145,7 +145,7 @@
         </section>
 
         <div
-          class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+          class="w-full absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-130rem)]"
         >
           <svg
             class="relative left-[calc(50%+3rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+36rem)] sm:h-[42.375rem]"
@@ -174,12 +174,20 @@
         </div>
       </div>
       <h5
-        class="mb-4 mx-5 px-6 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white"
+        v-if="isCompany"
+        class="pt-32 mb-4 mx-5 px-6 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white"
       >
         Nos principaux métiers
       </h5>
 
-      <div class="flex px-6 flex-row">
+      <h5
+        v-if="!isCompany"
+        class="pt-32 mb-4 mx-5 px-6 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white"
+      >
+       Nos offres pour vous
+      </h5>
+
+      <div class="flex px-6 flex-row  w-full max-w-5xl">
         <div class="px-3 w-64 rounded">
           <list-group>
             <div
@@ -195,7 +203,7 @@
             <list-group-item
               v-for="category in categories"
               :key="category['@id']"
-              @click="selectCategory(category['@id'])"
+              @click="selectCategory(category.id)"
             >
               <template #prefix>
                 <svg
@@ -218,60 +226,35 @@
           </list-group>
         </div>
         <div
-          class="flex items-center justify-center w-56 h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-          v-if="offers.length === 0"
+          v-if="offers.length === 0  || isLoading"
+          class="flex w-full items-center justify-center  h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
         >
           <div
+          v-if="offers.length === 0 && !isLoading"
+            class="px-3 py-1 text-lg font-medium leading-none text-center text-black  rounded-full"
+          >
+            Aucune offre disponible pour le moment
+          </div>
+          <div
+          v-if="isLoading"
             class="px-3 py-1 text-xs font-medium leading-none text-center text-red-800 bg-red-200 rounded-full animate-pulse dark:bg-red-900 dark:text-red-200"
           >
             loading...
           </div>
         </div>
-        <div class="flex flex-col w-full" v-if="offersFilter.length > 0">
+      
+        <div class="flex flex-col w-full" v-if="offersFilter.length > 0 && !isLoading">
           <div v-for="offer in offersFilter" :key="offer['@id']">
-            <div
-              class="w-full p-4 mb-4 space-y-6 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800"
-            >
-              <div class="flex flex-row items-center">
-                <div
-                  v-if="offer.status === 'open'"
-                  class="px-3 py-1 text-xs font-medium leading-none text-center text-green-800 bg-green-200 rounded-full animate-pulse dark:bg-green-900 dark:text-green-200"
-                >
-                  ouvert
-                </div>
-                <div
-                  v-if="offer.status === 'IN_PROGRESS'"
-                  class="px-3 py-1 text-xs font-medium leading-none text-center text-green-800 bg-green-200 rounded-full animate-pulse dark:bg-green-900 dark:text-green-200"
-                >
-                  en cours ...
-                </div>
-                <div
-                  v-if="offer.status === 'closed'"
-                  class="px-3 py-1 text-xs font-medium leading-none text-center text-purple-800 bg-purple-200 rounded-full animate-pulse dark:bg-purple-900 dark:text-purple-200"
-                >
-                  finish
-                </div>
-                <h3 class="mx-3">
-                  {{ offer.title }}
-                </h3>
-              </div>
-              <div class="">
-                <h3>{{ offer.description }}</h3>
-                <br />
-                <h3>Tarification : {{ offer.salary }} €</h3>
-                <h3>
-                  Publie il y a {{ moment(offer.createdAt).format("LLL") }}
-                </h3>
-              </div>
-              <div class="">
-                <button
-                  @click="viewOffer(offer.id)"
-                  class="rounded-md bg-red-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-                >
-                  Voir
-                </button>
-              </div>
-            </div>
+            <OfferBoxComponent :jobOffer="{
+              job_id: offer.id,
+              job_title: offer.title,
+              job_description: offer.description,
+              salary: offer.salary,
+              job_posted_at_datetime_utc: offer.createdAt,
+              status: offer.status,
+              job_apply_link: offer.jobUrl,
+              keywords: offer.keywords,
+            }" />
           </div>
         </div>
       </div>
@@ -284,8 +267,10 @@ import { ListGroup, ListGroupItem } from "flowbite-vue";
 <script>
 import moment from "moment";
 import Navbar from "../components/General/Navbar.vue";
-import { getCategories } from "../stores/usersFunction";
+import { getCategories, getLoggedUser, isCompany } from "../stores/usersFunction";
 import { fetchOffers } from "../stores/offers";
+import OfferBoxComponent from "../components/General/OfferBoxComponent.vue";
+import storage from "../stores/storage";
 moment.locale("fr");
 
 export default {
@@ -296,21 +281,44 @@ export default {
       categories: [],
       offers: [],
       offersFilter: [],
+      isLoading: false,
+      isLoadingCategories: false,
+      isCompany: false,
     };
   },
   mounted() {
     this.getCategoriesRequest();
-    this.getOffersRequest();
+    getLoggedUser().then((data) => {
+      this.user = data;
+      this.userId = data.id;
+      this.isCompany = isCompany(data);
+    })
   },
   methods: {
     getCategoriesRequest: async function () {
-      await getCategories().then((data) => {
+      this.isLoadingCategories = true;
+      const storedCategories  = await storage.getItem("categories");
+      if(storedCategories){
+        this.categories = storedCategories;
+        this.getOffersRequest();
+        return;
+      }else{
+        await getCategories().then((data) => {
+        this.isLoadingCategories = false;
         this.categories = data;
+        storage.setItem("categories", data);
+        this.getOffersRequest();
       });
-      console.log(this.categories);
+      }
+     
     },
-    getOffersRequest: async function () {
-      await fetchOffers().then((data) => {
+    getOffersRequest: async function (category_id) {
+      this.isLoading = true;
+      await fetchOffers({
+        category: category_id !== 1 && category_id || ""
+      }).then((data) => {
+        this.isLoading = false;
+        console.log("datahere", data)
         this.offers = data;
         this.offersFilter = data;
       });
@@ -318,20 +326,12 @@ export default {
     },
 
     selectCategory(category) {
-      console.log(category);
-      this.offersFilter = this.offers.filter(
-        (offer) => offer.category === category
-      );
-
-      if (category === "/api/categories/1") {
-        this.offersFilter = this.offers;
-      }
-    },
-
-    viewOffer: function (id) {
-      this.$router.push({ name: "offerId", params: { id } });
+      console.log("category_id", category);
+      this.getOffersRequest(category).then((res)=>{
+        console.log(res);
+      })
     },
   },
-  components: { Navbar },
+  components: { Navbar, OfferBoxComponent },
 };
 </script>
