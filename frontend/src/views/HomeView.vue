@@ -32,7 +32,7 @@
     <Navbar />
     <main class="flex flex-col items-center">
       <div class="relative  max-w-5xl">
-        <section v-if="isCompany===true" class="dark:bg-gray-900 w-full px-6 pt-12">
+        <section v-if="isCompany" class="dark:bg-gray-900 w-full px-6 pt-12">
           <div class="px-4 mx-auto max-w-screen-xl sm:py-8 lg:px-6">
             <div class="max-w-screen-md mb-8 lg:mb-16">
               <h2
@@ -265,7 +265,8 @@ export default {
     getLoggedUser().then((data) => {
       this.user = data;
       this.userId = data?.id;
-      this.isCompany = isCompany(data);
+      console.log("dataherebro", data)
+      this.isCompany = data === null ? isCompany(data) : false;
     })
   },
   methods: {
