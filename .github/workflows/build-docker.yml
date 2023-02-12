@@ -2,10 +2,10 @@ name: Build Docker Image
 
 on:
   push:
-    branches: ["feature/ci-cd"]
+    branches: ["feature/admin"]
 
   pull_request:
-    branches: ["feature/ci-cd"]
+    branches: ["feature/admin"]
 
 jobs:
   build-frontend:
