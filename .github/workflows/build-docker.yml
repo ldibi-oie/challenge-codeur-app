@@ -46,4 +46,4 @@ jobs:
           file: ./Dockerfile
           platforms: ${{ env.platforms }}
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          tags: "frontend:latest"
