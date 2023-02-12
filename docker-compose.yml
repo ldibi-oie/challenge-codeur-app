@@ -75,5 +75,3 @@ networks:
 
 volumes:
     db:
-
-

@@ -12,13 +12,35 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use App\Entity\MediaObject;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[ApiResource]
+#[ApiResource( 
+    
+    operations: [
+        new GetCollection(),
+        new Post(),
+        new Get(),
+        new Put(),
+        new Patch(),
+        new Delete(),
+    ],
+    normalizationContext: ['groups' => ['user']],
+    denormalizationContext: ['groups' => ['user']],
+   
+)]
 class Company
 {
     use TimestampableEntity;
 
+
+    #[Groups('user')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -36,6 +58,7 @@ class Company
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $address = null;
 
+    #[Groups('user')]
     #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
@@ -46,6 +69,7 @@ class Company
     private Collection $offers;
     
 
+    #[Groups('user')]
     #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;

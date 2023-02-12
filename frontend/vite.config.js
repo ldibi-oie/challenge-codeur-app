@@ -9,8 +9,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
+    },
   }
 })
-
-console.log(import.meta.env , import.meta.url)
