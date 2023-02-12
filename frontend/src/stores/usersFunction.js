@@ -1,5 +1,6 @@
 
 import requestApi from '../axios';
+import { popUpError, popUpInfo } from '../stores/notyf'
 
 export const login = (data) => {
     requestApi.post("/api/login_check" , {
@@ -53,10 +54,37 @@ export const sendVerificationEmail = (data) => {
       })
 }
 
+export const sendResetPassword = async (email) => {
+    var r;
+    await requestApi.get("/api/users?email=" + email).then((res) => {
+        console.log(res)
+        const data = res.data["hydra:member"]
+        if(data.length === 0 ){
+            popUpError('Cette email n\'existe pas !')
+            r = false
+        } else {
+            requestApi.post("/send/reset/password" , {id: data[0].id , email})
+            .then((res) => {
+                // this.token = res.data.token
+                console.log(res)
+                if(res){
+                    popUpInfo('Un email a ete envoye a ' + email)
+                    r = true;
+                }
+            })
+            .catch(err => {
+                this.error = err
+                r = err.message
+            }) 
+        }
+           
+    })    
+    return r;
+}
+
 export const ResendVerificationEmail = async (data) => {
     var r = ''
     await requestApi.post("/register" , data)
-
     return r;
 }
 
@@ -87,8 +115,6 @@ export const getCategories = async () => {
     })
     return r;
 }
-
-
 
 export const logout = async () => {
     localStorage.removeItem("token")

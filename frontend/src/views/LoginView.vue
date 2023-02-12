@@ -18,7 +18,7 @@
                   <input type="password" v-model="password"  id="password" name="password" placeholder="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" required="">
               </div>
               <div class="flex items-start">
-                  <a href="#" class="ml-auto text-sm text-red-700 hover:underline dark:text-red-500">Lost Password?</a>
+                  <router-link to="/reset/password/form" class="ml-auto text-sm text-red-700 hover:underline dark:text-red-500">Lost Password?</router-link>
               </div>
               <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 sm:w-auto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                   <div role="status" v-if="isLoading === true">
@@ -38,6 +38,8 @@
           </form>
         {{  error  }}
       </div>
+
+
   </div>
 </template>
   
@@ -51,7 +53,8 @@ import requestApi from "../axios"
         token: "",
         error: "",
         user: "",
-        isLoading: false
+        isLoading: false,
+        section: false
       };
     },
     methods: {

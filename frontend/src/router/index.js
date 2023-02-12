@@ -8,6 +8,8 @@ import Subscription from '../views/Subscription/Subscription.vue'
 import VerificationInfos from "../views/Stepper/Main.vue"
 import ErrorPage from "../views/ErrorPage.vue"
 import OfferId from "../views/Offer/OfferId.vue"
+import resetPassword from '../components/General/resetPassword.vue'
+import resetForm from '../components/General/resetForm.vue'
 import AdminRoutes from "./admin.js"
 
 const router = createRouter({
@@ -57,6 +59,16 @@ const router = createRouter({
       path: '/offer/:id',
       name: 'offerId',
       component: OfferId
+    },
+    {
+      path: '/reset/password',
+      name: 'resetPassword',
+      component: resetPassword
+    },
+    {
+      path: '/reset/password/form',
+      name: 'resetForm',
+      component: resetForm
     },
     ...AdminRoutes
   ]

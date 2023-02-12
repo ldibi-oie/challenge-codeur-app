@@ -51,6 +51,15 @@ const freelanceParams = [
  { name: 'Mon abonnement' , value: 'abonnement' },
 ]
 
+const companyParams = [
+ { name: 'Mes informations' ,  value: 'infos'},
+ { name: 'Mes evaluations' , value: 'evaluations' },
+ { name: 'Mes offres en cours' , value: 'offres' },
+ { name: 'Gerer mes offres' , value: 'offres' },
+ { name: 'Mes projets realisés' , value: 'projets' },
+ { name: 'Mon abonnement' , value: 'abonnement' },
+]
+
 const ROLE_FREELANCER = "ROLE_FREELANCER"
 const ROLE_COMPANY = "ROLE_COMPANY"
 

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use App\Entity\UserPasswordHasher;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,7 +31,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Delete(),
     ],
     normalizationContext: ['groups' => ['user']]
-)]
+),
+ApiFilter(SearchFilter::class , properties:['id' => 'exact' , 'email' => 'exact'])
+]
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
