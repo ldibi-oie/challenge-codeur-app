@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use App\Entity\MediaObject;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\Delete;
@@ -18,6 +17,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Entity\Traits\TimestampableTrait;
 
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
@@ -31,22 +31,22 @@ use ApiPlatform\Metadata\Put;
         new Patch(),
         new Delete(),
     ],
-    normalizationContext: ['groups' => ['user']],
+    normalizationContext: ['groups' => ['user', 'timestampable']],
     denormalizationContext: ['groups' => ['user']],
    
 )]
 class Company
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
 
-    #[Groups('user')]
+    #[Groups('user', 'comment')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
     
-    #[Groups('user')]
+    #[Groups('user', 'comment')]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
     
@@ -58,13 +58,12 @@ class Company
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $address = null;
 
-    #[Groups('user')]
+    #[Groups('user', 'comment')]
     #[ORM\ManyToOne(targetEntity: MediaObject::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $logo= null;
     
-    #[Groups('user')]
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
     private Collection $offers;
     

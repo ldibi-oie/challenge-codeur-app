@@ -7,20 +7,23 @@ use App\Repository\KeywordRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Entity\Traits\TimestampableTrait;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: KeywordRepository::class)]
 #[ApiResource]
 class Keyword
 {
 
-    use TimestampableEntity;
+    use TimestampableTrait;
 
+    #[Groups('user' , 'freelance', 'offer')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('user' , 'freelance', 'offer')]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
