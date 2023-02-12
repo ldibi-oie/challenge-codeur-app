@@ -53,6 +53,7 @@ class Offer
     private $description = null;
 
 
+    #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
@@ -72,7 +73,6 @@ class Offer
     #[ORM\ManyToOne(inversedBy: 'isSelectedCandidateList')]
     private ?Freelance $selectedCandidate = null;
 
-    #[Groups('user')]
     #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Comment::class)]
     private Collection $comments;
 
