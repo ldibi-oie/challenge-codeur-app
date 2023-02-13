@@ -187,7 +187,7 @@
        Nos offres pour vous
       </h5>
 
-      <div class="flex px-6 flex-row  w-full max-w-5xl">
+      <div class="flex px-6 flex-row  w-full max-w-5xl my-10">
         <div class="px-3 w-64 rounded">
           <list-group >
             <div class="flex items-center justify-center h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" v-if="categories.length === 0">
@@ -268,8 +268,9 @@ export default {
     this.getCategoriesRequest();
     getLoggedUser().then((data) => {
       this.user = data;
-      this.userId = data.id;
-      this.isCompany = isCompany(data);
+      this.userId = data?.id;
+      console.log("dataherebro", data)
+      this.isCompany = data === null ? isCompany(data) : false;
     })
   },
   methods: {

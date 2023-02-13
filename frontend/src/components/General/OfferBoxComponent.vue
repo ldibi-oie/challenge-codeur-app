@@ -99,7 +99,7 @@ import { isRegisteredUser , getLoggedUser} from '../../stores/usersFunction.js';
   },
   methods: {
     createOffer(jobOffer) {
-      this.$emit('createOffer', jobOffer);
+      this.$router.push({ name: "scrapper-create-offer-form", query: { offerData: JSON.stringify(jobOffer)} });
     },
     viewDetail(jobOffer) {
     this.$router.push({ name: "offerId", params: { id: jobOffer.job_id } });

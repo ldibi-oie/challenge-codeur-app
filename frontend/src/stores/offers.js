@@ -4,11 +4,12 @@ import { popUpError , popUpSuccess } from "./notyf";
 export const fetchOffers = async (options) => {
   const {
     company_id= "",
+    freelance_id="",
     category= "",
     page= 1
   } = options
   var token = await getToken();
-  const offers = await requestApi.get(`/api/offers?page=${page}&company%5B%5D=${company_id}&category=${category}`, {
+  const offers = await requestApi.get(`/api/offers?page=${page}&company%5B%5D=${company_id}&category=${category}&candidates=${freelance_id}`, {
     headers: "Bearer " + token,
   });
   return offers.data["hydra:member"];

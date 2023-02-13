@@ -42,6 +42,7 @@ class AppFixtures extends Fixture
         $user->setEmail('admin@admin.fr');
         $user->setRoles(["ROLE_ADMIN"]);
         $user->setPassword($this->userPasswordHasher->hashPassword($user, "pass1234"));
+        $user->setIsVerified(true); 
         $manager->persist($user);
 
 
@@ -252,7 +253,8 @@ class AppFixtures extends Fixture
                     ->setCompany($company)
                     ->setSalary($this->faker->numberBetween(2000, 100000))
                     ->setCategory($new_category)
-                    ->setStatus($this->faker->randomElement(['open', 'closed']));
+                    ->setStatus($this->faker->randomElement(['open', 'closed']))
+                    ->setJobUrl($this->faker->url());
 
                     $rand_keywords = $this->faker->randomElements($keywords_list, 3);
                     foreach ($rand_keywords as $keyword) {

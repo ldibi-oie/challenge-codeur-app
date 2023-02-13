@@ -1,7 +1,16 @@
 <template>
     <div>
-        <NavbarAdmin/>
-        <aside
+        <Navbar />
+        <!-- Si l'utilisateur n'est pas un admin, renvoie une page avec un interdiction a l'utilisateur d'acceder a cette page -->
+        <div v-if="!isAdmin">
+            <div class="flex flex-col items-center justify-center h-screen">
+                <p class="text-2xl font-semibold text-gray-700 dark:text-gray-200">
+                    Vous n'avez pas les droits pour acceder a cette page
+                </p>
+            </div>
+        </div>
+        <div v-else>
+            <aside
             id="logo-sidebar"
             class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
             aria-label="Sidebar">
@@ -98,20 +107,21 @@
     </p> -->
 </div>
 
-    </div>
+</div>
+</div>
 </template>
 
 <script>
     import NavigationAdmin from '../../components/Admin/Navigation.vue'
     import TableAdmin from '../../components/Admin/Table.vue'
-    import NavbarAdmin from '../../components/Admin/Navbar.vue'
+    import Navbar from '../../components/General/Navbar.vue'
     import http from '../../axios'
 
     export default {
         components: {
             NavigationAdmin,
             TableAdmin,
-            NavbarAdmin,
+            Navbar,
         },
         data() {
             return {
@@ -126,11 +136,15 @@
 
                 // Alert error
                 error: '',
+
+                // Admin
+                isAdmin: false,
             }
         },
         mounted() {
             this.getLinks()
             this.fetchData(this.url)
+            this.getAdmin()
         },
         methods: {
             async getLinks() {
@@ -173,6 +187,16 @@
             async formData() {
                 this.$router.push({ name: 'admin_form_add', query: { submitApi: this.url, submitApiMethod: 'post' } });
             },
+            async getAdmin() {
+                try {
+                    const admin = JSON.parse(localStorage.getItem('user'))
+                    if (admin.roles[0] === 'ROLE_ADMIN') {
+                        this.isAdmin = true
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+            }
         },
     }
 </script>
