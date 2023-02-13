@@ -8,8 +8,6 @@
                     {{ item.name }}  {{ item.surname }}
                     <a href="" >Regarder le cv</a>
                     <button @click="setFinalCandidate(item['@id'] , details.id)" class="text-white bg-red-700 w-30 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Accepter</button>
-
-                    
                 </div>
                 <span v-if="details?.candidates?.length === 0">Pas de candidature pour le moment</span>
             </div>
@@ -31,10 +29,9 @@ export default {
 
     methods:{
         setFinalCandidate: async function(id , userId) {
-            console.log(id)
-            await addCandidate({'selectedCandidate': id , 'id': userId}).then((st) => {
-                console.log(st)
-            })
+            console.log(" setFinalCandidate ", id)
+            console.log(" userId ", userId)
+            await addCandidate(id, userId)
         }
     }
 }
