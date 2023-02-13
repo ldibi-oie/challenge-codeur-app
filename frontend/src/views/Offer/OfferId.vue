@@ -62,6 +62,7 @@
             </div>
           </div>
 
+
      
       </div>
     </div>
@@ -89,6 +90,7 @@ export default {
       candidates: null,
       isCompany: false,
       user: null,
+      newcomment: ""
     };
   },
   mounted() {
@@ -98,8 +100,9 @@ export default {
     async initialize() {
       this.loading = true;
       await fetchOffer(this.$route.params.id, this);
+      console.log("offerhere", this.offer)
       //get offer comments by id
-      this.comments = await getOffersCommentsByOfferId({ id: this.$route.params.id });
+      this.comments = await getOffersCommentsByOfferId({ offer_id: this.$route.params.id });
       console.log("this.comments", this.comments);
       //get offer candidates by id
       this.candidates = (await getOffersCandidatesByOfferId({ id: this.$route.params.id })).slice(0, 5); //slice to get only 5 candidates

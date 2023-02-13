@@ -33,7 +33,7 @@ use App\Entity\Traits\TimestampableTrait;
     denormalizationContext: ['groups' => ['user', 'offer']]
 )]
 
-#[ApiFilter(SearchFilter::class, properties: ['company' => 'exact', 'category' => 'exact', 'status' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['company' => 'exact', 'category' => 'exact', 'status' => 'exact', 'candidates' => 'exact'])]
 class Offer
 {
     use TimestampableTrait;
