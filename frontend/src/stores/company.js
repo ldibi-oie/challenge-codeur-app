@@ -1,26 +1,42 @@
 
 
 import requestApi from '../axios';
-const url = "http://localhost:8741";
-
+import { popUpError, popUpSuccess } from './notyf';
+import { getUser } from './usersFunction';
 export const setCompanyToUser = async (data) => {
     var r;
+    console.log(data)
     const v = {
-        "id" : data.id,
+        "user" : data.userId,
         "name": data.organization,
-        "siretnumber": data.siretnumber,
+        "address": data.address,    
     }
 
-    console.log("CREATION D'UNE COMPANY EN COURS ....")
 
-    await requestApi.post(url+"/api/companies" , v)
-    .then((res) => {
+    console.log("CREATION D'UNE COMPANY EN COURS ...." , v)
+
+    await requestApi.post("/api/companies" , v)
+    .then(async (res) => {
       console.log(res)
       console.log(res.data)
+
+      await requestApi.patch("/api/users/" + data.id , {roles: ["ROLE_COMPANY"]} , {
+        headers : {
+            "Content-Type" : "application/merge-patch+json",
+        }
+        })
+      .then(async () => {
+        popUpSuccess('Vos donnees ont ete enregistré !')
+        await getUser()
+      }).catch((err ) => {
+        popUpError(err.message)
+      })
+
       r = true
     })
     .catch(err => {
         console.log(err)
+        popUpError(err.message)
     })
     return r;
 }
@@ -32,7 +48,7 @@ export const updateCompanyToUser = async (data) => {
         // "siretnumber": data.siretnumber,
     }
 
-    console.log("CREATION D'UNE COMPANY EN COURS ....")
+    console.log("UPDATE D'UNE COMPANY EN COURS ....")
 
     await requestApi.put("/api/companies/" + data.userId , v)
     .then((res) => {    
@@ -48,7 +64,7 @@ export const updateCompanyToUser = async (data) => {
 // get companies 
 export const getCompanies = async () => {
     var r;
-    await requestApi.get(url+"/api/companies")
+    await requestApi.get("/api/companies")
     .then((res) => {
       //console.log(res.data)
       r = res.data;
@@ -62,7 +78,7 @@ export const getCompanies = async () => {
 // get company by id
 export const getCompanyById = async (id) => {
     var r ;
-    await requestApi.get(url+"/api/companies/" + id)
+    await requestApi.get("/api/companies/" + id)
     .then((res) => {
       r = res.data;
       //console.log("stores.company ", r)
@@ -89,7 +105,7 @@ export const addOffre = async (data, company_id) => {
 
     console.log("CREATION D'UNE OFFRE EN COURS ....")
 
-    await requestApi.post(url+"/api/offers" , v)
+    await requestApi.post("/api/offers" , v)
     .then((res) => {
       console.log(res)
       console.log(res.data)
@@ -106,7 +122,7 @@ export const addOffre = async (data, company_id) => {
 // get offers by company
 export const getOffersByCompany = async (id) => {
     var r;
-    await requestApi.get(url+"/api/companies/" + id)
+    await requestApi.get("/api/companies/" + id)
     .then((res) => {
         console.log("",res.data)
         r = res.data
@@ -122,7 +138,7 @@ export const getOffersByCompany = async (id) => {
 // get offers 
 export const getOffers = async () => {
     var r;
-    await requestApi.get(url+"/api/offers")
+    await requestApi.get("/api/offers")
     .then((res) => {
       console.log(res.data)
       r = res.data
@@ -136,7 +152,7 @@ export const getOffers = async () => {
 // get comments
 export const getComments = async () => {
     var r;
-    await requestApi.get(url+"/api/comments")
+    await requestApi.get("/api/comments")
     .then((res) => {
       console.log(res.data)
       r = res.data
@@ -150,7 +166,7 @@ export const getComments = async () => {
 // get comments by offer
 export const getCommentsByOffer = async (id) => {
     var r;
-    await requestApi.get(url+"/api/comments?offer.id=" + id)
+    await requestApi.get("/api/comments?offer.id=" + id)
     .then((res) => {
       console.log(res.data)
       r = res.data["hydra:member"]
@@ -160,3 +176,30 @@ export const getCommentsByOffer = async (id) => {
     })
     return r;
 }
+
+// add selected candidates
+export const addSelectedCandidates = async (data) => {
+    var r;
+    console.log("data.offer_cliched_id", data)
+    const v = {
+        "selectedCandidate": "/api/freelances/"+data.selected_candidate_id,
+    }
+
+    //console.log("selected_candidate_id", data)
+    console.log("AJOUT D'UN CANDIDAT  SELECTED EN COURS ....", v)
+    await requestApi.patch("/api/offers/" + data.offer_cliched_id, v, {
+    headers : {
+        "Content-Type" : "application/merge-patch+json",
+    }})
+    .then((res) => {
+    console.log(" res.data in ..", res.data)
+    popUpSuccess("Vous venez de selectionner un candidat")
+    window.location.reload();
+    r = res
+    })
+    .catch(err => {
+        console.log("the error", err)
+    })
+    return r;
+}
+

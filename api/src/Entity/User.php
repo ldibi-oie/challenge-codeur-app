@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use App\Entity\UserPasswordHasher;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,7 +31,9 @@ use App\Entity\Traits\TimestampableTrait;
         new Delete(),
     ],
     normalizationContext: ['groups' => ['user', 'timestampable']],
-)]
+),
+ApiFilter(SearchFilter::class , properties:['id' => 'exact' , 'email' => 'exact'])
+]
 #[ORM\Table(name: '`user`')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]

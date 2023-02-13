@@ -8,6 +8,7 @@ parameters:
     vuejs.register: '%env(CLIENT_URL_REGISTER)%'
     vuejs.login: '%env(CLIENT_URL_LOGIN)%'
     vuejs.404: '%env(CLIENT_URL_404)%'
+    vuejs.resetPassword: '%env(CLIENT_URL_RESET_PASSWORD)%'
 
     stripe_sk: '%env(resolve:STRIPE_SK)%'
     stripe_pk: '%env(resolve:STRIPE_PK)%'

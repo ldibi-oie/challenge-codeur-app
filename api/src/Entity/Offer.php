@@ -33,12 +33,12 @@ use App\Entity\Traits\TimestampableTrait;
     denormalizationContext: ['groups' => ['user', 'offer']]
 )]
 
-#[ApiFilter(SearchFilter::class, properties: ['company' => 'exact', 'category' => 'exact', 'status' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['company' => 'exact', 'category' => 'exact', 'status' => 'exact', 'candidates' => 'exact'])]
 class Offer
 {
     use TimestampableTrait;
 
-    #[Groups('offer')]
+    #[Groups('user','offer')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -52,12 +52,12 @@ class Offer
     #[ORM\Column(type: 'text')]
     private $description = null;
 
-
     #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
+    #[Groups('user', 'offer')]
     #[ORM\ManyToMany(targetEntity: Freelance::class, inversedBy: 'offers')]
     private Collection $candidates;
 
@@ -70,6 +70,7 @@ class Offer
     #[ORM\Column]
     private ?int $salary = null;
 
+    #[Groups('user', 'offer')]
     #[ORM\ManyToOne(inversedBy: 'isSelectedCandidateList')]
     private ?Freelance $selectedCandidate = null;
 

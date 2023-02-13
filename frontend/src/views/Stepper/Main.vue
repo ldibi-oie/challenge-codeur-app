@@ -1,5 +1,6 @@
 <template>
     <div class="mx-auto p-6 container ">
+        {{ user }}
         <ol class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 justify-between">
             <li v-on:click="nextStep(1)" v-bind:class="{'flex items-center text-red-600 dark:text-red-500 space-x-2.5': section === 1 , 'flex items-center text-gray-600 dark:text-gray-500 space-x-2.5': section != 1}">
                 <span v-bind:class="{'flex items-center justify-center w-8 h-8 border border-red-600 rounded-full shrink-0 dark:border-red-500': section === 1 , 'flex items-center justify-center w-8 h-8 border border-gray-600 rounded-full shrink-0 dark:border-gray-500': section != 1}">
@@ -47,11 +48,19 @@
             
         </div>
         <div v-bind:class="{'block m-6': section === 2 , 'hidden': section != 2}">
-            <InfosProfile :type="typeUser" />
+            <InfosProfile :type="typeUser" :user="user" @nextStep="sendData" />
         </div>
 
         <div v-bind:class="{'block m-6': section === 3 , 'hidden': section != 3}">
-            <span>3EME ONGLET</span>
+            <span>Souscrivez a un abonnement {{ typeUser === 2 ? 'Entreprise afin de pouvoir postuler des appels d\'offres et travailler avec des freelancers du monde entier' : 'Freelance afin de pouvoir candidater et trouver vos futures missions' }} </span>
+            <PricingCard :is_company="typeUser === 2 ? true : false" :user="user" />
+            <div class="flex justify-center p-5">
+                <router-link
+                  to="/"
+                  class="text-sm text-gray-600 dark:text-gray-600 hover:underline first-letter"
+                  >Retour a la page d'accueil</router-link
+                >
+            </div>
         </div>
 
 
@@ -65,7 +74,7 @@
 
 <script>
 import InfosProfile from '../Profile/components/InfosProfile.vue';
-
+import PricingCard from '../Subscription/PricingCard.vue'
 export default {
     data() {
         return {
@@ -82,8 +91,11 @@ export default {
             this.typeUser = type;
             console.log(this.typeUser);
             this.nextStep(this.section + 1);
+        },
+        sendData: function(step){
+            this.section = step
         }
     },
-    components: { InfosProfile }
+    components: { InfosProfile , PricingCard }
 }
 </script>

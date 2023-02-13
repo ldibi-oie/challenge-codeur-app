@@ -32,8 +32,34 @@
     <Navbar />
     <main class="flex flex-col items-center">
       <div class="relative  max-w-5xl">
-        <section v-if="isCompany" class="dark:bg-gray-900 w-full px-6 pt-12">
-          <div class="px-4 mx-auto max-w-screen-xl sm:py-8 lg:px-6">
+        <div v-if="!user" class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+          <div class="text-center">
+            <h1
+              class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
+            >
+              Trouver vos freelances
+            </h1>
+            <p class="mt-6 text-lg leading-8 text-gray-600">
+              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
+              lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
+              fugiat aliqua.
+            </p>
+            <div class="mt-10 flex items-center justify-center gap-x-6">
+              <router-link
+                to="/login"
+                class="rounded-md bg-red-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                >Get started</router-link
+              >
+              <router-link
+                to="/about"
+                class="text-base font-semibold leading-7 text-gray-900"
+                >Learn more <span aria-hidden="true">→</span></router-link
+              >
+            </div>
+          </div>
+        </div>
+        <section class="dark:bg-gray-900 w-full px-6 pt-12">
+          <div class="px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
             <div class="max-w-screen-md mb-8 lg:mb-16">
               <h2
                 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white"
@@ -163,39 +189,17 @@
 
       <div class="flex px-6 flex-row  w-full max-w-5xl my-10">
         <div class="px-3 w-64 rounded">
-          <list-group>
-            <div
-              class="flex items-center justify-center h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-              v-if="categories.length === 0"
-            >
-              <div
-                class="px-3 py-1 text-xs font-medium leading-none text-center text-red-800 bg-red-200 rounded-full animate-pulse dark:bg-red-900 dark:text-red-200"
-              >
-                loading...
-              </div>
+          <list-group >
+            <div class="flex items-center justify-center h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" v-if="categories.length === 0">
+              <div class="px-3 py-1 text-xs font-medium leading-none text-center text-red-800 bg-red-200 rounded-full animate-pulse dark:bg-red-900 dark:text-red-200">loading...</div>
             </div>
-            <list-group-item
-              v-for="category in categories"
-              :key="category['@id']"
-              @click="selectCategory(category.id)"
-            >
+            <list-group-item v-for="category in categories" @click="selectCategory(category['@id'])">
               <template #prefix>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
                 </svg>
               </template>
-              {{ category?.name }}
+              {{category?.name}}
             </list-group-item>
           </list-group>
         </div>
@@ -301,6 +305,18 @@ export default {
     },
 
     selectCategory(category) {
+      console.log(category);
+      this.offersFilter = this.offers.filter(
+        (offer) => offer.category === category
+      );
+
+      if(category === '/api/categories/1'){
+        this.offersFilter = this.offers
+      }
+    },
+
+    viewOffer: function (id) {
+      this.$router.push({ name: "offerId", params: { id } });
       console.log("category_id", category);
       this.getOffersRequest(category).then((res)=>{
         console.log(res);

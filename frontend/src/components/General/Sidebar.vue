@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { logout } from '../../stores/usersFunction'
+import { logout , getLoggedUser} from '../../stores/usersFunction'
 const userNormalParams = [
   { name: 'Mes informations' , value: 'infos' },
   // { name: 'Devenir Premium' , value: 'premium'},
@@ -67,6 +67,15 @@ const freelanceParams = [
  { name: 'Mon abonnement' , value: 'abonnement' },
 ]
 
+const companyParams = [
+ { name: 'Mes informations' ,  value: 'infos'},
+ { name: 'Mes evaluations' , value: 'evaluations' },
+ { name: 'Mes offres en cours' , value: 'offres' },
+ { name: 'Ajouter une offre' , value: 'Ajouter une offre' },
+ { name: 'Mes projets realisés' , value: 'projets' },
+ { name: 'Mon abonnement' , value: 'abonnement' },
+]
+
 const ROLE_FREELANCER = "ROLE_FREELANCER"
 const ROLE_COMPANY = "ROLE_COMPANY"
 
@@ -75,16 +84,19 @@ export default {
 
   data(){
     return {
+      data: '',
       isLoading: this.role ? true : false,
-      // settings: this.role?.includes(ROLE_COMPANY) ? freelanceParams : 
-      //   this.role?.includes(ROLE_FREELANCER) ? freelanceParams :
-      //   userNormalParams
-      settings: freelanceParams
+      settings: JSON.parse(localStorage.getItem('user')).roles?.includes(ROLE_COMPANY) ? companyParams : 
+        JSON.parse(localStorage.getItem('user')).roles?.includes(ROLE_FREELANCER) ? freelanceParams :
+        userNormalParams
+      // settings: freelanceParams
     }
   }
   ,
+  
   mounted() {
     console.log(this.role , this.role?.includes(ROLE_COMPANY) , this.role?.includes(ROLE_FREELANCER))
+    this.data = getLoggedUser()
   },
   methods: {
     selectOnglet: async function(value){

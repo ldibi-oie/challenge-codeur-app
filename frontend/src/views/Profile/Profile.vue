@@ -5,22 +5,18 @@
       <!-- <VerticalBar /> -->
       <div
         id="main-content"
-        class="relative w-full h-full ml-18 overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900"
+        class="relative w-full h-full ml-18  overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900"
       >
-        <Sidebar :role="user.roles" @selectOnglet="sendData" />
-         <!-- {{ user }} -->
+        <Sidebar :role="user?.roles" @selectOnglet="sendData"/>
+        {{ user }}
 
         <main>
-          <div class="px-4 pt-6 xl:gap-4 dark:bg-gray-900">
-            <div class="mb-4 col-span-full xl:mb-2">
-              <div
-                class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                v-if="user?.roles?.length === 1"
-                role="alert"
-              >
-                <span class="font-medium">Mode basic user!</span> Sourcrivez a
-                un abonnement Prenium Freelance ou Company pour commencer vos
-                premiers projets
+          <div
+            class="px-4 pt-6 xl:gap-4 dark:bg-gray-900"
+          >
+            <div class="mb-4 col-span-full xl:mb-2" >
+              <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" v-if="user?.roles?.length === 1" role="alert">
+                <span class="font-medium">Mode basic user!</span> Sourcrivez a un abonnement Prenium Freelance ou Company pour commencer vos premiers projets 
               </div>
               <h1
                 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
@@ -29,56 +25,45 @@
               </h1>
             </div>
             <!-- Right Content -->
-
-            <div
-              v-bind:class="{
-                hidden: section != 'offres',
-                '': section === 'offres',
-              }"
-            >
-              <MyOffers :offers="user.freelance?.offers" />
+            
+            <div v-bind:class="{'hidden' : section != 'offres', '': section === 'offres'}">
+              <MyOffers 
+              :user="user"
+              :offers="offers"
+              />
             </div>
 
-            <div
-              v-bind:class="{
-                hidden: section != 'projets',
-                '': section === 'projets',
-              }"
-            >
-              <MyProjects :projets="user.freelance?.offers" />
+            <div v-bind:class="{'hidden' : section != 'projets', '': section === 'projets'}">
+              <MyProjects 
+                :projets="user.roles?.includes(ROLE_FREELANCER) ? user.freelance?.offers :
+                  user.roles?.includes(ROLE_COMPANY) ? user.company?.offers : []"
+              />
             </div>
-
-            <div
-              v-bind:class="{
-                hidden: section != 'infos',
-                '': section === 'infos',
-              }"
-            >
-              <SubscriptionSection
+            
+            <div v-bind:class="{'hidden' : section != 'infos', '': section === 'infos'}">
+              <SubscriptionSection 
                 v-if="user?.subscriptions?.length > 1"
                 :user="user"
               />
 
-              <InfosProfile
-                :type="
-                  user.hasOwnProperty('freelance') === true
-                    ? 1
-                    : user.hasOwnProperty('company') === true
-                    ? 2
-                    : null
-                "
+              <InfosProfile 
+                :type="user.hasOwnProperty('freelance') === true ? 1 :
+                user.hasOwnProperty('company') === true ? 2 : null"
                 :user="user"
               />
             </div>
 
-            <div
-              v-bind:class="{
-                hidden: section != 'evaluations',
-                '': section === 'evaluations',
-              }"
-            >
-              <MyComments />
+            <div v-bind:class="{'hidden' : section != 'evaluations', '': section === 'evaluations'}">
+              <MyComments 
+              />
             </div>
+
+            <div v-bind:class="{'hidden' : section != 'Ajouter une offre', '': section === 'Ajouter une offre'}">
+              <AddOffer
+
+              />
+            </div>
+            
           </div>
         </main>
       </div>
@@ -95,12 +80,17 @@ import SubscriptionSection from "./components/SubscriptionSection.vue";
 import MyOffers from "./components/MyOffers.vue";
 import MyProjects from "./components/MyProjects.vue";
 import MyComments from "./components/MyComments.vue";
+import AddOffer from "./components/AddOffer.vue"
+import { fetchOffers } from "../../stores/offers";
+const ROLE_FREELANCER = "ROLE_FREELANCER"
+const ROLE_COMPANY = "ROLE_COMPANY"
 
 export default {
   data() {
     return {
       user: "",
       section: "infos",
+      offers: []
     };
   },
   mounted() {
@@ -111,12 +101,26 @@ export default {
       getUser().then((r) => {
         console.log(r);
         this.user = r[0];
+        this.getOffersById();
       });
+
+    },
+
+    getOffersById: async function() {  
+      const id = this.user && this.user?.company ? this.user?.company?.id : 
+        this.user && this.user?.freelance ? this.user?.freelance?.id : null
+      console.log('cherche offer pour id ' + id);
+      await fetchOffers({
+          company_id: id
+      }).then((response) => {
+          this.offers = response
+          console.log
+      })
     },
 
     sendData(data) {
-      this.section = data;
-    },
+      this.section = data
+    }
   },
   components: {
     Sidebar,
@@ -126,6 +130,7 @@ export default {
     MyOffers,
     MyProjects,
     MyComments,
-  },
+    AddOffer
+},
 };
 </script>

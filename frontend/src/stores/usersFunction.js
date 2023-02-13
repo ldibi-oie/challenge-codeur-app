@@ -2,6 +2,7 @@
 import requestApi from "../axios";
 import storage from "./storage";
 
+import { popUpError, popUpInfo } from '../stores/notyf'
 export const getLoggedUser = async () => {
   return storage.getItem("user");
 };
@@ -42,13 +43,23 @@ export const login = (state) => {
       state.token = res.data.token;
       // get user full object
       await storage.setItem("token", res.data.token);
-      await getUser(res.data.user?.id);
+      await getUser(res.data.user?.id).then((result) => {
 
-      if (res.data.user?.isVerified === false) {
-        state.$router.push({ name: "waiting" });
-      } else {
-        state.$router.push({ name: "profile" });
-      }
+        // 
+        console.log(result)
+        const role = isCompany(res.data.user) || isFreelance(res.data.user)
+        console.log(role)
+        if (res.data.user?.isVerified === false) {
+          state.$router.push({ name: "waiting" });
+        } 
+        if(!role) {
+          state.$router.push({ name: "verify_user" });
+        } else {
+          state.$router.push({ name: "profile" });
+        }
+      })
+
+      
     })
     .catch((err) => {
       state.error = err;
@@ -86,6 +97,34 @@ export const sendVerificationEmail = (data) => {
       this.error = err;
     });
 };
+
+export const sendResetPassword = async (email) => {
+    var r;
+    await requestApi.get("/api/users?email=" + email).then((res) => {
+        console.log(res)
+        const data = res.data["hydra:member"]
+        if(data.length === 0 ){
+            popUpError('Cette email n\'existe pas !')
+            r = false
+        } else {
+            requestApi.post("/send/reset/password" , {id: data[0].id , email})
+            .then((res) => {
+                // this.token = res.data.token
+                console.log(res)
+                if(res){
+                    popUpInfo('Un email a ete envoye a ' + email)
+                    r = true;
+                }
+            })
+            .catch(err => {
+                this.error = err
+                r = err.message
+            }) 
+        }
+           
+    })    
+    return r;
+}
 
 export const ResendVerificationEmail = async (data) => {
   var r = "";

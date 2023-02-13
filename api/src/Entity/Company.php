@@ -32,7 +32,7 @@ use App\Entity\Traits\TimestampableTrait;
         new Delete(),
     ],
     normalizationContext: ['groups' => ['user', 'timestampable']],
-    denormalizationContext: ['groups' => ['user']],
+    // denormalizationContext: ['groups' => ['user']],
    
 )]
 class Company
@@ -64,6 +64,7 @@ class Company
     #[ApiProperty(types: ['https://schema.org/image'])]
     public ?MediaObject $logo= null;
     
+    #[Groups('user')]
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
     private Collection $offers;
     

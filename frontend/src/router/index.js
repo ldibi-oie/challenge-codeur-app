@@ -8,6 +8,8 @@ import Subscription from "../views/Subscription/Subscription.vue";
 import VerificationInfos from "../views/Stepper/Main.vue";
 import ErrorPage from "../views/ErrorPage.vue";
 import OfferId from "../views/Offer/OfferId.vue";
+import resetPassword from '../components/General/resetPassword.vue'
+import resetForm from '../components/General/resetForm.vue'
 import AdminRoutes from "./admin.js";
 import OfferScrapperView from "../views/OfferScrapper/OfferScrapperView.vue";
 import CompanyAddOfferView from "../views/company/form/CompanyAddOfferView.vue";
@@ -85,7 +87,16 @@ const router = createRouter({
       name: "offerId",
       component: OfferId,
     },
-    ...AdminRoutes,
+    {
+      path: '/reset/password',
+      name: 'resetPassword',
+      component: resetPassword
+    },
+    {
+      path: '/reset/password/form',
+      name: 'resetForm',
+      component: resetForm
+    },
     {
       path: "/scrapper-create-offer",
       name: "scrapper-create-offer",
@@ -95,8 +106,9 @@ const router = createRouter({
       path: "/scrapper-create-offer-form",
       name: "scrapper-create-offer-form",
       component: OfferScrapperForm,
-    }
-  ],
+    },
+    ...AdminRoutes
+  ]
 });
 
 export default router;
