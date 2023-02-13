@@ -1,6 +1,7 @@
 /* eslint-disable no-prototype-builtins */
 import requestApi from "../axios";
 import storage from "./storage";
+import { popUpSuccess } from "../stores/notyf";
 
 import { popUpError, popUpInfo } from '../stores/notyf'
 export const getLoggedUser = async () => {
@@ -267,3 +268,45 @@ export const getInvoicesBySubscriptionId = async (options) => {
   console.log("this.invoices0", invoices);
   return invoices.data["hydra:member"];
 };
+// export const addCandidate = async (selectedCandidate) => {
+//   console.log("adding candidate for" , selectedCandidate)
+//   await requestApi.patch("/api/offers/" + selectedCandidate.id , selectedCandidate.selectedCandidate , {
+//     headers : {
+//         "Content-Type" : "application/merge-patch+json",
+//     }
+//   })
+//   .then(() => {
+//     popUpSuccess('Siret soumis !')
+//     r = true
+//   })
+//   .catch((err) => {
+//     popUpError(err)
+//     r = false
+//   })
+// }
+
+// add selected candidates
+export const addCandidate = async (idcandidat, offerid) => {
+  var r;
+  console.log("data.offer_cliched_id", offerid)
+  const v = {
+      "selectedCandidate": idcandidat,
+  }
+
+  //console.log("selected_candidate_id", data)
+  console.log("AJOUT D'UN CANDIDAT  SELECTED EN COURS ....", v)
+  await requestApi.patch("/api/offers/" + offerid, v, {
+  headers : {
+      "Content-Type" : "application/merge-patch+json",
+  }})
+  .then((res) => {
+  console.log(" res.data in ..", res.data)
+  popUpSuccess("Vous venez de selectionner un candidat")
+  window.location.reload();
+  r = res
+  })
+  .catch(err => {
+      console.log("the error", err)
+  })
+  return r;
+}

@@ -61,17 +61,17 @@ const userNormalParams = [
 const freelanceParams = [
  { name: 'Mes informations' ,  value: 'infos'},
  { name: 'Mes evaluations' , value: 'evaluations' },
- { name: 'Mes offres en cours' , value: 'offres' },
- { name: 'Mes projets realisés' , value: 'projets' },
+ { name: 'Mes offres ' , value: 'offres' },
+//  { name: 'Mes projets realisés' , value: 'projets' },
  { name: 'Mon abonnement' , value: 'abonnement' },
 ]
 
 const companyParams = [
  { name: 'Mes informations' ,  value: 'infos'},
  { name: 'Mes evaluations' , value: 'evaluations' },
- { name: 'Mes offres en cours' , value: 'offres' },
+ { name: 'Mes offres ' , value: 'offres' },
  { name: 'Ajouter une offre' , value: 'Ajouter une offre' },
- { name: 'Mes projets realisés' , value: 'projets' },
+//  { name: 'Mes projets realisés' , value: 'projets' },
  { name: 'Mon abonnement' , value: 'abonnement' },
 ]
 

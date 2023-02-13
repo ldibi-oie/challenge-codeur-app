@@ -74,6 +74,7 @@ class Freelance
     #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'freelances', cascade: ['persist'])]
     private Collection $keywords;
 
+    #[Groups('user' , 'freelance')]
     #[ORM\Column(nullable: true)]
     private ?bool $isSiretVerified = null;
 

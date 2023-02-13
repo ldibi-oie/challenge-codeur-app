@@ -1,5 +1,4 @@
 <template>
-  <div>
     <Navbar />
     <div style="max-width: 950px;"
       class="container px-4 pt-8 mx-auto  lg:px-0 dark:bg-gray-900 flex flex-col items-center">
@@ -24,15 +23,12 @@
               loading...
             </div>
           </div>
-        </div>
-        <!-- candidates profile with user avatar -->
-        <div style="min-width: 250px;" v-if="isCompany">
-          <div class="flex flex-col shadow ml-4">
-            <div class="w-full">
-              <div v-for="candidate in candidates" :key="candidate.id"
-                class="flex flex-row px-2 py-2 text-xs font-medium mr-2">
-                <div
-                  class="flex p-4 w-8 h-8 mx-4 rounded-full items-center justify-center  rounded-full text-purple-700 bg-gray-200">
+          <!-- candidates profile with user avatar -->
+          <div style="min-width: 250px;" v-if="isCompany">
+            <div class="flex flex-col shadow ml-4">
+              <div class="w-full">
+                <div v-for="candidate in candidates" :key="candidate.id" class="flex flex-row px-2 py-2 text-xs font-medium mr-2">
+                <div class="flex p-4 w-8 h-8 mx-4 items-center justify-center  rounded-full text-purple-700 bg-gray-200" >
                   <p>{{ candidate.name[0] }}{{ candidate.surname[0] }}</p>
                 </div>
                 <div class="flex flex-row items-center">
@@ -45,8 +41,7 @@
                   <div class="flex flex-row items-center">
                     <p class="text-purple-700">Select candidate</p>
                   </div>
-                  <div
-                    class="flex p-4 w-4 h-4 mx-4 rounded-full items-center justify-center  rounded-full text-purple-700 bg-purple-200">
+                  <div class="flex p-4 w-4 h-4 mx-4  items-center justify-center  rounded-full text-purple-700 bg-purple-200" >
                     <p>&#xbb;</p>
                   </div>
                 </button>

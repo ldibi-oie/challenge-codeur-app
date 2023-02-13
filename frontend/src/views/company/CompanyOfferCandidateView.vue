@@ -49,7 +49,7 @@
                         <div class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> Candidatures</div>
                     </div>
                     <form @submit="sendCandidate" >
-                        <div v-for="candidates in item.candidates" class="flex items-center justify-between border border-gray-200 rounded">
+                        <div v-for="item in item.candidates" class="flex items-center justify-between border border-gray-200 rounded">
                                 <div>
                                     <div class="mb-1 font-normal text-gray-700 dark:text-gray-400"> <span class="text-2xs font-bold tracking-tight text-gray-900 dark:text-white"> Nom :</span> {{ candidates.name }}  née en : {{ candidates.birthday }}</div>
                                     <div class="mb-1 font-normal text-gray-700 dark:text-gray-400"> 

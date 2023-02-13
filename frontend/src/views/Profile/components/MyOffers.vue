@@ -1,4 +1,4 @@
-<template lang="">
+<template>
     <div>
           <div class="flex flex-col justify-center my-5" >
             <div role="status" class="flex flex-col justify-center" v-if="!offers">
@@ -43,7 +43,8 @@
                                     </div>
                                 </div>
                                 
-                              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700" v-for="item in offers">
+                                
+                              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700" v-for="item in offers" @click="viewOfferDetail(item , item.id)">
                                   
                                   <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                                       <div class="text-base font-semibold text-gray-900 dark:text-white">{{item.title}}</div>
@@ -78,12 +79,16 @@
                                       </router-link>
                                   </td>
                               </tr>
-                                                       
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+
+            <div class="p-5 items-center w-full">
+              <ManageOffer :details="viewDetail" />
+            </div>
+
         </div>
 
     </div>
@@ -91,19 +96,34 @@
 <script>
 import { fetchOffers } from '../../../stores/offers';
 import storage from '../../../stores/storage';
+import ManageOffer from './ManageOffer.vue';
+import {getOffersCandidatesByOfferId} from "../../../stores/usersFunction"
 
 export default {
-    props: ['user' , 'offers'],
+    props: ["user", "offers"],
     data() {
         return {
-            id : storage.getItem('user').id,
-            isLoading: null
-        }
-    } ,
-    
+            id: storage.getItem("user").id,
+            isLoading: null,
+            viewDetail: ''
+        };
+    },
     methods: {
-        
-    }
+      viewOfferDetail: function(offer , offerId) {
+        console.log(offer)
+        offer["offerId"] = offerId;
+        this.viewDetail = offer
+        this.getOffers(offer.id)
+      },
+
+      getOffers: async function(id){
+        await getOffersCandidatesByOfferId({offer_id : id}).then((res) => {
+            this.viewDetail["candidates"] = res
+        })
+      }
+
+    },
+    components: { ManageOffer }
 }
 </script>
 <style lang="">
