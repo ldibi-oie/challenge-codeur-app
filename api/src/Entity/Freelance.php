@@ -23,6 +23,7 @@ class Freelance
 
     use TimestampableEntity;
 
+    #[Groups('user')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

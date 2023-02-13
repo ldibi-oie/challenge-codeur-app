@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
+
 #[Vich\Uploadable]
 #[ORM\Entity]
 #[ApiResource(
@@ -59,9 +60,11 @@ class MediaObject
 
     #[Vich\UploadableField(mapping: "media_object", fileNameProperty: "filePath")]
     #[Assert\NotNull(groups: ['media_object_create'])]
+    #[Groups(['media_object:read'])]
     public ?File $file = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['media_object:read'])]
     public ?string $filePath = null;
 
     public function getId(): ?int

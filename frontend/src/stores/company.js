@@ -1,6 +1,7 @@
 
 
 import requestApi from '../axios';
+import { popUpSuccess } from './notyf';
 const url = "http://localhost:8741";
 
 export const setCompanyToUser = async (data) => {
@@ -85,7 +86,6 @@ export const addOffre = async (data, company_id) => {
         "salary": data.salary,
         "status": data.status,
     }
-
     console.log("CREATION D'UNE OFFRE EN COURS ....")
 
     await requestApi.post(url+"/api/offers" , v)
@@ -116,7 +116,30 @@ export const getOffersByCompany = async (id) => {
     return r;
 }
 
+// add selected candidates
+export const addSelectedCandidates = async (data) => {
+    var r;
+    console.log("data.offer_cliched_id", data)
+    const v = {
+        "selectedCandidate": "/api/freelances/"+data.selected_candidate_id,
+    }
 
+    //console.log("selected_candidate_id", data)
+    console.log("AJOUT D'UN CANDIDAT  SELECTED EN COURS ....", v)
+    await requestApi.patch(url+"/api/offers/" + data.offer_cliched_id, v, {
+    headers : {
+        "Content-Type" : "application/merge-patch+json",
+    }})
+    .then((res) => {
+    console.log(" res.data in ..", res.data)
+    popUpSuccess("Vous venez de selectionner un candidat")
+    r = res
+    })
+    .catch(err => {
+        console.log("the error", err)
+    })
+    return r;
+}
 
 // get offers 
 export const getOffers = async () => {
