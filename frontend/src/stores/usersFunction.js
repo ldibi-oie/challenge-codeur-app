@@ -49,13 +49,18 @@ export const login = (state) => {
       getUser(res?.data?.user?.id).then((result)=>{
         console.log("reshere1", result)
         const is_registered_user = isRegisteredUser(result[0])
+        const is_admin = result[0]?.roles?.includes("ROLE_ADMIN")
         console.log("is_registered_user", is_registered_user)
         if (res.data.user?.isVerified === false) {
           state.$router.push({ name: "waiting" });
         }
-        if(is_registered_user) {
+        if(is_admin) {
+          state.$router.push({ name: "admin" });
+        }
+        else if(is_registered_user) {
           state.$router.push({ name: "profile" });
-        } else {
+        }
+        else {
           state.$router.push({ name: "verify_user" });
         }
       });
