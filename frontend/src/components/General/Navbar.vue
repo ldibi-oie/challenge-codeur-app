@@ -140,7 +140,7 @@ export default {
       isLogged: false,
       isRegisteredUser: false,
       isCompany: false,
-      user: null,
+      user: localStorage.getItem('user') ? localStorage.getItem('user') : null,
       loading: false,
     };
   },
