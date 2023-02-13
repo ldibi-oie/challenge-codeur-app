@@ -80,8 +80,8 @@ export default {
                     this.user?.company ? this.user?.company?.surname : '',
                 birthday: this.user?.freelance ? this.user?.freelance?.birthday :
                     this.user?.company ? this.user?.company?.birthday : '',
-                organization: JSON.parse(localStorage.getItem('user'))?.company.name ? JSON.parse(localStorage.getItem('user'))?.company.name : '',
-                address: JSON.parse(localStorage.getItem('user'))?.company.address ? JSON.parse(localStorage.getItem('user'))?.company.address : '',
+                organization: JSON.parse(localStorage.getItem('user'))?.company?.name ? JSON.parse(localStorage.getItem('user'))?.company.name : '',
+                address: JSON.parse(localStorage.getItem('user'))?.company?.address ? JSON.parse(localStorage.getItem('user'))?.company.address : '',
             }
         };
     },
