@@ -270,7 +270,7 @@ export default {
       this.user = data;
       this.userId = data?.id;
       console.log("dataherebro", data)
-      this.isCompany = data === null ? isCompany(data) : false;
+      this.isCompany =  isCompany(this.user) || false;
     })
   },
   methods: {
