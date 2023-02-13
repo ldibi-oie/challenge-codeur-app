@@ -99,21 +99,13 @@
             </button>
           </div>
           <div v-else>
-            <div class="flex items-center" v-if="isLogged === true && !user?.roles.includes('ROLE_ADMIN')">
+            <div class="flex items-center" v-if="isLogged === true">
               <router-link
                   to="/profile"
                   class="rounded-md bg-red-600 px-3.5 py-1.5 text-xs font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
               >Mon compte</router-link
               >
             </div>
-            <div class="flex items-center" v-if="isLogged === true && user?.roles.includes('ROLE_ADMIN')">
-              <router-link
-                to="/admin"
-                class="rounded-md bg-red-600 px-3.5 py-1.5 text-xs font-semibold leading-7 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-              >Dashboard Admin</router-link
-              >
-            </div>
-            
             <div class="flex items-center" v-if="isLogged === false">
               <router-link
                   to="/login"
@@ -137,7 +129,7 @@ import {
 export default {
   data() {
     return {
-      isLogged: false,
+      isLogged: localStorage.getItem('user') ? true : false,
       isRegisteredUser: false,
       isCompany: false,
       user: localStorage.getItem('user') ? localStorage.getItem('user') : null,
@@ -152,6 +144,7 @@ export default {
       this.loading = true;
       getUser().then((r) => {
         this.user = r[0];
+
         this.isLogged = this.user != null ? true : false;
         this.isRegisteredUser = isRegisteredUser(this.user);
         this.isCompany = isCompany(this.user);

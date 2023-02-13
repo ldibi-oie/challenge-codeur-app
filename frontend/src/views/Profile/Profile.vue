@@ -8,9 +8,9 @@
         class="relative w-full h-full ml-18  overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900"
       >
         <Sidebar :role="user?.roles" @selectOnglet="sendData"/>
-        {{ user }}
+        <!-- {{ user }} -->
 
-        <main>
+        <main class="p-4 sm:ml-18">
           <div
             class="px-4 pt-6 xl:gap-4 dark:bg-gray-900"
           >
