@@ -8,14 +8,13 @@
         class="relative w-full h-full ml-18  overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900"
       >
         <Sidebar :role="user?.roles" @selectOnglet="sendData"/>
-        {{ user }}
 
         <main>
           <div
             class="px-4 pt-6 xl:gap-4 dark:bg-gray-900"
           >
             <div class="mb-4 col-span-full xl:mb-2" >
-              <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" v-if="user?.roles?.length === 1" role="alert">
+              <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" v-if="user?.subscriptions?.length === 0" role="alert">
                 <span class="font-medium">Mode basic user!</span> Sourcrivez a un abonnement Prenium Freelance ou Company pour commencer vos premiers projets 
               </div>
               <h1
@@ -29,14 +28,13 @@
             <div v-bind:class="{'hidden' : section != 'offres', '': section === 'offres'}">
               <MyOffers 
               :user="user"
-              :offers="user?.company?.offers ? user?.company?.offers : user?.freelance ? user?.freelance.offers : this.offers"
+              :offers="offers"
               />
             </div>
 
             <div v-bind:class="{'hidden' : section != 'projets', '': section === 'projets'}">
               <MyProjects 
-                :projets="user.roles?.includes(ROLE_FREELANCER) ? user.freelance?.offers :
-                  user.roles?.includes(ROLE_COMPANY) ? user.company?.offers : []"
+                :projets="offers"
               />
             </div>
             
@@ -101,7 +99,7 @@ export default {
       getUser().then((r) => {
         console.log(r);
         this.user = r[0];
-        // this.getOffersById();
+        this.getOffersById();
       });
 
     },

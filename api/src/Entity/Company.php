@@ -73,7 +73,8 @@ class Company
     #[ORM\OneToOne(inversedBy: 'company', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
+    
+    #[Groups('user')]
     #[ORM\Column(nullable: true)]
     private ?bool $isSiretVerified = null;
 

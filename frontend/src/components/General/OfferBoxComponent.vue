@@ -35,7 +35,7 @@
               <button  @click="createOffer(jobOffer)"  class="py-1 px-8 rounded bg-green-200 flex items-center">Choose</button>
             </div>
             <div v-if="isRegisteredUser && (isScrapper===false)" class="flex flex-row ml-4 my-4 ">
-              <button  @click="viewDetail(jobOffer)"  class="rounded-lg shadow text-xs py-2 px-6 bg-gray-100 flex items-center">See More</button>
+              <button  @click="viewDetail(jobOffer)"  class="rounded-lg shadow text-xs py-2 px-6 bg-gray-100 flex items-center">Candidater pour l'offre</button>
             </div>
 
             <div v-if="jobOffer.job_apply_link" class="text-xs px-4 font-semibold">
@@ -71,7 +71,7 @@
 <script>
 import moment from 'moment';
 import ReadMore from '../../components/General/ReadMore.vue';
-import { isRegisteredUser , getLoggedUser} from '../../stores/usersFunction.js';
+import { isRegisteredUser , getLoggedUser , addCandidate} from '../../stores/usersFunction.js';
 
 
  export default {
@@ -101,8 +101,8 @@ import { isRegisteredUser , getLoggedUser} from '../../stores/usersFunction.js';
     createOffer(jobOffer) {
       this.$router.push({ name: "scrapper-create-offer-form", query: { offerData: JSON.stringify(jobOffer)} });
     },
-    viewDetail(jobOffer) {
-    this.$router.push({ name: "offerId", params: { id: jobOffer.job_id } });
+    async viewDetail(jobOffer) {
+      // await addCandidate()
     },
     moment,
     initialize: async function () {

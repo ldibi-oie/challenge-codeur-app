@@ -9,7 +9,6 @@
                 </svg>
                 <span class="sr-only">Loading...</span>
             </div> 
-            {{ type }}
             <form @submit.prevent="setInfos" v-if="user ">
                 <h3 class="mb-4 text-xl font-semibold dark:text-white">{{type ? type === 1 ? 'Freelance' : 'Company' : 'Mes informations' }}</h3>
 

@@ -1,6 +1,5 @@
 <template>
     <div class="mx-auto p-6 container ">
-        {{ user }}
         <ol class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 justify-between">
             <li v-on:click="nextStep(1)" v-bind:class="{'flex items-center text-red-600 dark:text-red-500 space-x-2.5': section === 1 , 'flex items-center text-gray-600 dark:text-gray-500 space-x-2.5': section != 1}">
                 <span v-bind:class="{'flex items-center justify-center w-8 h-8 border border-red-600 rounded-full shrink-0 dark:border-red-500': section === 1 , 'flex items-center justify-center w-8 h-8 border border-gray-600 rounded-full shrink-0 dark:border-gray-500': section != 1}">

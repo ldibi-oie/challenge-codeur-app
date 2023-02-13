@@ -244,3 +244,20 @@ export const getOffersCommentsByOfferId = async (options) => {
   });
   return offers.data["hydra:member"];
 }
+
+export const addCandidate = async (selectedCandidate) => {
+  console.log("adding candidate for" , selectedCandidate)
+  await requestApi.patch("/api/offers/" + selectedCandidate.id , selectedCandidate.selectedCandidate , {
+    headers : {
+        "Content-Type" : "application/merge-patch+json",
+    }
+  })
+  .then(() => {
+    popUpSuccess('Siret soumis !')
+    r = true
+  })
+  .catch((err) => {
+    popUpError(err)
+    r = false
+  })
+}
