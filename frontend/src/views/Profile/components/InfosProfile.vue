@@ -33,10 +33,10 @@
                         <input type="email" name="email" disabled :value="user.email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="example@company.com" >
                     </div>
                     
-                    <div class="col-span-6 sm:col-span-3">
+                    <!-- <div class="col-span-6 sm:col-span-3">
                         <label for="birthday" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthday</label>
                         <input type="date" name="birthday" v-model="infos.birthday" id="birthday" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="15/08/1990" >
-                    </div>
+                    </div> -->
 
                     <div class="col-span-6 sm:col-span-3">
                         <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Adresse</label>
@@ -80,7 +80,8 @@ export default {
                     this.user?.company ? this.user?.company?.surname : '',
                 birthday: this.user?.freelance ? this.user?.freelance?.birthday :
                     this.user?.company ? this.user?.company?.birthday : '',
-                organization: '',
+                organization: JSON.parse(localStorage.getItem('user'))?.company.name ? JSON.parse(localStorage.getItem('user'))?.company.name : '',
+                address: JSON.parse(localStorage.getItem('user'))?.company.address ? JSON.parse(localStorage.getItem('user'))?.company.address : '',
             }
         };
     },
@@ -114,13 +115,13 @@ export default {
                         // update
                         await updateFreelanceToUser(this.infos).then((st) => {
                             console.log(st)
-                            popUpSuccess('Vos donnees ont ete mis a jour !')
+                            this.$emit('nextStep' , 3)
                         })
                     } else {
                         //create
                         await setFreelanceToUser(this.infos).then((st) => {
                             console.log(st)
-                            popUpSuccess('Vos donnees ont ete enregistré !')
+                            this.$emit('nextStep' , 3)
                         })
                     }
                 }
@@ -130,14 +131,13 @@ export default {
                         // update
                         await updateCompanyToUser(this.infos).then((st) => {
                             console.log(st)
-                            popUpSuccess('Vos donnees ont ete mis a jour !')
-
+                            this.$emit('nextStep' , 3)
                         })
                     } else {
                         //create
                         await setCompanyToUser(this.infos).then((st) => {
                             console.log(st)
-                            popUpSuccess('Vos donnees ont ete enregistré !')
+                            this.$emit('nextStep' , 3)
                         })
                     }
 

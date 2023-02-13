@@ -7,7 +7,7 @@
         id="main-content"
         class="relative w-full h-full ml-18  overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900"
       >
-        <Sidebar :role="user.roles" @selectOnglet="sendData"/>
+        <Sidebar :role="user?.roles" @selectOnglet="sendData"/>
         {{ user }}
 
         <main>
@@ -28,13 +28,15 @@
             
             <div v-bind:class="{'hidden' : section != 'offres', '': section === 'offres'}">
               <MyOffers 
-                :offers="user.freelance?.offers"
+              :user="user"
+              :offers="offers"
               />
             </div>
 
             <div v-bind:class="{'hidden' : section != 'projets', '': section === 'projets'}">
               <MyProjects 
-                :projets="user.freelance?.offers"
+                :projets="user.roles?.includes(ROLE_FREELANCER) ? user.freelance?.offers :
+                  user.roles?.includes(ROLE_COMPANY) ? user.company?.offers : []"
               />
             </div>
             
@@ -55,6 +57,12 @@
               <MyComments 
               />
             </div>
+
+            <div v-bind:class="{'hidden' : section != 'Ajouter une offre', '': section === 'Ajouter une offre'}">
+              <AddOffer
+
+              />
+            </div>
             
           </div>
         </main>
@@ -72,12 +80,17 @@ import SubscriptionSection from "./components/SubscriptionSection.vue";
 import MyOffers from "./components/MyOffers.vue";
 import MyProjects from "./components/MyProjects.vue";
 import MyComments from "./components/MyComments.vue";
+import AddOffer from "./components/AddOffer.vue"
+import { fetchOffers } from "../../stores/offers";
+const ROLE_FREELANCER = "ROLE_FREELANCER"
+const ROLE_COMPANY = "ROLE_COMPANY"
 
 export default {
   data() {
     return {
       user: "",
-      section: "infos"
+      section: "infos",
+      offers: []
     };
   },
   mounted() {
@@ -88,7 +101,21 @@ export default {
       getUser().then((r) => {
         console.log(r);
         this.user = r[0];
+        this.getOffersById();
       });
+
+    },
+
+    getOffersById: async function() {  
+      const id = this.user && this.user?.company ? this.user?.company?.id : 
+        this.user && this.user?.freelance ? this.user?.freelance?.id : null
+      console.log('cherche offer pour id ' + id);
+      await fetchOffers({
+          company_id: id
+      }).then((response) => {
+          this.offers = response
+          console.log
+      })
     },
 
     sendData(data) {
@@ -102,7 +129,8 @@ export default {
     SubscriptionSection,
     MyOffers,
     MyProjects,
-    MyComments
+    MyComments,
+    AddOffer
 },
 };
 </script>

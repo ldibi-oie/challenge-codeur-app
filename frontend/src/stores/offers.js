@@ -1,6 +1,6 @@
 import requestApi from "../axios";
 import {getToken} from "./usersFunction"
-
+import { popUpError , popUpSuccess } from "./notyf";
 export const fetchOffers = async (options) => {
   const {
     company_id= "",
@@ -21,6 +21,20 @@ export const fetchOffer = async (id, state) => {
     state.offer = offer.data;
   } catch (error) {
     state.error = error;
+  } finally {
+    state.loading = false;
+  }
+};
+
+export const createOffer = async (state) => {
+  try {
+    state.loading = true;
+    const offer = await requestApi.post("/api/offers" , state);
+    state.offer = offer.data;
+    popUpSuccess('Offre créée avec succes')
+  } catch (error) {
+    state.error = error;
+    popUpError(error)
   } finally {
     state.loading = false;
   }

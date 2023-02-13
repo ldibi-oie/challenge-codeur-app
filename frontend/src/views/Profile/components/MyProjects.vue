@@ -1,4 +1,4 @@
-<template lang="">
+<template>
     <div>
           <div class="flex flex-col justify-center my-5" >
             <div role="status" class="flex justify-center" v-if="!projets">
@@ -14,7 +14,7 @@
                       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Mes projets</h1>
                     </div>
                 </div>
-                {{projets}}
+                <!-- {{projets}} -->
                 <div class="inline-block min-w-full align-middle">
                     <div class="overflow-hidden shadow">
                         <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
@@ -62,6 +62,13 @@
                                     </button>
                                 </td>
                               </tr>
+                              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700" v-if="projets.length === 0">
+                                  
+                                <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                    <div class="text-base font-semibold text-gray-900 dark:text-white">Aucun projet pour le moment ...</div>
+                                    <div class="text-sm font-normal text-gray-500 dark:text-gray-400"></div>
+                                </td>
+                            </tr>
                                                        
                             </tbody>
                         </table>

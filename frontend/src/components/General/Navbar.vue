@@ -129,10 +129,10 @@ import {
 export default {
   data() {
     return {
-      isLogged: false,
+      isLogged: localStorage.getItem('user') ? true : false,
       isRegisteredUser: false,
       isCompany: false,
-      user: null,
+      user: localStorage.getItem('user') ? localStorage.getItem('user') : null,
       loading: false,
     };
   },
@@ -144,6 +144,7 @@ export default {
       this.loading = true;
       getUser().then((r) => {
         this.user = r[0];
+
         this.isLogged = this.user != null ? true : false;
         this.isRegisteredUser = isRegisteredUser(this.user);
         this.isCompany = isCompany(this.user);
