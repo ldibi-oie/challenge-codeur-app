@@ -253,7 +253,8 @@ class AppFixtures extends Fixture
                     ->setCompany($company)
                     ->setSalary($this->faker->numberBetween(2000, 100000))
                     ->setCategory($new_category)
-                    ->setStatus($this->faker->randomElement(['open', 'closed']));
+                    ->setStatus($this->faker->randomElement(['open', 'closed']))
+                    ->setJobUrl($this->faker->url());
 
                     $rand_keywords = $this->faker->randomElements($keywords_list, 3);
                     foreach ($rand_keywords as $keyword) {
