@@ -8,15 +8,14 @@
         class="relative w-full h-full ml-18  overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900"
       >
         <Sidebar :role="user?.roles" @selectOnglet="sendData"/>
-        <!-- {{ user }} -->
 
         <main class="p-4 sm:ml-18">
           <div
             class="px-4 pt-6 xl:gap-4 dark:bg-gray-900"
           >
             <div class="mb-4 col-span-full xl:mb-2" >
-              <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" v-if="user?.roles?.length === 1" role="alert">
-                <span class="font-medium">Mode basic user!</span> Sourcrivez a un abonnement Prenium Freelance ou Company pour commencer vos premiers projets 
+              <div v-if="user?.subscriptions ? user?.subscriptions?.length === 0 : false" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"  role="alert">
+                <span class="font-medium">Mode basic user!</span> Sourcrivez a un abonnement Premium Freelance ou Company pour commencer vos premiers projets
               </div>
               <h1
                 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
@@ -42,7 +41,7 @@
             
             <div v-bind:class="{'hidden' : section != 'infos', '': section === 'infos'}">
               <SubscriptionSection 
-                v-if="user?.subscriptions?.length === 0"
+                v-if="user?.subscriptions ? user?.subscriptions?.length > 0 : false"
                 :user="user"
                 :type="user.hasOwnProperty('freelance') === true ? 'freelances' :
                   user.hasOwnProperty('company') === true ? 'companies' : null"
@@ -57,6 +56,12 @@
 
             <div v-bind:class="{'hidden' : section != 'evaluations', '': section === 'evaluations'}">
               <MyComments 
+              />
+            </div>
+
+            <div v-bind:class="{'hidden' : section != 'abonnement', '': section === 'abonnement'}">
+              <MyCurrentSubscription
+        
               />
             </div>
 
@@ -82,6 +87,8 @@ import MyProjects from "./components/MyProjects.vue";
 import MyComments from "./components/MyComments.vue";
 import AddOffer from "./components/AddOffer.vue"
 import { fetchOffers } from "../../stores/offers";
+import MyCurrentSubscription from "./components/MyCurrentSubscription.vue";
+
 const ROLE_FREELANCER = "ROLE_FREELANCER"
 const ROLE_COMPANY = "ROLE_COMPANY"
 
@@ -130,7 +137,8 @@ export default {
     MyOffers,
     MyProjects,
     MyComments,
-    AddOffer
+    AddOffer,
+    MyCurrentSubscription
 },
 };
 </script>

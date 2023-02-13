@@ -1,5 +1,5 @@
 <template>
-          <div class="shadow-md p-4 mb-8 bg-white">
+          <div class="shadow-md p-4 mb-8 bg-white w-full">
             <div class="px-4 flex flex-row justify-between items-center">
                 <h2 class="text-xl font-bold text-gray-700 dark:text-white pr-4">
                 {{ jobOffer.job_title }}{{ jobOffer.job_country && `, ${jobOffer.job_country}` }}
@@ -38,12 +38,16 @@
               <button  @click="viewDetail(jobOffer)"  class="rounded-lg shadow text-xs py-2 px-6 bg-gray-100 flex items-center">See More</button>
             </div>
 
-            <div v-if="jobOffer.job_apply_link" class="text-xs px-4 font-semibold">
+            <div v-if="jobOffer.job_apply_link" class="text-xs px-4 font-semibold w-full">
               <p>
-                Apply Link: <a class="text-red-400 truncate ..." v-bind:href="jobOffer.job_apply_link">
+                Apply Link : 
+                <p class="text-xs text-red-400 truncate ... flex-wrap. w-full" >
+                 <a v-bind:href="jobOffer.job_apply_link">
                   {{ jobOffer.job_apply_link }}
-                </a>
+                 </a> 
+                </p>
               </p>
+         
             </div>
 
             <div class="flex w-full justify-end">

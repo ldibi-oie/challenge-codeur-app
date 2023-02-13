@@ -64,8 +64,6 @@ export default {
             {
                 this.user = r[0]
                 this.offers = this.user.company.offers
-                console.log("user", this.user);
-                console.log("offers", this.offers);
             })
         }
     }

@@ -7,16 +7,20 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimestampableTrait;
-
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['timestampable']],
+    normalizationContext: ['groups' => ['timestampable', 'invoice', 'user']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['subscription' => 'exact'])]
 class Invoice
 {
     use TimestampableTrait;
 
+    #[Groups('user')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -31,6 +35,7 @@ class Invoice
     #[ORM\Column(length: 255)]
     private ?string $number = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 255)]
     private ?string $hostedInvoiceUrl = null;
 

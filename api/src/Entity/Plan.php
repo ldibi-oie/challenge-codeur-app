@@ -7,7 +7,9 @@ use App\Repository\PlanRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimestampableTrait;
 use Symfony\Component\Serializer\Annotation\Groups;
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['plan', 'timestampable']],
+)]
 #[ORM\Entity(repositoryClass: PlanRepository::class)]
 class Plan
 {
@@ -19,6 +21,7 @@ class Plan
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -29,6 +32,7 @@ class Plan
     #[ORM\Column(length: 255)]
     private ?string $stripeId = null;
 
+    #[Groups('user')]
     #[ORM\Column]
     private ?int $price = null;
 

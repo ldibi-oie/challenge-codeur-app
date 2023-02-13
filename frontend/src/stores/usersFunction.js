@@ -4,7 +4,7 @@ import storage from "./storage";
 
 import { popUpError, popUpInfo } from '../stores/notyf'
 export const getLoggedUser = async () => {
-  return storage.getItem("user");
+  return storage.getItem("user") || null;
 };
 
 export const getToken = async () => {
@@ -167,7 +167,6 @@ export const getOffers = async () => {
 export const logout = async () => {
   await storage.removeItem("token");
   await storage.removeItem("user");
-  //await storage.clear();
   window.location.href = "/";
   return false;
 };
@@ -253,3 +252,18 @@ export const getOffersCommentsByOfferId = async (options) => {
   });
   return offers.data["hydra:member"];
 }
+
+
+// get invoices by subcription id
+export const getInvoicesBySubscriptionId = async (options) => {
+  const {
+    subscription_id= "",
+    page= 1
+  } = options
+  var token = await getToken();
+  const invoices = await requestApi.get(`/api/invoices?page=${page}&subscription=${subscription_id}`, {
+    headers: "Bearer " + token,
+  });
+  console.log("this.invoices0", invoices);
+  return invoices.data["hydra:member"];
+};
