@@ -1,6 +1,6 @@
 <template>
-    <div class="mx-auto p-6 container ">
-        {{ user }}
+    <div class="mx-auto p-6 container pt-32" style="max-width: 800px">
+        
         <ol class="items-center w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 justify-between">
             <li v-on:click="nextStep(1)" v-bind:class="{'flex items-center text-red-600 dark:text-red-500 space-x-2.5': section === 1 , 'flex items-center text-gray-600 dark:text-gray-500 space-x-2.5': section != 1}">
                 <span v-bind:class="{'flex items-center justify-center w-8 h-8 border border-red-600 rounded-full shrink-0 dark:border-red-500': section === 1 , 'flex items-center justify-center w-8 h-8 border border-gray-600 rounded-full shrink-0 dark:border-gray-500': section != 1}">
@@ -31,19 +31,26 @@
             </li>
         </ol>
 
-        <div v-bind:class="{'flex flex-col h-screen justify-center items-center': section === 1 , 'hidden': section != 1}">
+        <div v-bind:class="{'flex flex-col h-screen pt-32 items-center': section === 1 , 'hidden': section != 1}">
             <div v-bind:class="{'block': section === 1 , 'hidden': section != 1}">
-                <span>JE SUIS </span>
+             <div class="flex flex-row w-full items-center justify-start">
+                <p class="text-2xl text-black font-bold">JE SUIS </p>
 
-                <div class="bg-white flex row items-center">
+             </div>
+               <div class="flex flex-row mt-4">
+                <div class="px-12 bg-white flex row items-center mr-8 px-8 py-8 rounded-lg bg-purple-100 hover:bg-purple-300  focus:outline-none">
                 <!-- Votre contenu ici -->
-                <button v-on:click="setTypeUser(1)" class="m-3 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
+                <button v-on:click="setTypeUser(1)" class="mr-3 px-4 text-black font-medium rounded-lg text-lg px-5 py-2.5" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
                     Un Freelance
                 </button>
-                <button v-on:click="setTypeUser(2)" class="m-3 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
+                </div>
+
+                <div class="bg-white flex row items-center px-8 py-8 rounded-lg bg-purple-100 hover:bg-purple-300   focus:outline-none">
+                <button v-on:click="setTypeUser(2)" class="m-3 text-black font-medium rounded-lg text-lg px-5 py-2.5" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
                    Une Entreprise
                 </button>
                 </div>
+               </div>
             </div>
             
         </div>
@@ -62,10 +69,6 @@
                 >
             </div>
         </div>
-
-
-        
-        
 
     </div>
 

@@ -41,23 +41,27 @@ export const login = (state) => {
     })
     .then(async (res) => {
       state.token = res.data.token;
+      console.log("reshere0", res)
       // get user full object
       await storage.setItem("token", res.data.token);
-      await getUser(res.data.user?.id).then((result) => {
+  
 
-        // 
-        console.log(result)
-        const role = isCompany(res.data.user) || isFreelance(res.data.user)
-        console.log(role)
+      getUser(res?.data?.user?.id).then((result)=>{
+        console.log("reshere1", result)
+        const is_registered_user = isRegisteredUser(result[0])
+        console.log("is_registered_user", is_registered_user)
         if (res.data.user?.isVerified === false) {
           state.$router.push({ name: "waiting" });
-        } 
-        if(!role) {
-          state.$router.push({ name: "verify_user" });
-        } else {
-          state.$router.push({ name: "profile" });
         }
-      })
+        if(is_registered_user) {
+          state.$router.push({ name: "profile" });
+        } else {
+          state.$router.push({ name: "verify_user" });
+        }
+      });
+     
+      
+
 
       
     })
@@ -164,17 +168,17 @@ export const logout = async () => {
 };
 
 export const isFreelance = (data) => {
-  let user = data || getLoggedUser();
+  let user = data || localStorage.getItem("user");
   return user && user?.roles?.includes("ROLE_FREELANCER");
 };
 
 export const isCompany = (data) => {
-  let user = data || getLoggedUser();
+  let user = data || localStorage.getItem("user");
   return user && user?.roles?.includes("ROLE_COMPANY");
 };
 
 export const isRegisteredUser = (data) => {
-  let user = data || getLoggedUser();
+  let user = data || localStorage.getItem("user");
   console.log("userhere", user)
   return (
     (user && user?.roles?.includes("ROLE_FREELANCER")) ||
