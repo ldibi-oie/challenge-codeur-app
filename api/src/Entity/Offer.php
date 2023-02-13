@@ -38,7 +38,7 @@ class Offer
 {
     use TimestampableTrait;
 
-    #[Groups('offer')]
+    #[Groups('user','offer')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -57,6 +57,7 @@ class Offer
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
+    #[Groups('user', 'offer')]
     #[ORM\ManyToMany(targetEntity: Freelance::class, inversedBy: 'offers')]
     private Collection $candidates;
 
@@ -69,6 +70,7 @@ class Offer
     #[ORM\Column]
     private ?int $salary = null;
 
+    #[Groups('user', 'offer')]
     #[ORM\ManyToOne(inversedBy: 'isSelectedCandidateList')]
     private ?Freelance $selectedCandidate = null;
 
