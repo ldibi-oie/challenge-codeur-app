@@ -8,22 +8,25 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\TimestampableTrait;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['subscription', 'timestampable']],
+    normalizationContext: ['groups' => ['subscription','user', 'timestampable']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['user' => 'exact'])]
 class Subscription
 {
 
     use TimestampableTrait;
 
+    #[Groups('user')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-
+    #[Groups('user')]
     #[ORM\Column(length: 255)]
     private ?string $stripeId = null;
 
@@ -35,9 +38,11 @@ class Subscription
     #[ORM\ManyToOne]
     private ?Plan $plan = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $currentPeriodStart = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $currentPeriodEnd = null;
 

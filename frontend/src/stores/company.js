@@ -97,7 +97,7 @@ export const addOffre = async (data, company_id) => {
         "title": data.title,
         "description": data.description,
         "company": company_id,
-        "category": data.category_id,
+        "category": data.category,
         "salary": data.salary,
         "status": data.status,
         "jobUrl": data.jobUrl,
