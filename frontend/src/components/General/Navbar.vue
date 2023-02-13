@@ -54,7 +54,7 @@
                 <div
                   v-if="isRegisteredUser === true"
                   id="mega-menu-full-image"
-                  class="border-2 border-blue-200 rounded py-2 px-4 items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+                  class="border-2 border-red-200 rounded py-2 px-4 items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
                 >
                   <ul
                     class="flex flex-col mt-4 text-sm font-medium md:flex-row md:space-x-8 md:mt-0"
@@ -62,7 +62,7 @@
                     <li>
                       <router-link
                         to="subscription"
-                        class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700"
+                        class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-gray-400 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-red-500 md:dark:hover:bg-transparent dark:border-gray-700"
                         >Devenir Premium</router-link
                       >
                     </li>
@@ -81,7 +81,7 @@
               <li>
                 <router-link
                   to="scrapper-create-offer"
-                  class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700"
+                  class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-gray-400 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-red-500 md:dark:hover:bg-transparent dark:border-gray-700"
                   >Create Offer From Scrapper</router-link
                 >
               </li>

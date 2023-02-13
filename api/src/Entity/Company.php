@@ -74,6 +74,9 @@ class Company
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isSiretVerified = null;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -169,6 +172,18 @@ class Company
     public function setLogo(?MediaObject $logo): self
     {
         $this->logo = $logo;
+        return $this;
+    }
+
+    public function isIsSiretVerified(): ?bool
+    {
+        return $this->isSiretVerified;
+    }
+
+    public function setIsSiretVerified(?bool $isSiretVerified): self
+    {
+        $this->isSiretVerified = $isSiretVerified;
+
         return $this;
     }
 }

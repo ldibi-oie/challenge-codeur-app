@@ -74,6 +74,9 @@ class Freelance
     #[ORM\ManyToMany(targetEntity: Keyword::class, inversedBy: 'freelances', cascade: ['persist'])]
     private Collection $keywords;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isSiretVerified = null;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -244,6 +247,18 @@ class Freelance
     public function removeKeyword(Keyword $keyword): self
     {
         $this->keywords->removeElement($keyword);
+
+        return $this;
+    }
+
+    public function isIsSiretVerified(): ?bool
+    {
+        return $this->isSiretVerified;
+    }
+
+    public function setIsSiretVerified(?bool $isSiretVerified): self
+    {
+        $this->isSiretVerified = $isSiretVerified;
 
         return $this;
     }
