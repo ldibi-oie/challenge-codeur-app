@@ -123,7 +123,7 @@
   overflow: initial;
 }
 .block-content__button {
-  color: blue;
+  color: red;
   text-decoration: underline;
   align-self: flex-end;
 }

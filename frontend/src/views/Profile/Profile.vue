@@ -29,7 +29,7 @@
             <div v-bind:class="{'hidden' : section != 'offres', '': section === 'offres'}">
               <MyOffers 
               :user="user"
-              :offers="offers"
+              :offers="user?.company?.offers ? user?.company?.offers : user?.freelance ? user?.freelance.offers : this.offers"
               />
             </div>
 
@@ -42,8 +42,10 @@
             
             <div v-bind:class="{'hidden' : section != 'infos', '': section === 'infos'}">
               <SubscriptionSection 
-                v-if="user?.subscriptions?.length > 1"
+                v-if="user?.subscriptions?.length === 0"
                 :user="user"
+                :type="user.hasOwnProperty('freelance') === true ? 'freelances' :
+                  user.hasOwnProperty('company') === true ? 'companies' : null"
               />
 
               <InfosProfile 
@@ -59,9 +61,7 @@
             </div>
 
             <div v-bind:class="{'hidden' : section != 'Ajouter une offre', '': section === 'Ajouter une offre'}">
-              <AddOffer
-
-              />
+              <AddOffer />
             </div>
             
           </div>
@@ -101,7 +101,7 @@ export default {
       getUser().then((r) => {
         console.log(r);
         this.user = r[0];
-        this.getOffersById();
+        // this.getOffersById();
       });
 
     },
@@ -114,7 +114,7 @@ export default {
           company_id: id
       }).then((response) => {
           this.offers = response
-          console.log
+          console.log(this.offers)
       })
     },
 

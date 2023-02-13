@@ -38,7 +38,7 @@ class Offer
 {
     use TimestampableTrait;
 
-    #[Groups('offer')]
+    #[Groups('user', 'offer')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

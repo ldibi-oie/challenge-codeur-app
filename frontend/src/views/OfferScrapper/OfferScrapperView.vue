@@ -18,7 +18,7 @@
         <div v-if="isLoading" class="flex-1 justify-center items-center flex w-full py-8" style="margin: 0">
           <div class="shadow-md p-4 mb-8">
             <div class="px-4 flex flex-row justify-between">
-              <h2 class=" text-xl font-bold text-blue-500 dark:text-white">
+              <h2 class=" text-xl font-bold text-red-500 dark:text-white">
                 Loading...
               </h2>
             </div>

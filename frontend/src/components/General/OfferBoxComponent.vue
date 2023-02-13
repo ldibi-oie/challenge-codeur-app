@@ -40,7 +40,7 @@
 
             <div v-if="jobOffer.job_apply_link" class="text-xs px-4 font-semibold">
               <p>
-                Apply Link: <a class="text-blue-400 truncate ..." v-bind:href="jobOffer.job_apply_link">
+                Apply Link: <a class="text-red-400 truncate ..." v-bind:href="jobOffer.job_apply_link">
                   {{ jobOffer.job_apply_link }}
                 </a>
               </p>
