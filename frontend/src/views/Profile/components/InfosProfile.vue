@@ -37,7 +37,7 @@
                         <input type="date" name="birthday" v-model="infos.birthday" id="birthday" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="15/08/1990" >
                     </div> -->
 
-                    <div class="col-span-6 sm:col-span-3">
+                    <div v-bind:class="{'col-span-6 sm:col-span-3' : type === 2 , 'hidden' : type != 2}">
                         <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Adresse</label>
                         <input type="text" name="address" id="role" v-model="infos.address" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"  >
                     </div>
@@ -71,17 +71,17 @@ export default {
         return {
             isLoading: false,
             infos: {
+                idType: JSON.parse(localStorage.getItem('user'))?.company?.name ? JSON.parse(localStorage.getItem('user'))?.company.name : 
+                    JSON.parse(localStorage.getItem('user'))?.freelance?.id ? JSON.parse(localStorage.getItem('user'))?.freelance.id : '',
                 id: this.user ? this.user.id : localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : "",
                 userId: this.user ? this.user["@id"] : localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))["@id"] : "",
-                name: this.user?.freelance ? this.user.freelance?.name :
-                    this.user?.company ? this.user.company?.name : '',
-                surname: this.user?.freelance ? this.user?.freelance?.surname :
-                    this.user?.company ? this.user?.company?.surname : '',
+                name: this.user?.freelance ? this.user.freelance?.name : '',
+                surname: this.user?.freelance ? this.user?.freelance?.surname : '',
                 birthday: this.user?.freelance ? this.user?.freelance?.birthday :
                     this.user?.company ? this.user?.company?.birthday : '',
                 organization: JSON.parse(localStorage.getItem('user'))?.company?.name ? JSON.parse(localStorage.getItem('user'))?.company.name : '',
                 address: JSON.parse(localStorage.getItem('user'))?.company?.address ? JSON.parse(localStorage.getItem('user'))?.company.address : '',
-            }
+            },
         };
     },
     // filters: {

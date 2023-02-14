@@ -1,7 +1,15 @@
 <template>
   <div>
     <Navbar />
-    <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
+    {{ isDisplay }}
+    <div v-if="!isDisplay">
+      <div class="flex flex-col items-center justify-center h-screen">
+          <p class="text-2xl font-semibold text-gray-700 dark:text-gray-200">
+              Vous n'avez pas les droits pour acceder a cette page
+          </p>
+      </div>
+    </div>
+    <div v-else class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
       <!-- <VerticalBar /> -->
       <div
         id="main-content"
@@ -96,11 +104,13 @@ export default {
     return {
       user: "",
       section: "infos",
-      offers: []
+      offers: [],
+      isDisplay: ""
     };
   },
   mounted() {
     this.getUserRequest();
+    this.getLogged()
   },
   methods: {
     getUserRequest: async function () {
@@ -126,6 +136,16 @@ export default {
 
     sendData(data) {
       this.section = data
+    },
+
+    getLogged(){
+      const islogged = JSON.parse(localStorage.getItem('user')) ? true : false
+
+      if (islogged) {
+        this.isDisplay = true
+      } else {
+        this.$router.push({name: "error"})
+      }
     }
   },
   components: {

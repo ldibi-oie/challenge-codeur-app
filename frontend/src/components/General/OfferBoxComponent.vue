@@ -37,6 +37,9 @@
             <div v-if="isRegisteredUser && (isScrapper===false)" class="flex flex-row ml-4 my-4 ">
               <button  @click="viewDetail(jobOffer)"  class="rounded-lg shadow text-xs py-2 px-6 bg-gray-100 flex items-center">Candidater pour l'offre</button>
             </div>
+            <div class="flex flex-row ml-4 my-4 ">
+              <router-link :to="'/offer/' + jobOffer.job_id" class="rounded-lg shadow text-xs py-2 px-6 bg-gray-100 flex items-center">Voir</router-link>
+            </div>
 
             <div v-if="jobOffer.job_apply_link" class="text-xs px-4 font-semibold w-full">
               <p>
@@ -112,6 +115,7 @@ import { isRegisteredUser , getLoggedUser , addCandidate} from '../../stores/use
     initialize: async function () {
       const user = await getLoggedUser()
       this.isRegisteredUser = isRegisteredUser(user);
+      console.log(this.jobOffer)
     },
   }
 };

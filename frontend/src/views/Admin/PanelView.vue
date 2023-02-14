@@ -19,7 +19,7 @@
                     <div>
                         <svg
                         aria-hidden="true"
-                        class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-red-600"
+                        class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                         viewBox="0 0 100 101"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -50,14 +50,6 @@
                             <span class="ml-3 whitespace-nowrap capitalize">{{ item }}</span>
                         </button>
                     </li>
-                    <li class="mt-7">
-                        <button @click="logoutRequest()" class="flex items-start p-2 w-full text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M8.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l2-2a1 1 0 00-1.414-1.414L11 7.586V3a1 1 0 10-2 0v4.586l-.293-.293z"></path><path d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path></svg>
-                            <span class="flex-1 ml-3 whitespace-nowrap">Deconnexion</span>
-                            <span class="inline-flex justify-center items-center w-5 h-5 text-xs font-semibold rounded-full text-primary-800 bg-primary-100 dark:bg-primary-200 dark:text-primary-800">
-                            </span>
-                        </button>
-                    </li>
                 </ul>
             </div>
         </aside>
@@ -86,7 +78,7 @@
         </div>
     </div>
     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-200 mt-7">
-        <button class="bg-red-500 py-2 px-4 rounded-md text-white dark:text-white mx-5">
+        <button class="bg-blue-500 py-2 px-4 rounded-md text-white dark:text-white mx-5">
             <span v-if="loadNavigation">
                 <svg
                     aria-hidden="true"
@@ -124,7 +116,6 @@
     import TableAdmin from '../../components/Admin/Table.vue'
     import Navbar from '../../components/General/Navbar.vue'
     import http from '../../axios'
-    import { logout } from '../../stores/usersFunction'
 
     export default {
         components: {
@@ -205,11 +196,7 @@
                 } catch (error) {
                     console.log(error)
                 }
-            },
-            async logoutRequest(){
-                logout()
-                this.$route.push({name: 'home'})
-            }  
+            }
         },
     }
 </script>

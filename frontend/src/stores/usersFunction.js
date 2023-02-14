@@ -51,6 +51,8 @@ export const login = (state) => {
         console.log("reshere1", result)
         const is_registered_user = isRegisteredUser(result[0])
         const is_admin = result[0]?.roles?.includes("ROLE_ADMIN")
+        const is_freelance = result[0]?.roles?.includes("ROLE_FREELANCER")
+        const is_company = result[0]?.roles?.includes("ROLE_COMPANY")
         console.log("is_registered_user", is_registered_user)
         if (res.data.user?.isVerified === false) {
           state.$router.push({ name: "waiting" });
@@ -61,7 +63,7 @@ export const login = (state) => {
         else if(is_registered_user) {
           state.$router.push({ name: "profile" });
         }
-        else {
+        else if (!is_freelance && !is_company) {
           state.$router.push({ name: "verify_user" });
         }
       });

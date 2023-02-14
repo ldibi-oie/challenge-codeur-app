@@ -9,7 +9,7 @@
     >
       <h3 class="mb-4 text-2xl font-semibold">Monthly</h3>
       <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
-        Monthly recursive subscription.
+        Abonnement mensuel récursif.
       </p>
       <div class="flex items-baseline my-8">
         <span v-if="is_company" class="mr-2 text-5xl font-extrabold">$39</span>
@@ -34,7 +34,7 @@
               clip-rule="evenodd"
             ></path>
           </svg>
-          <span>Monthly subscription with a test period of 1 week</span>
+          <span>Abonnement mensuel </span>
         </li>
       </ul>
 
@@ -61,7 +61,7 @@
     >
       <h3 class="mb-4 text-2xl font-semibold">6 Month</h3>
       <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
-        6 month recursive subscription.
+        Abonnement récursif de 6 mois.
       </p>
       <div class="flex items-baseline my-8">
         <span v-if="is_company" class="mr-2 text-5xl font-extrabold">$199</span>
@@ -88,7 +88,7 @@
               clip-rule="evenodd"
             ></path>
           </svg>
-          <span>6 Month with test period of 1 week and 17% off</span>
+          <span>6 mois et 17% de réduction</span>
         </li>
       </ul>
 
@@ -115,7 +115,7 @@
     >
       <h3 class="mb-4 text-2xl font-semibold">Yearly</h3>
       <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
-        Yearly subscription with discount.
+        Abonnement annuel avec remise.
       </p>
       <div class="flex items-baseline my-8">
         <span v-if="is_company" class="mr-2 text-5xl font-extrabold">$390</span>
@@ -139,7 +139,7 @@
               clip-rule="evenodd"
             ></path>
           </svg>
-          <span>Year with test period of 1 week and 17% off</span>
+          <span>Abonnement annuel</span>
         </li>
       </ul>
       <a

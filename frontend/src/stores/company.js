@@ -50,7 +50,7 @@ export const updateCompanyToUser = async (data) => {
 
     console.log("UPDATE D'UNE COMPANY EN COURS ....")
 
-    await requestApi.put("/api/companies/" + data.userId , v)
+    await requestApi.put("/api/companies/" + data.id , v)
     .then((res) => {    
         console.log(res)
         console.log(res.data)
