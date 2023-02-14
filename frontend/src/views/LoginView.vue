@@ -72,10 +72,10 @@
           />
         </div>
         <div class="flex items-start">
-          <a
-            href="#"
+          <router-link
+            to="/reset/password/form"
             class="ml-auto text-sm text-red-700 hover:underline dark:text-red-500"
-            >Lost Password?</a
+            >Lost Password?</router-link
           >
         </div>
         <button

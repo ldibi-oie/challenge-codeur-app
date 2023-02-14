@@ -13,6 +13,9 @@ node_modules
 # /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 
+/api/.env
+.env
+
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/

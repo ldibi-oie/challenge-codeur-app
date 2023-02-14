@@ -1,6 +1,6 @@
 .history
-api/.env
-api/.env.local
+/api/.env/
+/api/.env.local
 
 /.idea
 api/node_modules
